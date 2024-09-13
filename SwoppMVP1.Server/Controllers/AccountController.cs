@@ -26,6 +26,7 @@ namespace SwoppMVP1.Server.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<AccountLoginResponseModel> Login(AccountLoginRequestModel request)
         {
+            /*
             var result = await _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
 
             if (result.Succeeded)
@@ -54,6 +55,8 @@ namespace SwoppMVP1.Server.Controllers
                     Expire = DateTime.Now
                 };
             }
+            */
+            return null;
         }
 
         private string GenerateEncodedToken(string userId, string device, DateTime expire, IList<string> roles)
