@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwoppMVP1.Server", "SwoppMVP1.Server\SwoppMVP1.Server.csproj", "{B6105CEE-E1A5-4431-8CFB-14374BB22E34}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "swoppmvp1.client", "swoppmvp1.client\swoppmvp1.client.esproj", "{5280D9C7-6A22-4900-B8BC-443C25B02D76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6105CEE-E1A5-4431-8CFB-14374BB22E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6105CEE-E1A5-4431-8CFB-14374BB22E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6105CEE-E1A5-4431-8CFB-14374BB22E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6105CEE-E1A5-4431-8CFB-14374BB22E34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5280D9C7-6A22-4900-B8BC-443C25B02D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5280D9C7-6A22-4900-B8BC-443C25B02D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5280D9C7-6A22-4900-B8BC-443C25B02D76}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5280D9C7-6A22-4900-B8BC-443C25B02D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5280D9C7-6A22-4900-B8BC-443C25B02D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5280D9C7-6A22-4900-B8BC-443C25B02D76}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {692C35A7-D9D8-4A06-8289-A910FB9E22FA}
+	EndGlobalSection
+EndGlobal
