@@ -68,8 +68,6 @@ namespace SwoppMVP1.Server.Controllers
                     Expire = DateTime.Now
                 };
             }
-            
-            return null;
         }
 
         [HttpPost]
@@ -115,20 +113,16 @@ namespace SwoppMVP1.Server.Controllers
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
             }
-            Console.WriteLine(_config.GetValue<string>("Token"));
             if (Equals(_config.GetValue<string>("Token"), ""))
             {
                 throw new Exception("Token key is missing in appsettings.json");
             }
             
-            // #TODO - Change to read the value from appsettings.json
-            var token2 ="1234567890123456alleVare";
             var token = new JwtSecurityToken(
                 claims: claims,
                 expires: expire,
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    token2)), SecurityAlgorithms.HmacSha256Signature)
-                    //_config.GetValue<string>("Token"), SecurityAlgorithms.HmacSha256))
+                    _config.GetValue<string>("Token"))), SecurityAlgorithms.HmacSha256Signature)
             );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
