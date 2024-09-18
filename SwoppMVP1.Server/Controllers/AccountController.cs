@@ -18,19 +18,41 @@ namespace SwoppMVP1.Server.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context;
 
 
         public AccountController(IConfiguration config, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, ApplicationDbContext context)
+            SignInManager<IdentityUser> signInManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _config = config;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _roleManager = roleManager;
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("api/account/setTransporterRole")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IdentityResult> setTransporterRole(IdentityUser request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            var roles = await _userManager.GetRolesAsync(user);
+            var check = _signInManager.IsSignedIn(User);
+            var claim = new Claim("Transporter", user.Id);
+      
+            IdentityRole newRole = new IdentityRole("Transporter");
+            var response = _roleManager.AddClaimAsync(newRole, claim);
+            _context.SaveChanges();
+            return response.Result;
+        }
+            
+        
         [HttpPost]
         [AllowAnonymous]
         [Route("api/account/login")]
