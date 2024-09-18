@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SwoppMVP1.Server.DAL;
-using SwoppMVP1.Server.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
-builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddIdentityCore<UserModel>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddApiEndpoints();
+Console.WriteLine("ConnectionStrings:AppDbContextConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseSqlite(
+        builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

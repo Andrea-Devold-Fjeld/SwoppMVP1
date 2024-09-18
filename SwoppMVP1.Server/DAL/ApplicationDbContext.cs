@@ -8,11 +8,12 @@ namespace SwoppMVP1.Server.DAL
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=swopp;Mode=Memory;Cache=Shared");
+            //options.UseLazy
         }
     }
 }

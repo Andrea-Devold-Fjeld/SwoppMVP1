@@ -3,9 +3,11 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using SwoppMVP1.Server.DAL;
 using SwoppMVP1.Server.Model;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
@@ -14,9 +16,20 @@ namespace SwoppMVP1.Server.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _config;
+        private readonly ApplicationDbContext _context;
+
+
+        public AccountController(IConfiguration config, UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager, ApplicationDbContext context)
+        {
+            _config = config;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _context = context;
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -26,7 +39,7 @@ namespace SwoppMVP1.Server.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<AccountLoginResponseModel> Login(AccountLoginRequestModel request)
         {
-            /*
+            
             var result = await _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
 
             if (result.Succeeded)
@@ -55,8 +68,32 @@ namespace SwoppMVP1.Server.Controllers
                     Expire = DateTime.Now
                 };
             }
-            */
+            
             return null;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/account/register")]
+        [Produces("application/json")]
+        public async Task<string> Register(RegisterRequest request)
+        {
+            var user = new IdentityUser
+            {
+                UserName = request.Email,
+                NormalizedUserName = request.Email.ToUpperInvariant(),
+                Email = request.Email,
+                NormalizedEmail = request.Email.ToUpperInvariant(),
+                PasswordHash = request.Password
+            };
+            var createUser = await _userManager.CreateAsync(user, request.Password);
+
+            if (createUser.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                return string.Format("{0},{1}", user.Id, user.UserName);
+            }
+            return string.Format("Not succesfull");
         }
 
         private string GenerateEncodedToken(string userId, string device, DateTime expire, IList<string> roles)
@@ -78,17 +115,20 @@ namespace SwoppMVP1.Server.Controllers
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
             }
-
-            if (Equals(_config.GetSection("AppSettings:Token"), ""))
+            Console.WriteLine(_config.GetValue<string>("Token"));
+            if (Equals(_config.GetValue<string>("Token"), ""))
             {
                 throw new Exception("Token key is missing in appsettings.json");
             }
-
+            
+            // #TODO - Change to read the value from appsettings.json
+            var token2 ="1234567890123456alleVare";
             var token = new JwtSecurityToken(
                 claims: claims,
                 expires: expire,
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    _config.GetSection("AppSetting:Token").Value)), SecurityAlgorithms.HmacSha256)
+                    token2)), SecurityAlgorithms.HmacSha256Signature)
+                    //_config.GetValue<string>("Token"), SecurityAlgorithms.HmacSha256))
             );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
