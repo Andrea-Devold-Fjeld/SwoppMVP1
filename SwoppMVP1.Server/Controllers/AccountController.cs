@@ -41,6 +41,7 @@ namespace SwoppMVP1.Server.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IdentityResult> setTransporterRole(IdentityUser request)
         {
+            /*
             var user = await _userManager.FindByNameAsync(request.UserName);
             var roles = await _userManager.GetRolesAsync(user);
             var check = _signInManager.IsSignedIn(User);
@@ -50,6 +51,8 @@ namespace SwoppMVP1.Server.Controllers
             var response = _roleManager.AddClaimAsync(newRole, claim);
             _context.SaveChanges();
             return response.Result;
+            */
+            return null;
         }
             
         
@@ -72,7 +75,7 @@ namespace SwoppMVP1.Server.Controllers
 
                 //logging out the user to be certain no existing session is active
                 await _signInManager.SignOutAsync();
-
+                
                 var token = GenerateEncodedToken(userId, "", request.Expire, roles);
 
                 return new AccountLoginResponseModel
