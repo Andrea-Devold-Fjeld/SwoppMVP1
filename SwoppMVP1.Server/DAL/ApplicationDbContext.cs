@@ -13,6 +13,7 @@ namespace SwoppMVP1.Server.DAL
         }
         
         public DbSet<Packet> Packets { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             //options.UseLazy

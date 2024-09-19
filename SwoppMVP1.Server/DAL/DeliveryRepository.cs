@@ -1,4 +1,5 @@
-﻿using SwoppMVP1.Server.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using SwoppMVP1.Server.Model;
 
 namespace SwoppMVP1.Server.DAL;
 
@@ -10,53 +11,136 @@ public class DeliveryRepository : IDeliveryRepository
     {
         _context = context;
     }
-    public Task<IEnumerable<Delivery>> GetAllDeliveriesAsync()
+    public async Task<IEnumerable<Delivery>> GetAllDeliveriesAsync()
+    {
+        return await _context.Deliveries.ToListAsync();
+    }
+
+    public async Task<Delivery?> GetDeliveryByIdAsync(Guid deliveryId)
+    {
+        return await _context.Deliveries.Where(x => x.Id == deliveryId).FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(Guid userId)
+    {
+        return await _context.Deliveries.Where(x => x.UserId == userId).ToListAsync();
+    }
+
+    public async Task<bool> AddDeliveryAsync(Delivery delivery)
+    {
+        try
+        {
+            await _context.Deliveries.AddAsync(delivery);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+
+    public async Task<bool> UpdateDeliveryAsync(Delivery delivery)
+    {
+        try
+        {
+            // #TODO check if this is asunc or not
+            _context.Update(delivery);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+
+    public async Task<bool> DeleteDeliveryAsync(Guid deliveryId)
+    {
+        var delivery = await _context.Deliveries.Where(x => x.Id == deliveryId).FirstOrDefaultAsync();
+        if (delivery != null)
+        {
+            _context.Remove(delivery);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> AddPacketToDeliverAsync(Guid deliveryId, Packet packet)
+    {
+        var delivery = await _context.Deliveries.Where(x => x.Id == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        if (delivery != null)
+        {
+            if (!IsInitialized(delivery.Packets))
+            {
+                List<Packet> packets = new List<Packet>();
+                packets.Add(packet);
+                delivery.Packets = packets;
+                _context.Deliveries.Update(delivery);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            delivery.Packets.Add(packet);
+            _context.Update(delivery);
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
+
+        return false;
+    }
+    
+
+    public async Task<bool> UpdatePacketToDeliverAsync(Guid deliveryId, Packet packet)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Delivery?> GetDeliveryByIdAsync(Guid deliveryId)
+    public async Task<bool> DeletePacketAsync(Guid deliveryId, Packet packet)
     {
-        throw new NotImplementedException();
+        var delivery = await _context.Deliveries.Where(x => x.Id == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        if (delivery != null)
+        {
+            if (IsInitialized(delivery.Packets))
+            {
+                delivery.Packets.Remove(packet);
+                _context.Deliveries.Update(delivery);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<Packet>> GetAllPacketsInDeliveryAsync(Guid deliveryId)
     {
-        throw new NotImplementedException();
+        var deliveries = await _context.Deliveries.Where(x => x.Id == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        if (deliveries != null)
+        {
+            if (IsInitialized(deliveries.Packets))
+            {
+                return deliveries.Packets;
+            }
+        }
+
+        return null;
     }
 
-    public Task<bool> AddDeliveryAsync(Delivery delivery)
+    public bool IsInitialized(List<Packet> packets)
     {
-        throw new NotImplementedException();
-    }
+        if ((packets != null) && (!packets.Any()))
+        {
+            return true;
+        }
 
-    public Task<bool> UpdateDeliveryAsync(Delivery delivery)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> DeleteDeliveryAsync(Guid deliveryId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> AddPacketToDeliverAsync(Packet packet)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdatePacketToDeliverAsync(Packet packet)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> DeletePacketAsync(Packet packet)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<Packet>> GetAllPacketsInDeliveryAsync(Guid deliveryId)
-    {
-        throw new NotImplementedException();
+        return false;
     }
 }
