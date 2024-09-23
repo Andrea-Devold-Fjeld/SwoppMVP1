@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -18,19 +19,74 @@ namespace SwoppMVP1.Server.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context;
 
 
         public AccountController(IConfiguration config, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, ApplicationDbContext context)
+            SignInManager<IdentityUser> signInManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _config = config;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _roleManager = roleManager;
         }
+        
+        /**
+         * Method to check if a given user has the transporter claim
+         */
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/account/checkTransporterRole")]
+        [Produces("application/json")]
+        public async Task<Claim?> GetCheckTransporterRole(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var transporterClaim = new Claim("Transporter", "true");
 
+            if (user == null) return new Claim("Transporter", "false");
+            {
+                var userClaim = await _userManager.GetClaimsAsync(user);
+                foreach (var claim in userClaim)
+                {
+                    if (claim.Type == "Transporter" && claim.Value == "true")
+                    {
+                        return claim;
+                    }
+                }
+            }
+            return new Claim("Transporter", "false");
+
+        }
+        
+        [HttpPost]
+        [Authorize]
+        [Route("api/account/setTransporterRole")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IdentityResult> SetTransporterRole(IdentityUser request)
+        {
+
+            var user = await _userManager.FindByIdAsync(request.Id);
+            if (user != null)
+            {
+                
+                
+                //ClaimsPrincipal userClaims = await new MyClaimsTransformation().TransformAsync(
+                //    await _signInManager.CreateUserPrincipalAsync(user));
+                //Console.WriteLine(userClaims.ToString());
+                Claim claim = new Claim("Transporter", "true");
+                var identityResult = await _userManager.AddClaimAsync(user, claim);
+                await _context.SaveChangesAsync(default(CancellationToken));
+                return IdentityResult.Success;
+            }
+            return IdentityResult.Failed();
+        }
+            
+        
         [HttpPost]
         [AllowAnonymous]
         [Route("api/account/login")]
@@ -50,7 +106,7 @@ namespace SwoppMVP1.Server.Controllers
 
                 //logging out the user to be certain no existing session is active
                 await _signInManager.SignOutAsync();
-
+                
                 var token = GenerateEncodedToken(userId, "", request.Expire, roles);
 
                 return new AccountLoginResponseModel
