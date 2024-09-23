@@ -26,13 +26,14 @@ public class DeliveryController
     public async Task<IEnumerable<Delivery?>> GetDeliveryByUserId(Guid id)
     {
         IEnumerable<Delivery> deliveries = await _repository.GetAllDeliveriesByUserIdAsync(id);
-        if (deliveries.Any())
+        var deliveryByUserId = deliveries.ToList();
+        if (deliveryByUserId.Any())
         {
             return await _repository.GetAllDeliveriesByUserIdAsync(id);
         }
         else
         {
-            return deliveries;
+            return deliveryByUserId;
         }
         
     }

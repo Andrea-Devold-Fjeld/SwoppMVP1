@@ -16,7 +16,6 @@ namespace SwoppMVP1.Server.DAL
         public DbSet<Delivery> Deliveries { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //options.UseLazy
         }
     }
 }
