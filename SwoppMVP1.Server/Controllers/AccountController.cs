@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -32,27 +33,57 @@ namespace SwoppMVP1.Server.Controllers
             _context = context;
             _roleManager = roleManager;
         }
+        
+        /**
+         * Method to check if a given user has the transporter claim
+         */
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/account/checkTransporterRole")]
+        [Produces("application/json")]
+        public async Task<Claim?> GetCheckTransporterRole(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var transporterClaim = new Claim("Transporter", "true");
 
+            if (user == null) return new Claim("Transporter", "false");
+            {
+                var userClaim = await _userManager.GetClaimsAsync(user);
+                foreach (var claim in userClaim)
+                {
+                    if (claim.Type == "Transporter" && claim.Value == "true")
+                    {
+                        return claim;
+                    }
+                }
+            }
+            return new Claim("Transporter", "false");
+
+        }
+        
         [HttpPost]
         [Authorize]
         [Route("api/account/setTransporterRole")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IdentityResult> setTransporterRole(IdentityUser request)
+        public async Task<IdentityResult> SetTransporterRole(IdentityUser request)
         {
-            /*
-            var user = await _userManager.FindByNameAsync(request.UserName);
-            var roles = await _userManager.GetRolesAsync(user);
-            var check = _signInManager.IsSignedIn(User);
-            var claim = new Claim("Transporter", user.Id);
-      
-            IdentityRole newRole = new IdentityRole("Transporter");
-            var response = _roleManager.AddClaimAsync(newRole, claim);
-            _context.SaveChanges();
-            return response.Result;
-            */
-            return null;
+
+            var user = await _userManager.FindByIdAsync(request.Id);
+            if (user != null)
+            {
+                
+                
+                //ClaimsPrincipal userClaims = await new MyClaimsTransformation().TransformAsync(
+                //    await _signInManager.CreateUserPrincipalAsync(user));
+                //Console.WriteLine(userClaims.ToString());
+                Claim claim = new Claim("Transporter", "true");
+                var identityResult = await _userManager.AddClaimAsync(user, claim);
+                await _context.SaveChangesAsync(default(CancellationToken));
+                return IdentityResult.Success;
+            }
+            return IdentityResult.Failed();
         }
             
         

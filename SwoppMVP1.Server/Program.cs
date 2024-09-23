@@ -37,6 +37,12 @@ builder.Services.AddAuthentication(options =>
         };
     });
 builder.Services.AddAuthorization();
+/*
+builder.Services.AddAuthorization(options =>
+    options.AddPolicy("TransporterOnly", policy => RequireClaim("TransporterId"
+        )
+    ));
+    */
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlite(
@@ -47,6 +53,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddScoped<IPacketRepository, PacketRepository>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
