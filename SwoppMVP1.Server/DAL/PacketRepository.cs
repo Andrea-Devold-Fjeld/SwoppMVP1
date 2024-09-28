@@ -71,4 +71,11 @@ public class PacketRepository : IPacketRepository
     {
         return await _context.Packets.Where(x => x.Available == true).ToListAsync();
     }
+
+
+
+    public async Task<IEnumerable<Packet>> GetPacketsByDeliveryId(Guid deliveryId)
+    {
+        return await _context.Packets.Where(packet => packet.DeliveryId.Contains(deliveryId.ToString())).ToListAsync();
+    }
 }
