@@ -20,12 +20,11 @@ namespace SwoppMVP1.Server.DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Packet>()
-                .Navigation(p => p.Delivery)
-                .UsePropertyAccessMode(PropertyAccessMode.Property);
             builder.Entity<Delivery>()
-                .Navigation(p => p.Packets)
-                .UsePropertyAccessMode(PropertyAccessMode.Property);
+                .HasMany(e => e.Packets)
+                .WithOne(e => e.Delivery)
+                .HasForeignKey(e => e.DeliveryId)
+                .IsRequired(false);
             base.OnModelCreating(builder);
         }
     }

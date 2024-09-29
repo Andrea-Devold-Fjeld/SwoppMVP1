@@ -29,14 +29,15 @@ public class DeliveryController
 
     [HttpGet]
     [Route("api/[controller]/[action]")]
-    public async Task<IEnumerable<Delivery>> GetDeliveriesWithPackets()
+    public async Task<IEnumerable<DeliveryDTO>> GetDeliveriesWithPackets()
     {
+        //#TODO this works now but i have to fix somethings with the packet object
         var deliveries = await _repository.GetDeliveriesWithPacketsAsync();
         var deliveriesWithPackets = deliveries.ToList();
         foreach (var delivery in deliveriesWithPackets)
         {
            var packets = await _packetRepository.GetPacketsByDeliveryId(delivery.DeliveryId);
-           delivery.Packets = (ICollection<Packet>)packets;
+           delivery.Packets = (ICollection<PacketDTO>)packets;
         }
         
         return deliveriesWithPackets;

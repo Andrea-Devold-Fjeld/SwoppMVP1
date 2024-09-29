@@ -14,6 +14,6 @@ public interface IDeliveryRepository
     Task<bool> UpdatePacketToDeliverAsync(Guid deliverId, Packet packet);
     Task<bool> DeletePacketAsync( Guid deliverId, Packet packet);
     Task<IEnumerable<Packet>?> GetAllPacketsInDeliveryAsync(Guid deliveryId);
-    Task<IEnumerable<Delivery>> GetDeliveriesWithPacketsAsync();
+    Task<IEnumerable<DeliveryDTO>> GetDeliveriesWithPacketsAsync();
 
 }

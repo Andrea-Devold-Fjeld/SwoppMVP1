@@ -14,5 +14,5 @@ public interface IPacketRepository
     Task UpdatePacketAsync(Packet packet);
     Task<bool> DeletePacketAsync(Guid id);
     Task<IEnumerable<Packet>> GetAvailablePacketsAsync();
-    Task<IEnumerable<Packet>> GetPacketsByDeliveryId(Guid deliveryId);
+    Task<IEnumerable<PacketDTO>> GetPacketsByDeliveryId(Guid deliveryId);
 }

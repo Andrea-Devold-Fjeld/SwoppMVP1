@@ -17,9 +17,15 @@ public class DeliveryRepository : IDeliveryRepository
         return await _context.Deliveries.ToListAsync();
     }
 
-    public async Task<IEnumerable<Delivery>> GetDeliveriesWithPacketsAsync()
+    public async Task<IEnumerable<DeliveryDTO>> GetDeliveriesWithPacketsAsync()
     {
-        return await _context.Deliveries.Include(p => p.Packets).ToListAsync();
+        return await _context.Deliveries.Include(p => p.Packets).Select(
+            e => new DeliveryDTO()
+            {
+                DeliveryId = e.DeliveryId,
+                UserId = e.UserId,
+                Delivered =  e.Delivered
+            }).ToListAsync();
     }
     public async Task<Delivery?> GetDeliveryByIdAsync(Guid deliveryId)
     {
