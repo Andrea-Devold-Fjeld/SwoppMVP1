@@ -71,4 +71,27 @@ public class PacketRepository : IPacketRepository
     {
         return await _context.Packets.Where(x => x.Available == true).ToListAsync();
     }
+
+
+
+    public async Task<IEnumerable<PacketDTO>> GetPacketsByDeliveryId(Guid deliveryId)
+    {
+        return await _context.Packets.Where(x => x.DeliveryId == deliveryId)
+            .Select(
+            e => new PacketDTO()
+            {
+                Id = e.Id,
+                UserId = e.UserId,
+                Timestamp = e.Timestamp,
+                Message = e.Message,
+                originAddress = e.originAddress,
+                destinationAddress = e.destinationAddress,
+                Weight = e.Weight,
+                Height = e.Height,
+                Depth = e.Depth,
+                Width = e.Width,
+                Available = e.Available
+            }).ToListAsync();
+        
+    }
 }

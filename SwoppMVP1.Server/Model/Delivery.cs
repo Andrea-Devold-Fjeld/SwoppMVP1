@@ -1,9 +1,14 @@
-﻿namespace SwoppMVP1.Server.Model;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace SwoppMVP1.Server.Model;
+[Table("Deliveries")]
 public class Delivery
 {
-    public Guid Id { get; set; }
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid DeliveryId { get; set; }
     public Guid UserId { get; set; }
-    public virtual List<Packet?>? Packets { get; set; }
+    public ICollection<Packet> Packets { get; set; } = new List<Packet>();
     public bool Delivered { get; set; }
 }

@@ -6,6 +6,7 @@ namespace SwoppMVP1.Server.DAL;
 public class DeliveryRepository : IDeliveryRepository
 {
     private readonly ApplicationDbContext _context;
+    private IDeliveryRepository _deliveryRepositoryImplementation;
 
     public DeliveryRepository(ApplicationDbContext context)
     {
@@ -16,9 +17,19 @@ public class DeliveryRepository : IDeliveryRepository
         return await _context.Deliveries.ToListAsync();
     }
 
+    public async Task<IEnumerable<DeliveryDTO>> GetDeliveriesWithPacketsAsync()
+    {
+        return await _context.Deliveries.Include(p => p.Packets).Select(
+            e => new DeliveryDTO()
+            {
+                DeliveryId = e.DeliveryId,
+                UserId = e.UserId,
+                Delivered =  e.Delivered
+            }).ToListAsync();
+    }
     public async Task<Delivery?> GetDeliveryByIdAsync(Guid deliveryId)
     {
-        return await _context.Deliveries.Where(x => x.Id == deliveryId).FirstOrDefaultAsync();
+        return await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(Guid userId)
@@ -59,7 +70,7 @@ public class DeliveryRepository : IDeliveryRepository
 
     public async Task<bool> DeleteDeliveryAsync(Guid deliveryId)
     {
-        var delivery = await _context.Deliveries.Where(x => x.Id == deliveryId).FirstOrDefaultAsync();
+        var delivery = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).FirstOrDefaultAsync();
         if (delivery != null)
         {
             _context.Remove(delivery);
@@ -72,9 +83,26 @@ public class DeliveryRepository : IDeliveryRepository
         }
     }
 
-    public async Task<bool> AddPacketToDeliverAsync(Guid deliveryId, Packet packet)
+
+
+
+    public async Task<bool> AddPacketToDeliverAsync(Guid deliveryId, Guid packetId)
     {
-        var delivery = await _context.Deliveries.Where(x => x.Id == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        var delivery = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        var packet = await _context.Packets.Where(x => x.Id == packetId).FirstOrDefaultAsync();
+        if (packet != null)
+        {
+            Console.WriteLine(packet.Id.ToString());
+            if (delivery != null)
+            {
+                delivery.Packets.Add(packet);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        return false;
+        /*
         if (delivery != null)
         {
             if (!IsInitialized(delivery.Packets))
@@ -95,6 +123,7 @@ public class DeliveryRepository : IDeliveryRepository
         }
 
         return false;
+        */
     }
     
 
@@ -105,42 +134,19 @@ public class DeliveryRepository : IDeliveryRepository
 
     public async Task<bool> DeletePacketAsync(Guid deliveryId, Packet packet)
     {
-        var delivery = await _context.Deliveries.Where(x => x.Id == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        var delivery = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
         if (delivery != null)
         {
-            if (IsInitialized(delivery.Packets))
-            {
-                delivery.Packets.Remove(packet);
-                _context.Deliveries.Update(delivery);
-                await _context.SaveChangesAsync();
-                return true;
-            }
+            delivery.Packets.Remove(packet);
         }
 
         return false;
     }
 
-    public async Task<IEnumerable<Packet>> GetAllPacketsInDeliveryAsync(Guid deliveryId)
+    public async Task<IEnumerable<Packet>?> GetAllPacketsInDeliveryAsync(Guid deliveryId)
     {
-        var deliveries = await _context.Deliveries.Where(x => x.Id == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
-        if (deliveries != null)
-        {
-            if (IsInitialized(deliveries.Packets))
-            {
-                return deliveries.Packets;
-            }
-        }
-
-        return null;
+        var deliveries = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        return deliveries != null ? deliveries.Packets : null;
     }
-
-    public bool IsInitialized(List<Packet> packets)
-    {
-        if ((packets != null) && (!packets.Any()))
-        {
-            return true;
-        }
-
-        return false;
-    }
+    
 }

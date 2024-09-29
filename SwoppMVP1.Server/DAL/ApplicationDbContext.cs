@@ -17,5 +17,15 @@ namespace SwoppMVP1.Server.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Delivery>()
+                .HasMany(e => e.Packets)
+                .WithOne(e => e.Delivery)
+                .HasForeignKey(e => e.DeliveryId)
+                .IsRequired(false);
+            base.OnModelCreating(builder);
+        }
     }
 }
