@@ -130,6 +130,7 @@ namespace SwoppMVP1.Server.Controllers
                 var token = GenerateEncodedToken(userId, "", DateTime.Parse(request.Expire), roles);
                 return new AccountLoginResponseModel
                 {
+                    UserId = user.Id,
                     Token = token,
                     Expire = DateTime.Parse(request.Expire)
                 };
