@@ -3,6 +3,7 @@
 namespace SwoppMVP1.Server.Model
 {   
     //Model that are used when an user attempts to login
+    [Serializable]
     public class AccountLoginRequestModel
     {
         [Required]

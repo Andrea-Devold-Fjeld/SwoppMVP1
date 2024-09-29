@@ -16,7 +16,7 @@ public class PacketController : Controller
     }
     //I dont have authorize yet on these method
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IEnumerable<Packet>> GetPackets()
@@ -25,7 +25,7 @@ public class PacketController : Controller
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public async Task<IEnumerable<Packet>> GetPacketsByUserId(Guid userId)
     {
@@ -33,7 +33,7 @@ public class PacketController : Controller
     }
     
     [HttpPost]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public async Task<bool> AddPacket(Packet packet)
     {
@@ -50,7 +50,7 @@ public class PacketController : Controller
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public async Task<IEnumerable<Packet>> GetAvailablePackets()
     {
@@ -58,7 +58,7 @@ public class PacketController : Controller
     }
 
     [HttpPost]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public async Task<bool> SetAvailablePacketWithId(Guid Id, bool available)
     {
@@ -66,7 +66,7 @@ public class PacketController : Controller
     }
 
     [HttpPost]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public async Task<bool> UpdatePacket(Packet packet)
     {
@@ -83,7 +83,7 @@ public class PacketController : Controller
     }
 
     [HttpDelete]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public async Task<bool> DeletePacket(Guid packetId)
     {

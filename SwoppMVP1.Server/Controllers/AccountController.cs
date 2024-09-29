@@ -35,7 +35,7 @@ namespace SwoppMVP1.Server.Controllers
          */
         [HttpGet]
         [AllowAnonymous]
-        [Route("api/account/checkTransporterRole")]
+        [Route("[controller]/[action]")]
         [Produces("application/json")]
         public async Task<Claim?> GetCheckTransporterRole(Guid userId)
         {
@@ -70,7 +70,7 @@ namespace SwoppMVP1.Server.Controllers
          */
         [HttpPost]
         [Authorize]
-        [Route("api/account/setTransporterRole")]
+        [Route("[controller]/[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -103,13 +103,13 @@ namespace SwoppMVP1.Server.Controllers
         [Authorize]  //"Bearer " + token
         [HttpPost]
         [AllowAnonymous]
-        [Route("api/account/login")]
+        [Route("[controller]/[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<AccountLoginResponseModel> Login(AccountLoginRequestModel request)
+        public async Task<AccountLoginResponseModel> Login([FromBody] AccountLoginRequestModel request)
         {
-            
+            Console.WriteLine(request.Username + ":" + request.Password + ":" + request.Expire);
             var result = await _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
 
             if (result.Succeeded)
@@ -144,7 +144,7 @@ namespace SwoppMVP1.Server.Controllers
          */
         [HttpPost]
         [AllowAnonymous]
-        [Route("api/account/register")]
+        [Route("[controller]/[action]")]
         [Produces("application/json")]
         public async Task<string> Register(RegisterRequest request)
         {

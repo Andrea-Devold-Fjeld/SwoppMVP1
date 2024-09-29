@@ -20,7 +20,7 @@ public class DeliveryController
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     public async Task<IEnumerable<Delivery>> GetDeliveries()
     {
         return await _repository.GetAllDeliveriesAsync();
@@ -28,7 +28,7 @@ public class DeliveryController
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     public async Task<IEnumerable<DeliveryDTO>> GetDeliveriesWithPackets()
     {
         //#TODO this works now but i have to fix somethings with the packet object
@@ -44,7 +44,7 @@ public class DeliveryController
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IEnumerable<Delivery?>> GetDeliveryByUserId(Guid id)
     {
@@ -62,7 +62,7 @@ public class DeliveryController
     }
 
     [HttpPost]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<HttpResponseMessage> AddDelivery(Delivery? delivery)
@@ -78,7 +78,7 @@ public class DeliveryController
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<HttpResponseMessage> AddPacketToDelivery(Guid packetId, Guid deliveryId)
