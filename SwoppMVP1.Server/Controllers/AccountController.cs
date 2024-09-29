@@ -74,10 +74,10 @@ namespace SwoppMVP1.Server.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IdentityResult> SetTransporterRole(IdentityUser request)
+        public async Task<IdentityResult> SetTransporterRole(Guid userId)
         {
             //Find user and check if exists
-            var user = await _userManager.FindByIdAsync(request.Id);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user != null)
             {
                 try
@@ -100,6 +100,7 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Login method that return a JWT token that are used to authorize further request
          */
+        [Authorize]  //"Bearer " + token
         [HttpPost]
         [AllowAnonymous]
         [Route("api/account/login")]
@@ -159,7 +160,8 @@ namespace SwoppMVP1.Server.Controllers
 
             if (createUser.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
+                await _context.SaveChangesAsync();
+                //await _signInManager.SignInAsync(user, false);
                 return string.Format("{0},{1}", user.Id, user.UserName);
             }
             return string.Format("Not succesfull");

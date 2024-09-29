@@ -24,6 +24,23 @@ public class DeliveryController
     public async Task<IEnumerable<Delivery>> GetDeliveries()
     {
         return await _repository.GetAllDeliveriesAsync();
+
+    }
+
+    [HttpGet]
+    [Route("api/[controller]/[action]")]
+    public async Task<IEnumerable<DeliveryDTO>> GetDeliveriesWithPackets()
+    {
+        //#TODO this works now but i have to fix somethings with the packet object
+        var deliveries = await _repository.GetDeliveriesWithPacketsAsync();
+        var deliveriesWithPackets = deliveries.ToList();
+        foreach (var delivery in deliveriesWithPackets)
+        {
+           var packets = await _packetRepository.GetPacketsByDeliveryId(delivery.DeliveryId);
+           delivery.Packets = (ICollection<PacketDTO>)packets;
+        }
+        
+        return deliveriesWithPackets;
     }
 
     [HttpGet]
@@ -72,8 +89,8 @@ public class DeliveryController
         {
             var packet = await _packetRepository.GetPacketAsync(packetId);
             if (packet is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
-            await _repository.AddPacketToDeliverAsync(delivery.Id, packet);
-            _context.SaveChangesAsync();
+            await _repository.AddPacketToDeliverAsync(delivery.DeliveryId, packetId);
+            await _context.SaveChangesAsync();
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
         return new HttpResponseMessage(HttpStatusCode.BadRequest);

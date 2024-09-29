@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SwoppMVP1.Server.Model;
-[Table("Packets")]
-public class Packet
+﻿namespace SwoppMVP1.Server.Model;
+[Serializable]
+public class PacketDTO
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public DateTime Timestamp { get; set; }
@@ -23,6 +19,6 @@ public class Packet
     public double Depth { get; set; }
     public double Weight { get; set; }
     public bool Available { get; set; }
-    public Guid? DeliveryId  { get; set; }
-    public virtual Delivery? Delivery { get; set; }
+    public string? DeliveryId  { get; set; }
+    public virtual DeliveryDTO? Delivery { get; set; }
 }
