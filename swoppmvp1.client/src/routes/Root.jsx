@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import AuthProvider from "@/AuthProvider.jsx";
 import Navigation from "@/Navigation.jsx";
 import Footer from "@/Footer.jsx";
-import App from "@/App.jsx";
+import Content from "@/Content.jsx";
 
 
 const Root=({children})=> {
@@ -14,7 +14,7 @@ const Root=({children})=> {
             <Navigation />
         </div>       
         <div className={"content"} id={"content"}>
-        <App />
+        <Content />
         </div>
         <div className={"sticky-bottom"} id={"footer"}>
             <Footer />                 
