@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import Navigation from "@/Navigation.jsx";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
+import LoginForm from "@/LoginForm.jsx";
+
 
 function App() {
+    return (
+        <div className="App">
+        </div>
+    )
+    /*
     const [forecasts, setForecasts] = useState();
 
     useEffect(() => {
@@ -44,6 +53,8 @@ function App() {
         const data = await response.json();
         setForecasts(data);
     }
+    
+     */
 }
 
 export default App;
