@@ -100,16 +100,22 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Login method that return a JWT token that are used to authorize further request
          */
-        [Authorize]  //"Bearer " + token
+          //"Bearer " + token
         [HttpPost]
         [AllowAnonymous]
         [Route("[controller]/[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<AccountLoginResponseModel> Login([FromBody] AccountLoginRequestModel request)
+        public async Task<AccountLoginResponseModel> Login([FromBody]AccountLoginRequestModel req)
         {
-            Console.WriteLine(request.Username + ":" + request.Password + ":" + request.Expire);
+            var request = new AccountLoginRequestModel()
+            {
+                Username = req.Username,
+                Password = req.Password,
+                Expire = DateTime.Now.AddHours(1).ToString("dd/MM/yyyy HH:mm:ss")
+            };
+            //request.Expire = DateTime.Now.AddHours(1);
             var result = await _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
 
             if (result.Succeeded)
@@ -121,11 +127,11 @@ namespace SwoppMVP1.Server.Controllers
                 //logging out the user to be certain no existing session is active
                 await _signInManager.SignOutAsync();
                 
-                var token = GenerateEncodedToken(userId, "", request.Expire, roles);
+                var token = GenerateEncodedToken(userId, "", DateTime.Parse(request.Expire), roles);
                 return new AccountLoginResponseModel
                 {
                     Token = token,
-                    Expire = request.Expire
+                    Expire = DateTime.Parse(request.Expire)
                 };
 
             }

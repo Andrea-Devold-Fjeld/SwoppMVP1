@@ -12,13 +12,25 @@ function LoginForm() {
         url.append("Username", email);
         url.append("Password", password);
         url.append("Expire", getExpire())
+        let object = {
+            Username: email,
+            Password: password
+        }
 
         try {
-            const response = fetch('account/login', {
+            const response = await fetch(`account/login/`, {
                 method: 'POST',
-                body: url
-            })
-            setFetchedData(data);
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+                body: JSON.stringify(object)
+            }).then((response) => response.json({
+                Username: email,
+                Password: password,
+                Expire: getExpire(),
+            }))
+                .then((json) => console.log(json))
+
         } catch (error) {
             console.error(error)
         }
@@ -43,7 +55,7 @@ function LoginForm() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        fetchData();
+        fetchData()
     }
 
     return (

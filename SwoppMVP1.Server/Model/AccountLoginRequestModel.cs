@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SwoppMVP1.Server.Model
 {   
@@ -6,12 +7,11 @@ namespace SwoppMVP1.Server.Model
     [Serializable]
     public class AccountLoginRequestModel
     {
-        [Required]
+
         public string Username { get; set; }
-        [Required]
+
         public string Password { get; set; }
 
-        [Required]
-        public DateTime Expire { get; set; }
+        public string Expire { get; set; }
     }
 }
