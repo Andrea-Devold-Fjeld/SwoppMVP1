@@ -14,7 +14,7 @@ function LoginForm() {
         url.append("Expire", getExpire())
 
         try {
-            const response = fetch('/api/account/login', {
+            const response = fetch('api/account/login', {
                 method: 'POST',
                 body: url
             });

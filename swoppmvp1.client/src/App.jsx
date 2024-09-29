@@ -6,11 +6,14 @@ import LoginForm from "@/LoginForm.jsx";
 
 
 function App() {
+    /*
     return (
         <div className="App">
         </div>
     )
-    /*
+    
+     */
+    
     const [forecasts, setForecasts] = useState();
 
     useEffect(() => {
@@ -54,7 +57,7 @@ function App() {
         setForecasts(data);
     }
     
-     */
+     
 }
 
 export default App;
