@@ -62,7 +62,7 @@ public class PacketRepository : IPacketRepository
         return true;
     }
 
-    public async Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(string userId)
     {
         return await _context.Packets.Where(x => x.UserId == userId).ToListAsync();
     }

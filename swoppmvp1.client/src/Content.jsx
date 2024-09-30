@@ -1,17 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
-import Cookies from 'js-cookie';
-import Navigation from "@/Navigation.jsx";
+
 function Content() {
     const [forecasts, setForecasts] = useState();
     const [token, setToken] = useState({name: "", value: ""});
 return (
-    <div className="App">
-        <div>
-            <Navigation />
-        </div>
+    <div className="content" id={"content"}>
         Kontent
-    </div>
+    </div>  
 )
 }
 export default Content;

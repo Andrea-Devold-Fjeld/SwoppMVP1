@@ -3,7 +3,7 @@
 public class PacketDTO
 {
     public Guid Id { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public DateTime Timestamp { get; set; }
     public string? Message { get; set; }
     public string? originAddress { get; set; }

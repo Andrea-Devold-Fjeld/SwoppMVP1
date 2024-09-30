@@ -6,7 +6,7 @@ public interface IPacketRepository
 {
     Task<IEnumerable<Packet>> GetPacketsAsync();
     Task<Packet?> GetPacketAsync(Guid id);
-    Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(Guid userId);
+    Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(string userId);
     
     Task<bool> SetPacketAvailabilityAsync(Guid packetId, bool isAvailable);
     Task<IEnumerable<Packet>> GetPacketsAsync(IEnumerable<Guid> ids);

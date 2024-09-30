@@ -6,10 +6,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import LoggedIn from "@/LoggedIn.jsx";
 import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {useAuth} from "@/hooks/AuthProvider.jsx";
 
 function Navigation() {
     
+    const navgigate = useNavigate();
+    const auth = useAuth();
     return (
+        <nav>
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
                 <Navbar.Brand href="#home">Swopp</Navbar.Brand>
@@ -17,7 +22,9 @@ function Navigation() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Link to={"/login"}>About</Link>
+                        <Nav.Link href={"/profile"}>Profile</Nav.Link>
+                        <Nav.Link href={"/login"}>Login</Nav.Link>
+                        <Button onClick={() => auth.logOut()}>Logout</Button>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">
@@ -33,6 +40,7 @@ function Navigation() {
                 </Navbar.Collapse>
             </Container>
         </Navbar>
+        </nav>
     );
 }
 

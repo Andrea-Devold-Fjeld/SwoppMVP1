@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SwoppMVP1.Server.DAL;
 using SwoppMVP1.Server.Model;
+using SwoppMVP1.Server.Service;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 
@@ -19,31 +21,39 @@ namespace SwoppMVP1.Server.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context;
+        private readonly IJwtTokenManager _jwtTokenManager;
+        private readonly IPrincipal _user;
+
 
 
         public AccountController(IConfiguration config, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+            SignInManager<IdentityUser> signInManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager
+            , IJwtTokenManager jwtTokenManager, IPrincipal user)
         {
             _config = config;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _jwtTokenManager = jwtTokenManager;
+            _user = user;
         }
         
         /**
          * Method to check if a given user has the transporter claim
          */
         [HttpGet]
+        [Authorize]
         [AllowAnonymous]
         [Route("[controller]/[action]")]
         [Produces("application/json")]
-        public async Task<Claim?> GetCheckTransporterRole(Guid userId)
+        public async Task<Claim?> GetCheckTransporterRole()
         {
+            var u = _user?.Identity?.Name;
             var claimType = "Transporter";
             var claimValue = "true";
             
             //Get user with usermanager
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByNameAsync(u);
             
             //check if user exist
             if (user == null) return new Claim("Transporter", "false");
@@ -63,13 +73,13 @@ namespace SwoppMVP1.Server.Controllers
 
         }
         
+        
         /**
          * Method to give a user with userId the transporter claim,
          * return IdentityResult.success if succesfull and IdentityResult.Feiled if not
          * #TODO check if there is better return values
          */
         [HttpPost]
-        [Authorize]
         [Route("[controller]/[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
@@ -122,12 +132,13 @@ namespace SwoppMVP1.Server.Controllers
             {
                 var user = await _userManager.FindByNameAsync(request.Username);
                 var userId = user.Id;
-                var roles = await _userManager.GetRolesAsync(user);
+                var roles = await _userManager.GetClaimsAsync(user);
 
                 //logging out the user to be certain no existing session is active
                 await _signInManager.SignOutAsync();
                 
                 var token = GenerateEncodedToken(userId, "", DateTime.Parse(request.Expire), roles);
+                //var token = _jwtTokenManager.Authenticate(request.Username, request.Password);
                 return new AccountLoginResponseModel
                 {
                     UserId = user.Id,
@@ -176,7 +187,7 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Private method to generate a JWT token
          */
-        private string GenerateEncodedToken(string userId, string device, DateTime expire, IList<string> roles)
+        private string GenerateEncodedToken(string userId, string device, DateTime expire, IList<Claim> roles)
         {
             //initialize a list of claims for the JWT
             List<Claim> claims = new List<Claim>
@@ -192,7 +203,7 @@ namespace SwoppMVP1.Server.Controllers
             {
                 foreach (var role in roles)
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
+                    claims.Add(role);
                 }
             }
             if (Equals(_config.GetValue<string>("Token"), ""))
@@ -208,6 +219,13 @@ namespace SwoppMVP1.Server.Controllers
             );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var identityUsers = _signInManager.UserManager.Users.ToList().FirstOrDefault(x => x.Id == userId);
+            if (identityUsers != null)
+            {
+                _userManager.SetAuthenticationTokenAsync(identityUsers, "LOCAL_AUTHORITY", "jwt", jwt);
+                _context.SaveChangesAsync();
+            }
+
             return jwt;
         }
     }

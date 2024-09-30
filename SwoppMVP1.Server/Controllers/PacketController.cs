@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SwoppMVP1.Server.DAL;
@@ -9,10 +12,14 @@ namespace SwoppMVP1.Server.Controllers;
 public class PacketController : Controller
 {
     private readonly IPacketRepository _repository;
+    private readonly IPrincipal _user;
+    private readonly UserManager<IdentityUser> _manager;
 
-    public PacketController(IPacketRepository repository)
+    public PacketController(IPacketRepository repository, IPrincipal user, UserManager<IdentityUser> manager)
     {
         _repository = repository;
+        _user = user;
+        _manager = manager;
     }
     //I dont have authorize yet on these method
     [HttpGet]
@@ -25,11 +32,17 @@ public class PacketController : Controller
     }
 
     [HttpGet]
+    [Authorize]
     [Route("[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<IEnumerable<Packet>> GetPacketsByUserId(Guid userId)
+    public async Task<IEnumerable<Packet>> GetPacketsByUserId()
     {
-        return await _repository.GetPacketsByUserIdAsync(userId);
+        var userId = _user?.Identity?.Name;
+        var userTest = User.FindFirst(ClaimTypes.NameIdentifier);
+        Console.WriteLine(userTest);
+        var user = _manager.Users.FirstOrDefault(u => u.Id == userId);
+        //var getuser = _manager.GetUserAsync(_user.Identity?).GetAwaiter().GetResult();
+        return await _repository.GetPacketsByUserIdAsync(userTest.Value);
     }
     
     [HttpPost]

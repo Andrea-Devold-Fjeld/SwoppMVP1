@@ -1,4 +1,5 @@
 
+using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization.Policy;
@@ -10,11 +11,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SwoppMVP1.Server.DAL;
+using SwoppMVP1.Server.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+IConfiguration config = builder.Configuration;
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -22,16 +24,19 @@ builder.Services.AddAuthentication(options =>
     })
     .AddCookie(options =>
     {
-        options.LoginPath = "api/Account/Login";
-        options.AccessDeniedPath = "api/Account/AccessDenied";
+        options.LoginPath = "Account/Login";
+        options.AccessDeniedPath = "Account/AccessDenied";
     })
     .AddJwtBearer(options =>
     {
+        var key = config.GetValue<string>("Token");
+        var keyBytes = Encoding.ASCII.GetBytes(key);
+
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token"])),
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
             ValidateIssuer = false,
             ValidateAudience = false
         };
@@ -53,9 +58,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddScoped<IPacketRepository, PacketRepository>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 builder.Services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(options => 
 {
     var securityScheme = new OpenApiSecurityScheme
     {
@@ -68,7 +76,6 @@ builder.Services.AddSwaggerGen(options =>
     };
 
     options.AddSecurityDefinition("Bearer", securityScheme);
-
     var securityRequirement = new OpenApiSecurityRequirement()
     {
         {
@@ -86,6 +93,8 @@ builder.Services.AddSwaggerGen(options =>
     
     options.AddSecurityRequirement(securityRequirement);
 });
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer("Bearer", options => options.SaveToken = true);*/
 builder.Services.AddControllers();
 
 var app = builder.Build();
