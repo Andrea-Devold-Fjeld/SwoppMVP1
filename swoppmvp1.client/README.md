@@ -33,7 +33,8 @@ In this function it is two important things.
  - And that there are two main routes.
    - ("/") which are the home which does not need the user to be logged in
    - ("/protectedlayout") that have a chck if the user is logged in
- 
+
+ ```
 
        import Root from "@/routes/Root.jsx";
        import Login from "@/routes/Login.jsx";
@@ -63,7 +64,7 @@ In this function it is two important things.
             </>
             )
         )
-
+```
 #### ProtectedLaytout.jsx
     export default function ProtectedLayout() {
         const user = useAuth();
