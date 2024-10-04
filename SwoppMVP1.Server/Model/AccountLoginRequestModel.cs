@@ -11,6 +11,6 @@ namespace SwoppMVP1.Server.Model
         public string Password { get; set; }
 
         [Required]
-        public DateTime Expire { get; set; }
+        public string Expire { get; set; }
     }
 }

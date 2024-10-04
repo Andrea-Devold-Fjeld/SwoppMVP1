@@ -100,32 +100,39 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Login method that return a JWT token that are used to authorize further request
          */
-        [Authorize]  //"Bearer " + token
         [HttpPost]
         [AllowAnonymous]
-        [Route("api/account/login")]
+        [Route("[controller]/[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<AccountLoginResponseModel> Login(AccountLoginRequestModel request)
+        public async Task<AccountLoginResponseModel> Login([FromBody]AccountLoginRequestModel req)
         {
-            
+            var request = new AccountLoginRequestModel()
+            {
+                Username = req.Username,
+                Password = req.Password,
+                Expire = DateTime.Now.AddHours(1).ToString("dd/MM/yyyy HH:mm:ss")
+            };
+            //request.Expire = DateTime.Now.AddHours(1);
             var result = await _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
 
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(request.Username);
                 var userId = user.Id;
-                var roles = await _userManager.GetRolesAsync(user);
+                var roles = await _userManager.GetClaimsAsync(user);
 
                 //logging out the user to be certain no existing session is active
                 await _signInManager.SignOutAsync();
                 
-                var token = GenerateEncodedToken(userId, "", request.Expire, roles);
+                var token = GenerateEncodedToken(userId, "", DateTime.Parse(request.Expire), roles);
+                //var token = _jwtTokenManager.Authenticate(request.Username, request.Password);
                 return new AccountLoginResponseModel
                 {
+                    UserId = user.Id,
                     Token = token,
-                    Expire = request.Expire
+                    Expire = DateTime.Parse(request.Expire)
                 };
 
             }
@@ -169,7 +176,7 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Private method to generate a JWT token
          */
-        private string GenerateEncodedToken(string userId, string device, DateTime expire, IList<string> roles)
+        private string GenerateEncodedToken(string userId, string device, DateTime expire, IList<Claim> roles)
         {
             //initialize a list of claims for the JWT
             List<Claim> claims = new List<Claim>
@@ -185,7 +192,7 @@ namespace SwoppMVP1.Server.Controllers
             {
                 foreach (var role in roles)
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
+                    claims.Add(role);
                 }
             }
             if (Equals(_config.GetValue<string>("Token"), ""))
@@ -201,6 +208,13 @@ namespace SwoppMVP1.Server.Controllers
             );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var identityUsers = _signInManager.UserManager.Users.ToList().FirstOrDefault(x => x.Id == userId);
+            if (identityUsers != null)
+            {
+                _userManager.SetAuthenticationTokenAsync(identityUsers, "LOCAL_AUTHORITY", "jwt", jwt);
+                _context.SaveChangesAsync();
+            }
+
             return jwt;
         }
     }
