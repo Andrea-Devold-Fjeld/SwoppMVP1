@@ -37,12 +37,9 @@ public class PacketController : Controller
     [Produces("application/json")]
     public async Task<IEnumerable<Packet>> GetPacketsByUserId()
     {
-        var userId = _user?.Identity?.Name;
-        var userTest = User.FindFirst(ClaimTypes.NameIdentifier);
-        Console.WriteLine(userTest);
-        var user = _manager.Users.FirstOrDefault(u => u.Id == userId);
-        //var getuser = _manager.GetUserAsync(_user.Identity?).GetAwaiter().GetResult();
-        return await _repository.GetPacketsByUserIdAsync(userTest.Value);
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+        return await _repository.GetPacketsByUserIdAsync(userId.Value); 
+
     }
     
     [HttpPost]

@@ -1,6 +1,5 @@
 import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {useLocalStorage} from "@/hooks/useLocalStorage.js";
 
 const AuthContext = createContext();
  
@@ -57,8 +56,6 @@ const AuthProvider = ({ children, userData }) => {
         localStorage.removeItem("site");
         navigate("/login");
     };
-    
-    const contextValue = {}
     
     return <AuthContext.Provider value={{ user,token, loginAction, logOut, isLoggedIn}}>
         {children}

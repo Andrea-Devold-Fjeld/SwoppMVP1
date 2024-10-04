@@ -1,6 +1,19 @@
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import {useEffect, useState} from "react";
-export default function PacketComponent({packet}) {
+export default function PacketComponent(packet) {
+    console.log(packet);
+    let table;
+    if(packet && packet.length) {
+        table = packet.map((p) => (
+            <tr key={p.id}>
+                <td>{p.id}</td>
+                <td>{p.id}</td>
+                <td>{p.message}</td>
+            </tr>
+        ));
+    }else {
+        table = "No packets"
+    }
     return (
         <>
             <table className="table">
@@ -12,13 +25,7 @@ export default function PacketComponent({packet}) {
                 </tr>
                 </thead>
                 <tbody>
-                {packet.map((p) => (
-                    <tr key={p.id}>
-                        <td>{p.id}</td>
-                        <td>{p.id}</td>
-                        <td>{p.message}</td>
-                    </tr>
-                ))}
+                {table}
                 </tbody>
             </table>
         </>

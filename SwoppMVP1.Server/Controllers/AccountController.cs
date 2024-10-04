@@ -48,12 +48,13 @@ namespace SwoppMVP1.Server.Controllers
         [Produces("application/json")]
         public async Task<Claim?> GetCheckTransporterRole()
         {
-            var u = _user?.Identity?.Name;
+            var userTest = User.FindFirst(ClaimTypes.NameIdentifier);
             var claimType = "Transporter";
             var claimValue = "true";
             
             //Get user with usermanager
-            var user = await _userManager.FindByNameAsync(u);
+            Console.WriteLine(userTest);
+            var user = _userManager.Users.FirstOrDefault(u => userTest != null && u.Id == userTest.Value);
             
             //check if user exist
             if (user == null) return new Claim("Transporter", "false");

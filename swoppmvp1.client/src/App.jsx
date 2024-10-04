@@ -3,7 +3,6 @@ import Login from "@/routes/Login.jsx";
 import { Route, createBrowserRouter, createRoutesFromElements} from "react-router-dom";
 import {AuthLayout} from "@/AuthLayout.jsx";
 import ProtectedLayout from "@/routes/ProtectedLayout.jsx";
-import Navigation from "@/Navigation.jsx";
 import Content from "@/Content.jsx";
 import Dashboard from "@/routes/Dashboard.jsx";
 import Profile from "@/routes/Profile.jsx"; 

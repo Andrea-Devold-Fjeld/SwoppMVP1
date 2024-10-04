@@ -25,12 +25,12 @@ export default function Dashboard() {
     }, [packet]);
     console.log(packet);
     //console.log(packet);
+    
 
     return (
         <div className={"table-responsive"}>
             {loading ?( <p>Loading...</p> ):(
-                <PacketComponent packet={packet} />
-                )}
+            JSON.stringify(...packet))}
             </div>
             
     )
