@@ -36,7 +36,7 @@ namespace SwoppMVP1.Server.Controllers
         [Authorize]
         [HttpGet]
         [AllowAnonymous]
-        [Route("api/account/checkTransporterRole")]
+        [Route("account/checkTransporterRole")]
         [Produces("application/json")]
         public async Task<Claim?> GetCheckTransporterRole()
         {
@@ -71,7 +71,7 @@ namespace SwoppMVP1.Server.Controllers
          */
         [HttpPost]
         [Authorize]
-        [Route("api/account/setTransporterRole")]
+        [Route("account/setTransporterRole")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -153,7 +153,7 @@ namespace SwoppMVP1.Server.Controllers
          */
         [HttpPost]
         [AllowAnonymous]
-        [Route("api/account/register")]
+        [Route("[controller]/[action]")]
         [Produces("application/json")]
         public async Task<string> Register(RegisterRequest request)
         {
