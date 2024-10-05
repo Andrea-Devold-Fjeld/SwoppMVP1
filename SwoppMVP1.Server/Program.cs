@@ -36,7 +36,8 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = false
         };
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options => 
+    options.AddPolicy("TransporterOnly", policy => policy.RequireClaim("Transporter", "true")));
 /*
 builder.Services.AddAuthorization(options =>
     options.AddPolicy("TransporterOnly", policy => RequireClaim("TransporterId"

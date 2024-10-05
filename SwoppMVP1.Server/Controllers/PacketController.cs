@@ -27,7 +27,7 @@ public class PacketController : Controller
     [HttpGet]
     [Route("api/[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<IEnumerable<Packet>> GetPacketsByUserId(Guid userId)
+    public async Task<IEnumerable<Packet>> GetPacketsByUserId(string userId)
     {
         return await _repository.GetPacketsByUserIdAsync(userId);
     }
@@ -60,7 +60,7 @@ public class PacketController : Controller
     [HttpPost]
     [Route("api/[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<bool> SetAvailablePacketWithId(Guid Id, bool available)
+    public async Task<bool> SetAvailablePacketWithId(string Id, bool available)
     {
         return await _repository.SetPacketAvailabilityAsync(Id, available);
     }
@@ -85,7 +85,7 @@ public class PacketController : Controller
     [HttpDelete]
     [Route("api/[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<bool> DeletePacket(Guid packetId)
+    public async Task<bool> DeletePacket(string packetId)
     {
         return await _repository.DeletePacketAsync(packetId);
     }

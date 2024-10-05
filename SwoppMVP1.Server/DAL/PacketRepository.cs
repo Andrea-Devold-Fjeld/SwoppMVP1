@@ -16,14 +16,14 @@ public class PacketRepository : IPacketRepository
         return await _context.Packets.ToListAsync();
     }
 
-    public async Task<Packet?> GetPacketAsync(Guid id)
+    public async Task<Packet?> GetPacketAsync(string id)
     {
-        return await _context.Packets.FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
     }
 
-    public async Task<IEnumerable<Packet>> GetPacketsAsync(IEnumerable<Guid> ids)
+    public async Task<IEnumerable<Packet>> GetPacketsAsync(IEnumerable<string> ids)
     {
-        return await _context.Packets.Where(x => ids.Contains(x.Id)).ToListAsync();
+        return await _context.Packets.Where(x => ids.Contains(x.Id.ToString())).ToListAsync();
     }
 
     public async Task CreatePacketAsync(Packet packet)
@@ -38,9 +38,9 @@ public class PacketRepository : IPacketRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeletePacketAsync(Guid id)
+    public async Task<bool> DeletePacketAsync(string id)
     {
-        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id == id);
+        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
         if (packet != null)
         {
             _context.Packets.Remove(packet);
@@ -53,18 +53,18 @@ public class PacketRepository : IPacketRepository
         }
     }
 
-    public async Task<bool> SetPacketAvailabilityAsync(Guid id, bool availability)
+    public async Task<bool> SetPacketAvailabilityAsync(string id, bool availability)
     {
-        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id == id);
+        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
         packet.Available = availability;
         _context.Packets.Update(packet);
         await _context.SaveChangesAsync();
         return true;
     }
 
-    public async Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(string userId)
     {
-        return await _context.Packets.Where(x => x.UserId == userId).ToListAsync();
+        return await _context.Packets.Where(x => x.UserId.ToString() == userId).ToListAsync();
     }
 
     public async Task<IEnumerable<Packet>> GetAvailablePacketsAsync()
@@ -74,9 +74,9 @@ public class PacketRepository : IPacketRepository
 
 
 
-    public async Task<IEnumerable<PacketDTO>> GetPacketsByDeliveryId(Guid deliveryId)
+    public async Task<IEnumerable<PacketDTO>> GetPacketsByDeliveryId(string deliveryId)
     {
-        return await _context.Packets.Where(x => x.DeliveryId == deliveryId)
+        return await _context.Packets.Where(x => x.DeliveryId.ToString() == deliveryId)
             .Select(
             e => new PacketDTO()
             {

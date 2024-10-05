@@ -27,14 +27,19 @@ public class DeliveryRepository : IDeliveryRepository
                 Delivered =  e.Delivered
             }).ToListAsync();
     }
-    public async Task<Delivery?> GetDeliveryByIdAsync(Guid deliveryId)
+    public async Task<Delivery?> GetDeliveryByIdAsync(string deliveryId)
     {
-        return await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).FirstOrDefaultAsync();
+        return await _context.Deliveries.Where(x => x.DeliveryId.ToString() == deliveryId).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(Guid userId)
+    public Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(Guid userId)
     {
-        return await _context.Deliveries.Where(x => x.UserId == userId).ToListAsync();
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(string userId)
+    {
+        return await _context.Deliveries.Where(x => x.UserId.ToString() == userId).ToListAsync();
     }
 
     public async Task<bool> AddDeliveryAsync(Delivery delivery)
@@ -68,9 +73,9 @@ public class DeliveryRepository : IDeliveryRepository
 
     }
 
-    public async Task<bool> DeleteDeliveryAsync(Guid deliveryId)
+    public async Task<bool> DeleteDeliveryAsync(string deliveryId)
     {
-        var delivery = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).FirstOrDefaultAsync();
+        var delivery = await _context.Deliveries.Where(x => x.DeliveryId.ToString() == deliveryId).FirstOrDefaultAsync();
         if (delivery != null)
         {
             _context.Remove(delivery);
@@ -86,10 +91,10 @@ public class DeliveryRepository : IDeliveryRepository
 
 
 
-    public async Task<bool> AddPacketToDeliverAsync(Guid deliveryId, Guid packetId)
+    public async Task<bool> AddPacketToDeliverAsync(string deliveryId, string packetId)
     {
-        var delivery = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
-        var packet = await _context.Packets.Where(x => x.Id == packetId).FirstOrDefaultAsync();
+        var delivery = await _context.Deliveries.Where(x => x.DeliveryId.ToString() == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        var packet = await _context.Packets.Where(x => x.Id.ToString() == packetId).FirstOrDefaultAsync();
         if (packet != null)
         {
             Console.WriteLine(packet.Id.ToString());
@@ -127,14 +132,14 @@ public class DeliveryRepository : IDeliveryRepository
     }
     
 
-    public async Task<bool> UpdatePacketToDeliverAsync(Guid deliveryId, Packet packet)
+    public async Task<bool> UpdatePacketToDeliverAsync(string deliveryId, Packet packet)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeletePacketAsync(Guid deliveryId, Packet packet)
+    public async Task<bool> DeletePacketAsync(string deliveryId, Packet packet)
     {
-        var delivery = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        var delivery = await _context.Deliveries.Where(x => x.DeliveryId.ToString() == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
         if (delivery != null)
         {
             delivery.Packets.Remove(packet);
@@ -143,9 +148,9 @@ public class DeliveryRepository : IDeliveryRepository
         return false;
     }
 
-    public async Task<IEnumerable<Packet>?> GetAllPacketsInDeliveryAsync(Guid deliveryId)
+    public async Task<IEnumerable<Packet>?> GetAllPacketsInDeliveryAsync(string deliveryId)
     {
-        var deliveries = await _context.Deliveries.Where(x => x.DeliveryId == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
+        var deliveries = await _context.Deliveries.Where(x => x.DeliveryId.ToString() == deliveryId).Include(delivery => delivery.Packets).FirstOrDefaultAsync();
         return deliveries != null ? deliveries.Packets : null;
     }
     

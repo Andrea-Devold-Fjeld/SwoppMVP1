@@ -38,14 +38,14 @@ namespace SwoppMVP1.Server.Controllers
         [AllowAnonymous]
         [Route("api/account/checkTransporterRole")]
         [Produces("application/json")]
-        public async Task<Claim?> GetCheckTransporterRole(Guid userId)
+        public async Task<Claim?> GetCheckTransporterRole()
         {
             var claimType = "Transporter";
             var claimValue = "true";
             
             //Get user with usermanager
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            
+            var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == identifier.Value);
             //check if user exist
             if (user == null) return new Claim("Transporter", "false");
             {
@@ -75,10 +75,11 @@ namespace SwoppMVP1.Server.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IdentityResult> SetTransporterRole(Guid userId)
+        public async Task<IdentityResult> SetTransporterRole()
         {
             //Find user and check if exists
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(identifier.Value);
             if (user != null)
             {
                 try
