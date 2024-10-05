@@ -33,6 +33,7 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Method to check if a given user has the transporter claim
          */
+        [Authorize]
         [HttpGet]
         [AllowAnonymous]
         [Route("api/account/checkTransporterRole")]
