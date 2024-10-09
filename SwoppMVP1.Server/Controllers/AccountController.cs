@@ -73,30 +73,31 @@ namespace SwoppMVP1.Server.Controllers
         [Authorize]
         [Route("account/setTransporterRole")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IdentityResult> SetTransporterRole()
+        public async Task<ActionResult<IdentityUser>> SetTransporterRole()
         {
             //Find user and check if exists
             var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
+            var checkIfCLaimExists = User.Claims.FirstOrDefault(c => c.Type == "Transporter");
+            if(checkIfCLaimExists != null && checkIfCLaimExists.Value == "true") return Forbid();
             var user = await _userManager.FindByIdAsync(identifier.Value);
-            if (user != null)
+            if (user == null) return NotFound(IdentityResult.Failed());
+            try
             {
-                try
-                {
-                    //#TODO make a tranpsorter claim object
-                    Claim claim = new Claim("Transporter", "true");
-                    await _userManager.AddClaimAsync(user, claim);
-                    await _context.SaveChangesAsync(default(CancellationToken));
-                    return IdentityResult.Success;
-                }
-                catch (Exception ex)
-                {
-                    return IdentityResult.Failed();
-                }
-
+                //#TODO make a tranpsorter claim object
+                Claim claim = new Claim("Transporter", "true");
+                await _userManager.AddClaimAsync(user, claim);
+                await _context.SaveChangesAsync(default(CancellationToken));
+                return Ok(IdentityResult.Success);
             }
-            return IdentityResult.Failed();
+            catch (Exception ex)
+            {
+                return BadRequest(IdentityResult.Failed());
+            }
+            return NotFound(IdentityResult.Failed());
         }
             
         /**

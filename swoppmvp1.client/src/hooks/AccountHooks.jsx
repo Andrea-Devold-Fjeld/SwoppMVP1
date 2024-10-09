@@ -37,7 +37,7 @@ export const registerHooks = async (user) => {
 export const checkTransporterRole = async () => {
     const auth = useAuth();
     try {
-        const response = await fetch("/account/checkTransporterRole", {
+        const response = await fetch("/account/checktransporterrole", {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -56,18 +56,16 @@ export const checkTransporterRole = async () => {
  * Set transporterrole for a use returns true if success and false if not
  * @returns {Promise<void>}
  */
-export const setTranpsorterRole = async () => {
+export const setTransporterRole = async () => {
     const auth = useAuth();
 
     try {
-        const response = await fetch("/account/setTransporterRole", {
-            method: "GET",
+        const response = await fetch("/account/settransporterrole", {
+            method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": `Bearer ${auth.token}`
             }
-        }).then(res => {
-            return res.status === 202;
         })
     }catch (e) {
         console.log(e);

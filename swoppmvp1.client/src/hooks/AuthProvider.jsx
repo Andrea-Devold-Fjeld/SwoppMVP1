@@ -32,7 +32,7 @@ const AuthProvider = ({ children}) => {
                 setUser(res.userId);
                 setToken(res.token);
                 localStorage.setItem("site", res.token);
-                navigate("/profile"); //this route dont exist
+                navigate("/dashboard"); //this route dont exist
             }
             throw new Error("Login failed");
         } catch (error) {

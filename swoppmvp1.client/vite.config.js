@@ -50,6 +50,18 @@ export default defineConfig({
             '^/account/login': {
                 target,
                 secure: false
+            },
+            '^/account/register': {
+                target,
+                secure: false
+            },
+            '^/account/checktransporterrole': {
+                target,
+                secure: false
+            },
+            '/account/settransporterrole': {
+                target,
+                secure: false
             }
         },
         port: 5173,
