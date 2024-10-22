@@ -62,6 +62,34 @@ export default defineConfig({
             '/account/settransporterrole': {
                 target,
                 secure: false
+            },
+            '^/packet/getpackets': {
+                target,
+                secure: false
+            },
+            '^/packet/getpacketsbyuserid': {
+                target,
+                secure: false
+            },
+            '^/packet/addpacket': {
+                target,
+                secure: false
+            },
+            '^/packet/getavailablepackets': {
+                target,
+                secure: false
+            },
+            '^/packet/setavailablepacketwithid': {
+                target,
+                secure: false
+            },
+            '^/packet/updatepacket': {
+                target,
+                secure: false
+            },
+            '^/packet/DeletePacket': {
+                target,
+                secure: false
             }
         },
         port: 5173,
