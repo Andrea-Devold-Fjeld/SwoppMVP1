@@ -7,6 +7,7 @@ import Content from "@/routes/Content.jsx";
 import Dashboard from "@/routes/Dashboard.jsx";
 import Register from "@/routes/Register.jsx";
 import RegisterTransporter from "@/routes/RegisterTransporter.jsx";
+import GoogleMap from "@/GoogleMap/GoogleMap.jsx";
 
 
 export const router = createBrowserRouter(
@@ -18,6 +19,7 @@ export const router = createBrowserRouter(
                     <Route path={"/home"} element={<Content />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/Maps" element={<GoogleMap />} />
                 </Route>
                 <Route element={<ProtectedLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
