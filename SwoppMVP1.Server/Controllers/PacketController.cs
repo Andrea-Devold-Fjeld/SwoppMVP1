@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SwoppMVP1.Server.DAL;
@@ -9,10 +11,12 @@ namespace SwoppMVP1.Server.Controllers;
 public class PacketController : Controller
 {
     private readonly IPacketRepository _repository;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public PacketController(IPacketRepository repository)
+    public PacketController(IPacketRepository repository, UserManager<IdentityUser> userManager)
     {
         _repository = repository;
+        _userManager = userManager;
     }
     //I dont have authorize yet on these method
     [HttpGet]
@@ -35,10 +39,17 @@ public class PacketController : Controller
     [HttpPost]
     [Route("[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<bool> AddPacket(Packet packet)
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize]
+    public async Task<bool> AddPacket([FromBody]Packet packet)
     {
         try
         {
+            var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(identifier.Value);
+            if (user == null) return false;
+            packet.UserId = user.Id;
+            packet.Timestamp = DateTime.Now;
             await _repository.CreatePacketAsync(packet);
             return true;
         }

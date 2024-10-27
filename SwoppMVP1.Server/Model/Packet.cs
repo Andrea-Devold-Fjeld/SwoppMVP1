@@ -7,11 +7,15 @@ public class Packet
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public DateTime Timestamp { get; set; }
     public string? Message { get; set; }
     public string? originAddress { get; set; }
+    public string? originAddressNr { get; set; }
+    public string? originPostNr { get; set; }
     public string? destinationAddress { get; set; }
+    public string? destinationAddressNr { get; set; }
+    public string? destinationPostNr { get; set; }
     public string? originGeolocation { get; set; }
     public string? destinationGeolocation { get; set; }
     public double? originLatitude { get; set; }

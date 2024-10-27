@@ -7,6 +7,8 @@ import Content from "@/routes/Content.jsx";
 import Dashboard from "@/routes/Dashboard.jsx";
 import Register from "@/routes/Register.jsx";
 import RegisterTransporter from "@/routes/RegisterTransporter.jsx";
+import AddPacket from "@/routes/AddPacket.jsx";
+import PackageReg from "@/routes/PackageReg.jsx";
 
 
 export const router = createBrowserRouter(
@@ -22,6 +24,8 @@ export const router = createBrowserRouter(
                 <Route element={<ProtectedLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path={'/registerTransporter'} element={<RegisterTransporter />} />
+                    <Route path={'/addPacket'} element={<AddPacket />} />
+                    <Route path={'/PackageReg'} element={<PackageReg />} />
                 </Route>
             </Route>
 

@@ -1,5 +1,6 @@
 ﻿
 import {useAuth} from "@/hooks/AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
 
 export const getPackets = async () => {
     const auth = useAuth();
@@ -35,20 +36,27 @@ export const getPacketByUserId = async () => {
 }
 
 export const addPacket = async (packet) => {
-    const auth = useAuth();
-    try {
-        const response = await fetch("/packet/addpacket", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "Authorization": `Bearer ${auth.token}`
-            }
-        })
-        return await response.json();
-    }
-    catch(err) {
-        console.log(err);
-    }
+        const auth = useAuth();
+        console.log(auth.token);
+        console.log(packet);
+        const navigate = useNavigate();
+        try {
+            const response = await fetch("/packet/addpacket", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": `Bearer ${auth.token}`
+                },
+                body: JSON.stringify(packet)
+            }).catch((err) => {
+                console.log(err);
+                navigate("/login)")
+            });
+            return await response.json();
+        } catch (err) {
+            console.log(err);
+        }
+    
 }
 
 export const getAvailablePackets = async (packet) => {

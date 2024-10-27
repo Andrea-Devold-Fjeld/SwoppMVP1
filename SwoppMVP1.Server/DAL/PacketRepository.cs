@@ -28,6 +28,11 @@ public class PacketRepository : IPacketRepository
 
     public async Task CreatePacketAsync(Packet packet)
     {
+        Console.WriteLine("packetId: " + packet.Id);
+        Console.WriteLine("packetUserId: " + packet.UserId);
+        Console.WriteLine("packetTimestamp: " + packet.Timestamp);
+        Console.WriteLine("packetOriginAddress: " + packet.originAddress);
+        Console.WriteLine("packetDestinationAddress: " + packet.destinationAddress);
         _context.Packets.Add(packet);
         await _context.SaveChangesAsync();
     }
