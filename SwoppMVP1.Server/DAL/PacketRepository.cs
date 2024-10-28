@@ -31,8 +31,8 @@ public class PacketRepository : IPacketRepository
         Console.WriteLine("packetId: " + packet.Id);
         Console.WriteLine("packetUserId: " + packet.UserId);
         Console.WriteLine("packetTimestamp: " + packet.Timestamp);
-        Console.WriteLine("packetOriginAddress: " + packet.originAddress);
-        Console.WriteLine("packetDestinationAddress: " + packet.destinationAddress);
+        Console.WriteLine("packetOriginAddress: " + packet.OriginAddress);
+        Console.WriteLine("packetDestinationAddress: " + packet.DestinationAddress);
         _context.Packets.Add(packet);
         await _context.SaveChangesAsync();
     }
@@ -89,8 +89,8 @@ public class PacketRepository : IPacketRepository
                 UserId = e.UserId,
                 Timestamp = e.Timestamp,
                 Message = e.Message,
-                originAddress = e.originAddress,
-                destinationAddress = e.destinationAddress,
+                OriginAddress = e.OriginAddress,
+                DestinationAddress = e.DestinationAddress,
                 Weight = e.Weight,
                 Height = e.Height,
                 Depth = e.Depth,

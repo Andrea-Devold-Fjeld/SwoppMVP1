@@ -1,10 +1,6 @@
-﻿
-import React, { useState, useEffect, Component } from 'react';
-import {geoLocationHook} from "@/hooks/GeolocationHooks.jsx";
-import {addPacket} from "@/hooks/PacketHooks.jsx";
-import { useNavigate } from "react-router-dom";
-import PackageReg from "@/routes/PackageReg.jsx";
-import { useForm } from "react-hook-form";
+﻿import React, {useState} from 'react';
+import {bothGeoLocationHook} from "@/hooks/GeolocationHooks.jsx";
+import {useNavigate} from "react-router-dom";
 import Test from "@/routes/Test.jsx";
 
 
@@ -26,87 +22,48 @@ export default function AddPacketForm({children}) {
 
     }
     
-    const getGeolocation = async () => {
-        const originGeo = await geoLocationHook(inputValue.originAddress, inputValue.originAdressNr, inputValue.originPostNr)
-        const destinationGeo = await geoLocationHook(inputValue.destinationAddress, inputValue.destinationAdressNr, inputValue.destinationPostNr)
-        setInputValue({
-            ...inputValue,
-            originLatitude: originGeo.results[0].geometry.location.lat,
-            originLongitude: originGeo.results[0].geometry.location.lng,
-            destinationLatitude: destinationGeo.results[0].geometry.location.lat,
-            destinationLongitude: destinationGeo.results[0].geometry.location.lng
-        });
-        
-        console.log(inputValue)
+    const getGeolocation = async (packet) => {
+        console.log("getGeolocation", inputValue);
+        return await bothGeoLocationHook(
+            inputValue.originAddress,
+            inputValue.originAddressNr,
+            inputValue.originPostNr,
+            inputValue.destinationAddress,
+            inputValue.destinationAddressNr,
+            inputValue.destinationPostNr
+        );
     }
     
      
-    /*
-    function onSubmit(data) {
-        console.log(data);
-        
-    }
+
     
-    
-     */
-    /*
     async function handleSubmit(e) {
         e.preventDefault();
-        const originGeo = await geoLocationHook(inputValue.originAddress, inputValue.originAdressNr, inputValue.originPostNr)
-        const destinationGeo = await geoLocationHook(inputValue.destinationAddress, inputValue.destinationAdressNr, inputValue.destinationPostNr)
-        setInputValue({
-            ...inputValue,
-            originLatitude: originGeo.results[0].geometry.location.lat,
-            originLongitude: originGeo.results[0].geometry.location.lng,
-            destinationLatitude: destinationGeo.results[0].geometry.location.lat,
-            destinationLongitude: destinationGeo.results[0].geometry.location.lng
-        });
-        const response = await addPacket(inputValue).then((res) => setResponse(res));
-        console.log(response)
+        const packet = {};
+        
+        const response = getGeolocation(packet)
+            .then((response) => {
+                console.log("finally", response);
+                packet.OriginAddress = response[0].results[0].formatted_address;
+                packet.OriginLatitude = response[0].results[0].geometry.location.lat;
+                packet.OriginLongitude = response[0].results[0].geometry.location.lng;
+                packet.DestinationAddress = response[1].results[0].formatted_address;
+                packet.DestinationLatitude = response[1].results[0].geometry.location.lat;
+                packet.DestinationLongitude = response[1].results[0].geometry.location.lng;
+                
+            })
+            .finally(() => console.log("finally"));
 
-    }
-    
-     */
-    
-    function handleSubmit(e) {
-        e.preventDefault();
-        const packet = [];
+        packet["Height"] = parseFloat(inputValue.height);
+        packet["Width"] = parseFloat(inputValue.width);
+        packet["Depth"] = parseFloat(inputValue.depth);
+        packet["Weight"] = parseFloat(inputValue.weight);
 
-            console.log("in use effect");
-            const originGeo = geoLocationHook(inputValue.originAddress, inputValue.originAdressNr, inputValue.originPostNr)
-                //.then((response) => response.json())
-                .then((data) => {
-                    packet["originLatitude"] = data.results[0].geometry.location.lat.toString();
-                    packet["originLongitude"] = data.results[0].geometry.location.lng.toString();
-                    packet["originAddress"] = data.results[0].formatted_address;
-                }).finally(() => {console.log(packet)});
-        const destinationGeo = geoLocationHook(inputValue.destinationAddress, inputValue.destinationAdressNr, inputValue.destinationPostNr)
-            //.then((response) => response.json())
-            .then((data) => {
-                packet["destinationLatitude"] = data.results[0].geometry.location.lat.toString();
-                packet["destinationLongitude"] = data.results[0].geometry.location.lng.toString();
-                packet["destinationAddress"] = data.results[0].formatted_address;
-            }).finally(() => {console.log(packet)});
-            
-            packet["height"] = inputValue.height;
-            packet["width"] = inputValue.width;
-            packet["depth"] = inputValue.depth;
-            packet["weight"] = inputValue.weight;
-            
 
-            console.log(packet);
-            console.log("packet " + typeof packet);
-            /*
-            if(loading){
-                setLoading(false);
-                setLi(<Test children={packet} />); 
+        console.log(packet);
+  
+        setLi(<Test children={packet}/>);
 
-            }
-            
-             */
-            setLi(<Test children={packet} />);
-            //navigate("/dashboard")
- 
     }
 
     return (
@@ -139,70 +96,3 @@ export default function AddPacketForm({children}) {
     )
 }
 
-/*
-Id
-string($uuid)
-(query)
-Id
-UserId
-string($uuid)
-(query)
-UserId
-Timestamp
-string($date-time)
-(query)
-Timestamp
-Message
-string
-(query)
-Message
-originAddress
-string
-(query)
-originAddress
-destinationAddress
-string
-(query)
-destinationAddress
-originGeolocation
-string
-(query)
-originGeolocation
-destinationGeolocation
-string
-(query)
-destinationGeolocation
-originLatitude
-number($double)
-(query)
-originLatitude
-originLongitude
-number($double)
-(query)
-originLongitude
-destinationLatitude
-number($double)
-(query)
-destinationLatitude
-destinationLongitude
-number($double)
-(query)
-destinationLongitude
-Height
-number($double)
-(query)
-Height
-Width
-number($double)
-(query)
-Width
-Depth
-number($double)
-(query)
-Depth
-Weight
-number($double)
-(query)
-Weight
-
- */

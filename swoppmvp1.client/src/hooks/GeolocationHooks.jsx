@@ -11,3 +11,14 @@ export const geoLocationHook = async (adress, adressNr, postNr) => {
         console.log(e);
     }
 }
+
+export const bothGeoLocationHook = async (originAdress, originAdressNr, originPostNr, destinationAdress, destinationAdressNr, destinationPostNr) => {
+    try {
+        const response = [];
+        response.push(await geoLocationHook(originAdress, originAdressNr, originPostNr));
+        response.push(await geoLocationHook(destinationAdress, destinationAdressNr, destinationPostNr));
+        return response;
+    } catch (e) {
+        console.log(e)
+    }
+}
