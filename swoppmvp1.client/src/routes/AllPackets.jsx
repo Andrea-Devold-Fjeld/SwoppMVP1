@@ -1,6 +1,9 @@
 import {useState, useEffect} from "react";
 import {getPackets} from "@/hooks/PacketHooks.jsx";
 import PacketTable from "@/tables/PacketTable.jsx";
+import PacketMarker from "@/routes/PacketMarker.jsx";
+
+
 
 export default function AllPackets() {
     const [packets, setPackets] = useState([]);
@@ -25,6 +28,9 @@ export default function AllPackets() {
             <div id={"loading"}>
                 {loading ? <h1>Loading...</h1> : <PacketTable stateChanger={setLoading} loading={loading} packets={packets} />}
                 
+            </div>
+            <div id={"mao"}>
+                {loading ? <h1>Loading...</h1> : <PacketMarker children={packets} />}
             </div>
         </>
     )

@@ -4,7 +4,7 @@ import {useAuth} from "@/hooks/AuthProvider.jsx";
 import { useNavigate } from "react-router-dom";
 import {bothGeoLocationHook, geoLocationHook} from "@/hooks/GeolocationHooks.jsx";
 
-export default function Test({children}) {
+export default function Test({children, stateChanger, sendt}) {
     /*
     const [response, setResponse] = useState(null);
     console.log(children);
@@ -13,14 +13,16 @@ export default function Test({children}) {
     
      */
     const navigate = useNavigate();
-    if(children.OriginLatitude === undefined || children.DestinationLatitude === undefined) return ;
-    useEffect(  () => {
+    console.log(children)
+    console.log("OriginLatitude", children.OriginLatitude)
+    console.log("DestinationLatitude", children.DestinationLatitude)
+    console.log("addPacket")
+    if(!sendt) {
+        console.log("sendt")
+        stateChanger();
         addPacket(children)
-            .then((response) => {
-                if (response.status === 401) {
-                    navigate("/login")
-                }
-            });
+            .then((response) => console.log("addpacket response: ", response));
+    }
         /*
         console.log(children)
         try {
@@ -40,7 +42,7 @@ export default function Test({children}) {
             console.log(err);
         }   
          */
-    },[]);
+    
     
      
     

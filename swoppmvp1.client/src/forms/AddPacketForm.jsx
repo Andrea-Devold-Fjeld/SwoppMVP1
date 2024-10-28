@@ -35,34 +35,37 @@ export default function AddPacketForm({children}) {
     }
     
      
+    const handleSendt = () => {
+        setSendt(true);
+    }
 
     
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
         const packet = {};
         
-        const response = getGeolocation(packet)
+        getGeolocation(packet)
             .then((response) => {
                 console.log("finally", response);
-                packet.OriginAddress = response[0].results[0].formatted_address;
-                packet.OriginLatitude = response[0].results[0].geometry.location.lat;
+                packet["OriginAddress"] = response[0].results[0].formatted_address;
+                packet["OriginLatitude"] = response[0].results[0].geometry.location.lat;
                 packet.OriginLongitude = response[0].results[0].geometry.location.lng;
                 packet.DestinationAddress = response[1].results[0].formatted_address;
                 packet.DestinationLatitude = response[1].results[0].geometry.location.lat;
                 packet.DestinationLongitude = response[1].results[0].geometry.location.lng;
+                packet["Height"] = parseFloat(inputValue.height);
+                packet["Width"] = parseFloat(inputValue.width);
+                packet["Depth"] = parseFloat(inputValue.depth);
+                packet["Weight"] = parseFloat(inputValue.weight);
                 
             })
+            .then(() => {
+                console.log("packet", packet);
+                setLi(<Test children={packet} stateChanger={handleSendt} sendt={sendt}/>);
+            })
+
             .finally(() => console.log("finally"));
-
-        packet["Height"] = parseFloat(inputValue.height);
-        packet["Width"] = parseFloat(inputValue.width);
-        packet["Depth"] = parseFloat(inputValue.depth);
-        packet["Weight"] = parseFloat(inputValue.weight);
-
-
         console.log(packet);
-  
-        setLi(<Test children={packet}/>);
 
     }
 

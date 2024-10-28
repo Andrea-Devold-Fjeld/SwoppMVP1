@@ -14,7 +14,7 @@ const center = {
 };
 
 
-function GoogleMapsComponent() {
+function GoogleMapsComponent({children}) {
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key
