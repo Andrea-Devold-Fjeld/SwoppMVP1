@@ -57,6 +57,7 @@ export default function AddPacketForm({children}) {
                 packet["Width"] = parseFloat(inputValue.width);
                 packet["Depth"] = parseFloat(inputValue.depth);
                 packet["Weight"] = parseFloat(inputValue.weight);
+                packet["Message"] = inputValue.message;
                 
             })
             .then(() => {
@@ -92,6 +93,7 @@ export default function AddPacketForm({children}) {
                 <input type={"number"} id={"depth"} name={"depth"} onChange={handleChange}/>
                 <label htmlFor={"weight"}>Weight</label>
                 <input type={"number"} id={"weight"} name={"weight"} onChange={handleChange}/>
+                <input type={"text"} id={"message"} name={"message"} onChange={handleChange}/>
                 <input type={"submit"} value={"Add Packet"} />
             </form>
             {li}

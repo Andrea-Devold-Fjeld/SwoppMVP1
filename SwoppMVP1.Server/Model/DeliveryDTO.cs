@@ -3,8 +3,8 @@
 [Serializable]
 public class DeliveryDTO
 {
-    public Guid DeliveryId { get; set; }
-    public Guid UserId { get; set; }
+    public string DeliveryId { get; set; }
+    public string UserId { get; set; }
     public ICollection<PacketDTO> Packets { get; set; } = new List<PacketDTO>();
     public bool Delivered { get; set; }
 }

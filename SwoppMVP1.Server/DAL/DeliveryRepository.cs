@@ -22,7 +22,7 @@ public class DeliveryRepository : IDeliveryRepository
         return await _context.Deliveries.Include(p => p.Packets).Select(
             e => new DeliveryDTO()
             {
-                DeliveryId = e.DeliveryId,
+                DeliveryId = e.DeliveryId.ToString(),
                 UserId = e.UserId,
                 Delivered =  e.Delivered
             }).ToListAsync();

@@ -189,7 +189,7 @@ namespace SwoppMVP1.Server.Controllers
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.Ticks.ToString(), ClaimValueTypes.Integer64),
                 new Claim(ClaimTypes.System, device)
             };
-
+            
             //If user has any roles add them to the claim list
             if (roles?.Any() == true)
             {

@@ -10,6 +10,7 @@ import RegisterTransporter from "@/routes/RegisterTransporter.jsx";
 import AddPacket from "@/routes/AddPacket.jsx";
 import PackageReg from "@/routes/PackageReg.jsx";
 import AllPackets from "@/routes/AllPackets.jsx";
+import TransporterRegistered from "@/routes/TransporterRegistered.jsx";
 
 
 export const router = createBrowserRouter(
@@ -28,6 +29,7 @@ export const router = createBrowserRouter(
                     <Route path={'/addPacket'} element={<AddPacket />} />
                     <Route path={'/PackageReg'} element={<PackageReg />} />
                     <Route path={'/allPackets'} element={<AllPackets />} />
+                    <Route path={'/transporterRegistered'} element={<TransporterRegistered />} />
                 </Route>
             </Route>
 

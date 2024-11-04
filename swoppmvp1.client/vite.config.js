@@ -90,7 +90,27 @@ export default defineConfig({
             '^/packet/DeletePacket': {
                 target,
                 secure: false
-            }
+            },
+            '^/delivery/getdeliveries': {
+                target,
+                secure: false
+            },
+            '^/delivery/getdeliverieswithpackets': {
+                target,
+                secure: false
+            },
+            '^/delivery/getdeliverybyuserid': {
+                target,
+                secure: false
+            },
+            '^/delivery/adddelivery': {
+                target,
+                secure: false
+            },
+            '^/delivery/addpackettodelivery': {
+                target,
+                secure: false
+            },
         },
         port: 5173,
         https: {

@@ -75,17 +75,32 @@ public class DeliveryController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<HttpResponseMessage> AddDelivery(Delivery? delivery)
+    public async Task<HttpResponseMessage> AddDelivery(int packetId)
     {
         var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
         var claim = User.Claims.FirstOrDefault(x => x.Type == "Transporter"); 
         if (claim?.Value != "true") return new HttpResponseMessage(HttpStatusCode.Forbidden);
 
-        if (delivery is null) return new HttpResponseMessage(HttpStatusCode.BadRequest);
-        
-        await _repository.AddDeliveryAsync(delivery);
-        await _context.SaveChangesAsync();
-        return new HttpResponseMessage(HttpStatusCode.Created);
+        try
+        {
+            var packet = await _packetRepository.GetPacketAsync(packetId.ToString());
+            if (packet is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
+            
+            var delivery = new Delivery
+            {
+                UserId = identifier.Value,
+                Delivered = false
+            };
+            delivery.Packets.Add(packet);
+            await _repository.AddDeliveryAsync(delivery);
+            await _context.SaveChangesAsync();
+            return new HttpResponseMessage(HttpStatusCode.Created);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new HttpResponseMessage(HttpStatusCode.BadRequest);
+        }        
     }
     
     [Authorize(Policy = "TransporterOnly")]

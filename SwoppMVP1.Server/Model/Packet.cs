@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace SwoppMVP1.Server.Model;
 [Serializable]
@@ -9,16 +10,12 @@ public class Packet
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public string UserId { get; set; }
+    public virtual IdentityUser? User { get; set; }
     public DateTime Timestamp { get; set; }
     public string? Message { get; set; }
     public string? OriginAddress { get; set; }
-    public string? OriginAddressNr { get; set; }
-    public string? OriginPostNr { get; set; }
     public string? DestinationAddress { get; set; }
-    public string? DestinationAddressNr { get; set; }
-    public string? DestinationPostNr { get; set; }
-    public string? OriginGeolocation { get; set; }
-    public string? DestinationGeolocation { get; set; }
+    
     public double? OriginLatitude { get; set; }
     public double? OriginLongitude { get; set; }
     public double? DestinationLatitude { get; set; }
