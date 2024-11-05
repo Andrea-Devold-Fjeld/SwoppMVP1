@@ -14,6 +14,7 @@ export default function DeliveryTable({deliveris, packetid}) {
                 setTransporter(response);
                 console.log("Transporter: ", transporter);
                 setLoading(false);
+                
                 if(!response) {
                     navigate("/registerTransporter");
                 }

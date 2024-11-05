@@ -6,7 +6,7 @@ import { useState } from 'react';
 import DeliverPacket from "@/routes/DeliverPacket.jsx";
 
 
-export default function PacketCard({packet, role}) {
+export default function PacketCard({packet, role, delivery}) {
     const [showDeliverPacket, setShowDeliverPacket] = useState(false);
 
     const navigate = useNavigate();
@@ -15,6 +15,8 @@ export default function PacketCard({packet, role}) {
     const handleClick = () => {
         if(role){
             setShowDeliverPacket(true);
+            console.log("Deliver packet");
+            
         }else{
             navigate("/registerTransporter");
         }

@@ -14,7 +14,6 @@ export default function DeliverPacket({packet}) {
             (response) => {
                 console.log(response);
                 setLoading(false);
-                setDelivery(response);
                 console.log(delivery);
     })}
     

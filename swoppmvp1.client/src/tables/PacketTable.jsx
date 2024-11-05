@@ -6,6 +6,7 @@ import PacketCard from "@/PacketCard.jsx";
 
 export default function PacketTable({stateChanger ,loading, packets}) {
     const [transporter, setTransporter] = useState(false);
+    const [deliverButton, setDeliverButton] = useState(false);
     
     console.log("Packets: ", packets);
     checkTransporterRole().then(
@@ -18,7 +19,7 @@ export default function PacketTable({stateChanger ,loading, packets}) {
     return (
         <>
             {packets.map((packet) => {
-                return( <PacketCard key={packet.id} packet={packet} role={transporter}/>)
+                return( <PacketCard key={packet.id} packet={packet} role={transporter} delivery={deliverButton}/>)
                 
             })}
         </>

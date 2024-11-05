@@ -11,11 +11,15 @@ import AddPacket from "@/routes/AddPacket.jsx";
 import PackageReg from "@/routes/PackageReg.jsx";
 import AllPackets from "@/routes/AllPackets.jsx";
 import TransporterRegistered from "@/routes/TransporterRegistered.jsx";
+import RoutePlanner from "@/routes/RoutePlanner.jsx";
+
+
 
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <>
+            
             <Route element={<AuthLayout />}>
                 <Route element={<Root />} >
                     <Route path={"/"} element={<Content />} />
@@ -30,6 +34,7 @@ export const router = createBrowserRouter(
                     <Route path={'/PackageReg'} element={<PackageReg />} />
                     <Route path={'/allPackets'} element={<AllPackets />} />
                     <Route path={'/transporterRegistered'} element={<TransporterRegistered />} />
+                    <Route path={'/routeplanner'} element={<RoutePlanner />} />
                 </Route>
             </Route>
 
