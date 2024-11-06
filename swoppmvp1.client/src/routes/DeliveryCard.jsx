@@ -2,12 +2,17 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import TransporterRegistered from "@/routes/TransporterRegistered.jsx";
 import AddedPackage from "@/routes/AddedPackage.jsx";
+import {useState} from "react";
 
 export default function DeliveryCard({deliveris, packetId}) {
     const [addPacket, setAddPacket] = useState(false);
-
+    const [isRegistered, setIsRegistered] = useState(false);
+    
+    console.log("In delivery card");
+    console.log("DeliveyCard: ", packetId)
     const handleClick = () => {
           setAddPacket(true);
+          setIsRegistered(true);
     }
     return(
     <Card>
@@ -20,7 +25,7 @@ export default function DeliveryCard({deliveris, packetId}) {
             <Button variant="primary" onClick={handleClick}>
                 Add packet to delivery  
             </Button>
-            {isRegistered && <AddedPackage /> }
+            {isRegistered && <AddedPackage deliveryId={deliveris.deliveryId} packetId={packetId}/> }
 
         </Card.Body>
     </Card>

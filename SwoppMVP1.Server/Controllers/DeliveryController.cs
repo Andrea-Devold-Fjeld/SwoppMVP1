@@ -75,7 +75,7 @@ public class DeliveryController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<HttpResponseMessage> AddDelivery(int packetId)
+    public async Task<HttpResponseMessage> AddDelivery(string packetId)
     {
         var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
         var claim = User.Claims.FirstOrDefault(x => x.Type == "Transporter"); 
@@ -83,7 +83,8 @@ public class DeliveryController : Controller
 
         try
         {
-            var packet = await _packetRepository.GetPacketAsync(packetId.ToString());
+            
+            var packet = await _packetRepository.GetPacketAsync(packetId.ToUpper());
             if (packet is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
             
             var delivery = new Delivery
@@ -93,6 +94,7 @@ public class DeliveryController : Controller
             };
             delivery.Packets.Add(packet);
             await _repository.AddDeliveryAsync(delivery);
+            await _packetRepository.SetPacketAvailabilityAsync(packetId, false);
             await _context.SaveChangesAsync();
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
@@ -103,25 +105,33 @@ public class DeliveryController : Controller
         }        
     }
     
-    [Authorize(Policy = "TransporterOnly")]
+    [AllowAnonymous]
     [HttpGet]
     [Route("api/[controller]/[action]")]
+    public async Task<Packet?> GetPacket(string packetId)
+    {
+        return await _packetRepository.GetPacketAsync(packetId);
+    }    
+    [Authorize(Policy = "TransporterOnly")]
+    [HttpPost]
+    [Route("[controller]/[action]")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<HttpResponseMessage> AddPacketToDelivery(string packetId, string deliveryId)
+    public async Task<HttpResponseMessage> AddPacketToDelivery(string deliveryId, string packetId)
     {
         var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
         var claim = User.Claims.FirstOrDefault(x => x.Type == "Transporter"); 
         if (claim?.Value != "true") return new HttpResponseMessage(HttpStatusCode.Forbidden);
         
         // #TODO does not work have to fix!!!!
-        var delivery = await _repository.GetDeliveryByIdAsync(deliveryId);
+        
+        var delivery = await _repository.GetDeliveryByIdAsync(deliveryId.ToUpper());
         if (delivery is null) return new HttpResponseMessage(HttpStatusCode.BadRequest);
         
-        var packet = await _packetRepository.GetPacketAsync(packetId);
+        var packet = await _packetRepository.GetPacketAsync(packetId.ToUpper());
         if (packet is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
         
-        await _repository.AddPacketToDeliverAsync(delivery.DeliveryId.ToString(), packetId);
+        await _repository.AddPacketToDeliverAsync(delivery.DeliveryId.ToString(), packetId.ToUpper());
         await _context.SaveChangesAsync();
         return new HttpResponseMessage(HttpStatusCode.Created);
     }

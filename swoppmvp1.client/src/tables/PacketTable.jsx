@@ -4,7 +4,7 @@ import {useState} from "react";
 import PacketCard from "@/PacketCard.jsx";
 
 
-export default function PacketTable({stateChanger ,loading, packets}) {
+export default function PacketTable({stateChanger ,loading, packets, onStateChange}) {
     const [transporter, setTransporter] = useState(false);
     const [deliverButton, setDeliverButton] = useState(false);
     
@@ -19,7 +19,14 @@ export default function PacketTable({stateChanger ,loading, packets}) {
     return (
         <>
             {packets.map((packet) => {
-                return( <PacketCard key={packet.id} packet={packet} role={transporter} delivery={deliverButton}/>)
+                return( 
+                    <PacketCard 
+                        key={packet.id} 
+                        packet={packet} 
+                        role={transporter} 
+                        delivery={deliverButton}
+                        onStateChange={onStateChange}
+                    />)
                 
             })}
         </>

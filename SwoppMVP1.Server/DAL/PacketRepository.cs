@@ -18,7 +18,9 @@ public class PacketRepository : IPacketRepository
 
     public async Task<Packet?> GetPacketAsync(string id)
     {
-        return await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+        Console.WriteLine(packet);
+        return packet;
     }
 
     public async Task<IEnumerable<Packet>> GetPacketsAsync(IEnumerable<string> ids)
