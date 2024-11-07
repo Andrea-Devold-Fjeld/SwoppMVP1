@@ -23,7 +23,7 @@ export default function PacketCard({packet, role, delivery, onStateChange}) {
         }
     }
     return (
-        <>
+        <><div>
             {showDeliverPacket ? (
                 <DeliverPacket packet={packet} />
             ) : (
@@ -44,7 +44,8 @@ export default function PacketCard({packet, role, delivery, onStateChange}) {
                         </Button>
                     </Card.Body>
                 </Card>
-                )}
+            )}
+        </div>
         </>
     )
 }

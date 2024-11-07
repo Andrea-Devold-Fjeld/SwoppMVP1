@@ -2,8 +2,27 @@ import {useAuth} from "@/hooks/AuthProvider.jsx";
 import queryString from "query-string";
 
 
-export const getDeliveriesByUserId = async (id) => {
-    const auth = useAuth();
+export const useDeliveryByUserId = () => {
+    const { user } = useAuth();
+    
+    const getDeliveriesByUserId2 = async () => {
+        
+        try {
+            const response = await fetch(`/delivery/getdeliverybyuserid/${user.userId}`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": `Bearer ${user.token}`
+                }
+            })
+            return await response.json();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+}
+export const getDeliveriesByUserId = async (auth) => {
     try {
         const response = await fetch(`/delivery/getdeliverybyuserid`, {
             method: "GET",

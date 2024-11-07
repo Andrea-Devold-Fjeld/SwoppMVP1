@@ -1,6 +1,7 @@
 import {Outlet, Navigate} from 'react-router-dom'
 import Navigation from "@/Navigation/Navigation.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
+import ProtectedNavigation from "@/Navigation/ProtectedNavigation.jsx";
 
 export default function ProtectedLayout() {
     const user = useAuth();
@@ -8,7 +9,7 @@ export default function ProtectedLayout() {
     return (
         <div>
             <div className={"nav"}>
-                <Navigation />
+                <ProtectedNavigation />
             </div>
             <div>
                 <Outlet />

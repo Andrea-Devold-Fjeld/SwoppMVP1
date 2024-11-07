@@ -2,8 +2,8 @@
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import {useNavigate} from "react-router-dom";
 
-export const getPackets = async () => {
-    const auth = useAuth();
+export const getPackets = async (auth) => {
+   // const auth = useAuth();
     try {
         const response = await fetch("/packet/getpackets", {
             method: "GET",
@@ -18,10 +18,41 @@ export const getPackets = async () => {
     }
 }
 
-export const getPacketByUserId = async () => {
+export const getPacketById = async (packetId) => {
     const auth = useAuth();
     try {
-        const response = await fetch("/packet/getpacketByUserId", {
+        const response = await fetch("/packet/getpacketbyid", {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            }
+        })
+        return await response.json();
+    }catch (e) {
+        console.log(e);
+    }
+}
+export const usePacketByUserId = () => {
+    const {user} = useAuth();
+    const getPacketByUserId = async () => {
+        try {
+            const response = await fetch(`/packet/getpacketByUserId`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": `Bearer ${user.token}`
+                }
+            })
+            return await response.json();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+export const getPacketByUserId = async (auth) => {
+    //const auth = useAuth();
+    try {
+        const response = await fetch("/packet/getpacketsbyuserid", {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

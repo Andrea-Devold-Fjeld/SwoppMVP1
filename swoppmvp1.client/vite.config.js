@@ -75,6 +75,10 @@ export default defineConfig({
                 target,
                 secure: false
             },
+            '^/packet/getpacketbyid': {
+                target,
+                secure: false
+            },
             '^/packet/getavailablepackets': {
                 target,
                 secure: false

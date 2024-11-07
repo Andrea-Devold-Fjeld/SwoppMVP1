@@ -9,8 +9,8 @@ const center = {
     lng: 10.757933
 };
 const containerStyle = {
-    width: '400px',
-    height: '400px'
+    width: '800px',
+    height: '800px'
 };
 
 function handleClick(e){
@@ -99,13 +99,13 @@ export default function GoogleMapsAdvancedMarkers({packets, geoLocations, onStat
             onStateChange({packetId: property.id, status: "Delivered"});
         });
         content.innerHTML = `<div>
-            <h1>Packet</h1>
-            <h2>Origin Address: ${property.originAddress}</h2>
-            <h2>Destination Address: ${property.destinationAddress}</h2>
-            <h2>Height: ${property.height}</h2>
-            <h2>Width: ${property.width}</h2>
-            <h2>Depth: ${property.depth}</h2>
-            <h2>Weight: ${property.weight}</h2>
+            <h5>Packet</h5>
+            <p>Origin Address: ${property.originAddress}</p>
+            <p>Destination Address: ${property.destinationAddress}</p>
+            <p>Height: ${property.height}</p>
+            <p>Width: ${property.width}</p>
+            <p>Depth: ${property.depth}</p>
+            <p>Weight: ${property.weight}</p>
             <button>Deliver</button>
         </div>`;
         
@@ -136,8 +136,8 @@ click: () => {
             options={{mapId: import.meta.env.VITE_APP_MAPS_ID}}
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={10}
             onLoad={onLoad}
+            zoom={5}
             onUnmount={onUnmount}
         >
             { /* Child components, such as markers, info windows, etc. */ }

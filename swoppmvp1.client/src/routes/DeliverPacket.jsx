@@ -4,16 +4,17 @@ import DeliveryTable from "@/routes/DeliveryTable.jsx";
 import {getDeliveriesByUserId} from "@/hooks/DeliveryHooks.jsx";
 import { useState } from 'react';
 import CreateDelivery from "@/routes/CreateDelivery.jsx";
-
+import {useAuth} from "@/hooks/AuthProvider.jsx";
 export default function DeliverPacket({packet}) {
     const [delivery, setDelivery] = useState([]);
     const [loading, setLoading] = useState(true);
     const [createDelivery, setCreateDelivery] = useState(false);
     
+    const auth = useAuth();
     console.log("Deliver packet: ", packet);
     console.log("Deliver packet id: ", packet.id);
     if(loading){
-        getDeliveriesByUserId().then(
+        getDeliveriesByUserId(auth).then(
             (response) => {
                 console.log("Get deliveries by userId", response);
                 setLoading(false);

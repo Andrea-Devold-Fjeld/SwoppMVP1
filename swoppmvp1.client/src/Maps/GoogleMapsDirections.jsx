@@ -1,10 +1,10 @@
 
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import {DirectionsRenderer, GoogleMap, useJsApiLoader} from '@react-google-maps/api';
 
 const containerStyle = {
-    width: '400px',
-    height: '400px'
+    width: '800px',
+    height: '800px'
 };
 
 // The latitude of Oslo, Ostlandet, Norway is 59.911491, and the longitude is 10.757933.
@@ -14,14 +14,17 @@ const center = {
     lng: 10.757933
 };
 
-const libraries = ["places", "routes"]
+const libraries = ["places", "routes", "marker"]
 
 
-function GoogleMapsComponent({geoLocation}) {
+function GoogleMapsComponent({geoLocation, packets}) {
+    const mapIds = [import.meta.env.VITE_APP_MAPS_ID]
+
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,
-        libraries: libraries
+        libraries: libraries, 
+        mapIds: mapIds
     })
 
     const [map, setMap] = useState(null);
@@ -71,8 +74,70 @@ function GoogleMapsComponent({geoLocation}) {
         setMap(null)
     }, [])
 
+    useEffect(() => {
+        if (map && packets.length > 0) {
+            console.log("Packets: ", packets)
+            const infoWindow = new window.google.maps.InfoWindow();
+            packets.forEach((packet) => {
+                console.log("OriginLatitude: ", packet.originLatitude, "type: ", typeof packet.originLatitude)
+                console.log("OriginLongitude: ", packet.originLongitude, "type: ", typeof packet.originLongitude)
+                const pin = new google.maps.marker.PinElement({});
+                let marker =new window.google.maps.marker.AdvancedMarkerElement({
+                    map,
+                    position: {lat: packet.originLatitude, lng: packet.originLongitude},
+                    content: pin.element,
+                    gmpClickable: true,
+                });
+                marker.addListener("click", ({ domEvent, latLng }) => {
+                    const { target } = domEvent;
+
+                    infoWindow.close();
+                    infoWindow.setContent(buildContent(packet));
+                    infoWindow.open(marker.map, marker);
+                });
+                //google.maps.event.removeListener(clickListener);
+            });
+
+        }
+    }, [map, packets]);
+
+    function toggleHighlight(markerView, property) {
+        if (markerView.content.classList.contains("highlight")) {
+            markerView.content.classList.remove("highlight");
+            markerView.zIndex = null;
+        } else {
+            markerView.content.classList.add("highlight");
+            markerView.zIndex = 1;
+        }
+    }
+
+
+    function buildContent(property) {
+        const content = document.createElement("div");
+        content.classList.add("property");
+        content.addEventListener("click", (e) => {
+            console.log("Click event", e);
+            onStateChange({packetId: property.id, status: "Delivered"});
+        });
+        content.innerHTML = `<div>
+            <h1>Packet</h1>
+            <h2>Origin Address: ${property.originAddress}</h2>
+            <h2>Destination Address: ${property.destinationAddress}</h2>
+            <h2>Height: ${property.height}</h2>
+            <h2>Width: ${property.width}</h2>
+            <h2>Depth: ${property.depth}</h2>
+            <h2>Weight: ${property.weight}</h2>
+            <button>Deliver</button>
+        </div>`;
+
+        console.log("Content", content)
+
+        return content;
+    }
+
     return isLoaded ? (
         <GoogleMap
+            options={{mapId: import.meta.env.VITE_APP_MAPS_ID}}
             mapContainerStyle={containerStyle}
             center={center}
             zoom={10}

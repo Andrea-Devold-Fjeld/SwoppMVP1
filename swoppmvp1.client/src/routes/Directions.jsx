@@ -3,8 +3,8 @@ import {useCallback, useMemo, useState} from 'react'
 import GoogleMapsDirections from "@/Maps/GoogleMapsDirections.jsx";
 
 
-export default function Directions({geoLocation}){
+export default function Directions({geoLocation, packets}){
     return (
-        <GoogleMapsDirections geoLocation={geoLocation} />
+        <GoogleMapsDirections geoLocation={geoLocation} packets={packets}/>
     )
 }

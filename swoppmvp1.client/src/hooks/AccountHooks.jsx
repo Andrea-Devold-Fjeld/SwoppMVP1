@@ -9,6 +9,7 @@ We can discuss if we want to save more
 returns userId, username
  */
 import {useAuth} from "@/hooks/AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
 
 export const registerHooks = async (user) => {
     try {
@@ -35,6 +36,7 @@ export const registerHooks = async (user) => {
  * @returns {Promise<boolean>} returns true if user is validated as transporter
  */
 export const checkTransporterRole = async () => {
+    const navigate = useNavigate();
     const auth = useAuth();
     try {
         const response = await fetch("/account/checktransporterrole", {
@@ -49,6 +51,7 @@ export const checkTransporterRole = async () => {
     }
     catch(err){
         console.log(err);
+        navigate("/login");
     }
 
 }

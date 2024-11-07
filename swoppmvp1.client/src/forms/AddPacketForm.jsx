@@ -1,8 +1,8 @@
 ﻿import React, {useState} from 'react';
 import {bothGeoLocationHook} from "@/hooks/GeolocationHooks.jsx";
 import {useNavigate} from "react-router-dom";
-import Test from "@/routes/Test.jsx";
-
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function AddPacketForm({children}) {
     const [inputValue, setInputValue] = useState({});
@@ -62,7 +62,7 @@ export default function AddPacketForm({children}) {
             })
             .then(() => {
                 console.log("packet", packet);
-                setLi(<Test children={packet} stateChanger={handleSendt} sendt={sendt}/>);
+                setLi(<p>Packet added</p>);
             })
 
             .finally(() => console.log("finally"));
@@ -72,30 +72,45 @@ export default function AddPacketForm({children}) {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor={"originAdress"}>Origin Address</label>
-                <input type={"text"} id={"originAdress"} name={"originAddress"} onChange={handleChange}/>
-                <label htmlFor={"originAdressNr"}>Origin Address Number</label>
-                <input type={"number"} id={"originAdressNr"} name={"originAddressNr"} onChange={handleChange}/>
-                <label htmlFor={"originPostNr"}>Origin Post Number</label>
-                <input type={"number"} id={"originPostNr"} name={"originPostNr"}  onChange={handleChange}/>
-                <label htmlFor={"destinationAddress"}>Destination Address</label>
-                <input type={"text"} id={"destinationAddress"} name={"destinationAddress"} onChange={handleChange}/>
-                <label htmlFor={"destinationAdressNr"}>Destination Address Number</label>
-                <input type={"number"} id={"destinationAdressNr"} name={"destinationAddressNr"}  onChange={handleChange}/>
-                <label htmlFor={"destinationPostNr"}>Destination Post Number</label>
-                <input type={"number"} id={"destinationPostNr"} name={"detinationPostNr"} onChange={handleChange}/>
-                <label htmlFor={"height"}>Height</label>
-                <input type={"number"} id={"height"}  onChange={handleChange} name={"height"}/>
-                <label htmlFor={"width"}>Width</label>
-                <input type={"number"} id={"width"} name={"width"} onChange={handleChange}/>
-                <label htmlFor={"depth"}>Depth</label>
-                <input type={"number"} id={"depth"} name={"depth"} onChange={handleChange}/>
-                <label htmlFor={"weight"}>Weight</label>
-                <input type={"number"} id={"weight"} name={"weight"} onChange={handleChange}/>
-                <input type={"text"} id={"message"} name={"message"} onChange={handleChange}/>
-                <input type={"submit"} value={"Add Packet"} />
-            </form>
+            <Form class={"add-packet-form"} onSubmit={handleSubmit}>
+                <Form.Group className={"mb-3"} controlId={"formBasicAddress"}>
+                    <Form.Label>Origin Address</Form.Label>
+                    <Form.Control type={"text"} placeholder={"Enter address"} name={"originAddress"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicPostNr"}>
+                    <Form.Label>Origin Post Number</Form.Label>
+                    <Form.Control type={"number"} placeholder={"Enter post number"} name={"originPostNr"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicAddress"}>
+                    <Form.Label>Destination Address</Form.Label>
+                    <Form.Control type={"text"} placeholder={"Enter address"} name={"destinationAddress"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicPostNr"}>
+                    <Form.Label>Destination Post Number</Form.Label>
+                    <Form.Control type={"number"} placeholder={"Enter post number"} name={"destinationPostNr"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicMessage"}>
+                    <Form.Label>Message</Form.Label>
+                    <Form.Control type={"textbox"} placeholder={"Enter message"} name={"message"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicHeight"}>
+                    <Form.Label>Height</Form.Label>
+                    <Form.Control type={"text"} placeholder={"Enter height"} name={"height"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicWidth"}>
+                    <Form.Label>Width</Form.Label>
+                    <Form.Control type={"text"} placeholder={"Enter width"} name={"width"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicDepth"}>
+                    <Form.Label>Depth</Form.Label>
+                    <Form.Control type={"text"} placeholder={"Enter depth"} name={"depth"} onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"formBasicWeight"}>
+                    <Form.Label>Weight</Form.Label>
+                    <Form.Control type={"text"} placeholder={"Enter weight"} name={"weight"} onChange={handleChange}/>
+                </Form.Group>
+                <Button type={"submit"}>Add Packet</Button>
+            </Form>
             {li}
         </>
     )

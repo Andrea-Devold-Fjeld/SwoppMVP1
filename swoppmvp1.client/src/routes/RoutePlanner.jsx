@@ -1,8 +1,10 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {bothGeoLocationHook, geoLocationHook} from "@/hooks/GeolocationHooks.jsx";
 import Directions from "@/routes/Directions.jsx";
+import {getPackets} from "@/hooks/PacketHooks.jsx";
+import {useAuth} from "@/hooks/AuthProvider.jsx";
 
 export default function RoutePlanner(){
     const [input, setInput] = useState({
@@ -15,7 +17,17 @@ export default function RoutePlanner(){
     })
     const [loading, setLoading] = useState(true);
     const [geoLocation, setGeolocation] = useState({});
-     
+    const [packets, setPackets] = useState([]);
+    
+    const auth = useAuth();
+    
+    useEffect(() => {
+        getPackets(auth)
+            .then((response) => {
+                console.log(response);
+                setPackets(response);
+            })
+    }, []);
     /*
             originLat: 0,
         originLng: 0,
@@ -98,7 +110,7 @@ export default function RoutePlanner(){
         <>
             {submit ? (
             <div>
-                <Directions geoLocation={geoLocation} />
+                <Directions geoLocation={geoLocation} packets={packets}/>
             </div> ):(
         <div id={"routePlanner"}>
             <Form>

@@ -5,6 +5,8 @@ import './index.css'
 import {router} from "@/App.jsx";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from 'react-ui'
+import 'bootstrap/dist/css/bootstrap.css';
+
 //removed strict mode
 createRoot(document.getElementById('root')).render(
       <ThemeProvider theme={"base"}>

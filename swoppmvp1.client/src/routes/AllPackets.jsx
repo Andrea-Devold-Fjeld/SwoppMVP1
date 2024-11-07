@@ -3,6 +3,7 @@ import {getPackets} from "@/hooks/PacketHooks.jsx";
 import PacketTable from "@/tables/PacketTable.jsx";
 import PacketMarker from "@/routes/PacketMarker.jsx";
 import DeliverPacket from "@/routes/DeliverPacket.jsx";
+import {useAuth} from "@/hooks/AuthProvider.jsx";
 
 
 
@@ -11,9 +12,10 @@ export default function AllPackets() {
     const [loading, setLoading] = useState(true);
     const [delivery, setDelivery] = useState(false);
     const [packet, setPacket] = useState("");
+    const auth = useAuth();
     console.log(loading);
     if(loading){
-        getPackets().then(
+        getPackets(auth).then(
             (response) => {
                 console.log(response);
                 setLoading(false);
@@ -48,7 +50,7 @@ export default function AllPackets() {
                 }
                 
             </div>
-            <div id={"mao"}>
+            <div id={"map"}>
                 {loading ? <h1>Loading...</h1> : <PacketMarker children={packets} onStateChange={handleStateChange}/>}
             </div>
                 </>

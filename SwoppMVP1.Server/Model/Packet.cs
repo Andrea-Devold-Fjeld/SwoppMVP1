@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
 namespace SwoppMVP1.Server.Model;
@@ -26,5 +27,6 @@ public class Packet
     public double? Weight { get; set; }
     public bool Available { get; set; }
     public Guid? DeliveryId  { get; set; }
+    [JsonIgnore]
     public virtual Delivery? Delivery { get; set; }
 }

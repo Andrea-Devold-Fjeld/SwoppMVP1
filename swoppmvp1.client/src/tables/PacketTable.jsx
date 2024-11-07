@@ -18,6 +18,7 @@ export default function PacketTable({stateChanger ,loading, packets, onStateChan
     
     return (
         <>
+            <div class={"packet-table"}>
             {packets.map((packet) => {
                 return( 
                     <PacketCard 
@@ -29,6 +30,7 @@ export default function PacketTable({stateChanger ,loading, packets, onStateChan
                     />)
                 
             })}
+            </div>
         </>
     )
 }

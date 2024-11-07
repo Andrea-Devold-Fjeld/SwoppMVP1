@@ -32,7 +32,7 @@ const AuthProvider = ({ children}) => {
                 setUser(res.userId);
                 setToken(res.token);
                 localStorage.setItem("site", res.token);
-                navigate("/dashboard"); //this route dont exist
+                //navigate("/dashboard"); //this route dont exist
             }
             throw new Error("Login failed");
         } catch (error) {
@@ -43,6 +43,10 @@ const AuthProvider = ({ children}) => {
         setUser("");
         setToken("");
         localStorage.removeItem("site");
+        console.log("Logged out");
+        console.log(user);
+        console.log(token);
+        console.log(localStorage.getItem("site"));
         navigate("/login");
     };
 

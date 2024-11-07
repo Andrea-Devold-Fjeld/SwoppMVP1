@@ -31,9 +31,19 @@ public class PacketController : Controller
     [HttpGet]
     [Route("[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<IEnumerable<Packet>> GetPacketsByUserId(string userId)
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IEnumerable<Packet>> GetPacketsByUserId()
     {
-        return await _repository.GetPacketsByUserIdAsync(userId);
+        var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (identifier != null)
+        {
+            var packets = await _repository.GetPacketsByUserIdAsync(identifier.Value);
+            Console.WriteLine(packets);
+            return packets;
+        }
+        return new List<Packet>();
     }
     
     [HttpPost]
@@ -92,6 +102,16 @@ public class PacketController : Controller
     public async Task<IEnumerable<Packet>> GetAvailablePackets()
     {
         return await _repository.GetAvailablePacketsAsync();
+    }
+    
+    [HttpGet]
+    [Route("[controller]/[action]")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AllowAnonymous]
+    public async Task<Packet?> GetPacketById(string Id)
+    {
+        return await _repository.GetPacketAsync(Id);
     }
 
     [HttpPost]

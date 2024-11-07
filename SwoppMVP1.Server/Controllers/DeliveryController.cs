@@ -28,10 +28,9 @@ public class DeliveryController : Controller
     [Authorize]
     [HttpGet]
     [Route("[controller]/[action]")]
-    public async Task<IEnumerable<Delivery>> GetDeliveries()
+    public async Task<IEnumerable<DeliveryDTO>> GetDeliveries()
     {
-        return await _repository.GetAllDeliveriesAsync();
-
+        return await _repository.GetDeliveriesWithPacketsAsync();
     }
     [Authorize]
     [HttpGet]

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
+    "bootstrap": "^5.3.3",
     "query-string": "^9.1.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
@@ -18,7 +19,8 @@
     "react-hook-form": "^7.53.1",
     "react-router-dom": "^6.26.2",
     "react-ui": "^1.0.0-beta.32",
-    "react-use": "^17.5.1"
+    "react-use": "^17.5.1",
+    "reactstrap": "^9.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
