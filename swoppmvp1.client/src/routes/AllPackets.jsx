@@ -49,7 +49,7 @@ export default function AllPackets() {
                 
             </div>
             <div id={"mao"}>
-                {loading ? <h1>Loading...</h1> : <PacketMarker children={packets} />}
+                {loading ? <h1>Loading...</h1> : <PacketMarker children={packets} onStateChange={handleStateChange}/>}
             </div>
                 </>
             }
