@@ -7,12 +7,15 @@ steps:
            '.']
     logsBucket: 'gs://mylogsbucket'
     options:
-      logging: GCS_ONLY
+      logging: CLOUD_LOGGING_ONLY
 
   # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push',
            'europe-north1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage']
+    options:
+      logging: CLOUD_LOGGING_ONLY
+
 
   # Entrypoint, timeout and environment variables
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -22,6 +25,8 @@ steps:
            'create-with-container', 'my-vm-name',
            '--container-image',
            'europe--docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage']
+    options:
+      logging: CLOUD_LOGGING_ONLY
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
