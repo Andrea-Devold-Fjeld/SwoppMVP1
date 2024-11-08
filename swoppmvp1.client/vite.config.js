@@ -34,12 +34,15 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
     env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'https://localhost:7135';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+/*
     build: {
         rollupOptions: {
             external: ['@react-google-maps/api'],
             },
         },
+ */
+export default defineConfig({
+
     plugins: [plugin()],
     resolve: {
         alias: {
