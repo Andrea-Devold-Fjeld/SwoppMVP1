@@ -1,4 +1,3 @@
-import GoogleMapsComponentMarker from "@/Maps/GoogleMapsMarker.jsx";
 import GoogleMapsAdvancedMarkers from "@/Maps/GoogleMapsAdvancedMarkers.jsx";
 
 

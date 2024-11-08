@@ -1,7 +1,7 @@
 import {getPackets} from "@/hooks/PacketHooks.jsx";
 import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
 import {useState} from "react";
-import PacketCard from "@/PacketCard.jsx";
+import PacketCard from "@/cards/PacketCard.jsx";
 
 
 export default function PacketTable({stateChanger ,loading, packets, onStateChange}) {

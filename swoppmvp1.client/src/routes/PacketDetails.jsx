@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import {getPacketByUserId} from "@/hooks/PacketHooks.jsx";
-import PacketCard from "@/PacketCard.jsx";
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import UsersPacket from "@/routes/UsersPacket.jsx";
+import UsersPacket from "@/cards/UsersPacket.jsx";
 
 export default function PacketDetails({auth}) {
     const [packet, setPacket] = useState([]);

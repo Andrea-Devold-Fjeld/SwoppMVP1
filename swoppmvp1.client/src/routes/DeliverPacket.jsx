@@ -1,6 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import PacketTable from "@/tables/PacketTable.jsx";
-import DeliveryTable from "@/routes/DeliveryTable.jsx";
+import DeliveryTable from "@/tables/DeliveryTable.jsx";
 import {getDeliveriesByUserId} from "@/hooks/DeliveryHooks.jsx";
 import { useState } from 'react';
 import CreateDelivery from "@/routes/CreateDelivery.jsx";

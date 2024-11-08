@@ -1,5 +1,4 @@
 import {Outlet, Navigate} from 'react-router-dom'
-import Navigation from "@/Navigation/Navigation.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import ProtectedNavigation from "@/Navigation/ProtectedNavigation.jsx";
 

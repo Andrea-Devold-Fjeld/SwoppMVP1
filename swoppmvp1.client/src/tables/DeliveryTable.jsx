@@ -1,8 +1,7 @@
 import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import DeliveryCard from "@/routes/DeliveryCard.jsx";
-import PacketCard from "@/PacketCard.jsx";
+import DeliveryCard from "@/cards/DeliveryCard.jsx";
 
 export default function DeliveryTable({deliveris, packetid}) {
     const [transporter, setTransporter] = useState(false);

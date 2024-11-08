@@ -1,7 +1,7 @@
-import {checkTransporterRole, setTransporterRole} from "@/hooks/AccountHooks.jsx";
+import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
 import {useState, useCallback} from "react";
 import { useNavigate } from "react-router-dom";
-import UserDetails from "@/routes/UserDetail.jsx";
+import UserDetails from "@/cards/UserDetail.jsx";
 import PacketDetails from "@/routes/PacketDetails.jsx";
 import DeliveryDetails from "@/routes/DeliveryDetails.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";

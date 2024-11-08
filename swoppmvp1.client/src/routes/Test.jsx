@@ -1,8 +1,5 @@
 ﻿import {addPacket} from "@/hooks/PacketHooks.jsx";
-import { useEffect, useState} from "react";
-import {useAuth} from "@/hooks/AuthProvider.jsx";
 import { useNavigate } from "react-router-dom";
-import {bothGeoLocationHook, geoLocationHook} from "@/hooks/GeolocationHooks.jsx";
 /*
 export default function Test({children, stateChanger, sendt}) {
     /*

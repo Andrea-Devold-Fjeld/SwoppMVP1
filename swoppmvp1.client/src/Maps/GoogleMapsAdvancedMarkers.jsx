@@ -1,4 +1,4 @@
-import {GoogleMap, Marker, useJsApiLoader} from "@react-google-maps/api";
+import {GoogleMap, useJsApiLoader} from "@react-google-maps/api";
 import React, {useCallback, useState, useEffect} from "react";
 //import infoWindow from "@react-google-maps/api/src/components/drawing/InfoWindow.js";
 

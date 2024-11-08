@@ -1,5 +1,15 @@
 {
   "profiles": {
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+      },
+      "launchUrl": "https://localhost:44407",
+      "useSSL": true
+    },
     "http": {
       "commandName": "Project",
       "launchBrowser": true,

@@ -1,5 +1,4 @@
 import {getPacketById} from "@/hooks/PacketHooks.jsx";
-import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
 import {useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 

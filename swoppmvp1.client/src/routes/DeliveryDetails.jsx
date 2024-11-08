@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
 import {getDeliveriesByUserId} from "@/hooks/DeliveryHooks.jsx";
-import DeliveryUserCard from "@/routes/DeliveryUserCard.jsx";
-import {useAuth} from "@/hooks/AuthProvider.jsx";
+import DeliveryUserCard from "@/cards/DeliveryUserCard.jsx";
 
 export default function DeliveryDetails({auth}) {
     const [deliveries, setDeliveries] = useState([]);
