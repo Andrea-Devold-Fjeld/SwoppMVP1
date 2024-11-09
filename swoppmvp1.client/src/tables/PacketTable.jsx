@@ -1,24 +1,21 @@
-import {getPackets} from "@/hooks/PacketHooks.jsx";
-import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
 import {useState} from "react";
 import PacketCard from "@/cards/PacketCard.jsx";
-
+import {useOutletContext} from "react-router-dom";
 
 export default function PacketTable({stateChanger ,loading, packets, onStateChange}) {
-    const [transporter, setTransporter] = useState(false);
     const [deliverButton, setDeliverButton] = useState(false);
-    
+
+    const context = useOutletContext();
+    const project = context ? context.project : null;
+
+    const transporter = project ? project.transporter : false;
+
     console.log("Packets: ", packets);
-    checkTransporterRole().then(
-        (response) => {
-            setTransporter(response);
-            console.log("Transporter: ", transporter);
-        }
-    )
+
     
     return (
         <>
-            <div class={"packet-table"}>
+            <div className={"packet-table"}>
             {packets.map((packet) => {
                 return( 
                     <PacketCard 

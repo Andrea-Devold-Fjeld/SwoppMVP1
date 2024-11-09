@@ -9,6 +9,7 @@ public class Delivery
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid DeliveryId { get; set; }
+    public string Title { get; set; }
     public virtual IdentityUser User { get; set; }
     public required string UserId { get; set; }
     public ICollection<Packet> Packets { get; set; } = new List<Packet>();

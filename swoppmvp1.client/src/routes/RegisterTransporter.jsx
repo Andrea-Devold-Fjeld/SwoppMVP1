@@ -2,11 +2,19 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TransporterRegistered from "@/routes/TransporterRegistered.jsx";
+import {useAuth} from "@/hooks/AuthProvider.jsx";
+import {useOutletContext} from "react-router-dom";
 export default function RegisterTransporter() {
     const [isRegistered, setIsRegistered] = useState(false);
+    const {handleUpdateTransporter} = useOutletContext();
     const navigate = useNavigate();
+    const auth = useAuth();
     const handleClick = () => {
-        setIsRegistered(true);
+        setTransporterRole(auth)
+            .then((response) => {
+                console.log(response);
+                handleUpdateTransporter(true);
+            })
     }
     return (
         <>  

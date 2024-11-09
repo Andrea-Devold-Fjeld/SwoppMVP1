@@ -3,27 +3,30 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import '../index.css';
 import {useAuth} from "@/hooks/AuthProvider.jsx";
+import {useOutletContext} from "react-router-dom";
 
 
 export default function ProtectedNavigation(){
-    const [transporter, setTransporter] = useState(false);
+    const { transporter, handleUpdateTransporter } = useOutletContext || {};
     const [loading, setLoading] = useState(true);
     const auth = useAuth();
-    checkTransporterRole().then(
-        (response) => {
-            if(response === undefined){
-                auth.logOut();
-                console.log("Logging out")
-            }
-            setTransporter(response.valueOf());
-            console.log("Transporter: ", transporter);
+    
+    const transporterClaim = transporter;
+    
 
-        }
-    )
-    console.log("Transporte2r: ", transporter);
+    /*
+    useEffect(() => {
+        checkTransporterRole(auth)
+            .then((response) => {
+                setTransporter(response);
+                setLoading(false);
+            })
+    }, []);
+*/
+    console.log("Transporte2r: ", transporterClaim);
 
     /*
      <Navbar expand="lg" className="bg-body-tertiary">
@@ -44,7 +47,7 @@ export default function ProtectedNavigation(){
         <>
             <div className={"navigation sticky-top"} id={"protected-nav"}>
 
-                {transporter ?
+                {transporterClaim ?
                     <>
                         <Navbar expand="lg" className="bg-body-tertiary navigation">
                             <Container>

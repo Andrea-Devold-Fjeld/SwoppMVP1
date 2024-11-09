@@ -14,47 +14,8 @@ using SwoppMVP1.Server.DAL;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-    })
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token"])),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
-builder.Services.AddAuthorization(options => 
-    options.AddPolicy("TransporterOnly", policy => policy.RequireClaim("Transporter", "true")));
-/*
-builder.Services.AddAuthorization(options =>
-    options.AddPolicy("TransporterOnly", policy => RequireClaim("TransporterId"
-        )
-    ));
-    */
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-    options.UseSqlite(
-        builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-
-builder.Services.AddScoped<IPacketRepository, PacketRepository>();
-builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
-builder.Services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -87,7 +48,52 @@ builder.Services.AddSwaggerGen(options =>
     
     options.AddSecurityRequirement(securityRequirement);
 });
-builder.Services.AddControllers();
+
+builder.Services.AddAuthorization(
+    options =>
+    {
+        options.AddPolicy("TransporterOnly", policy => policy.RequireClaim("TransporterId"));
+    });
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+/*
+ * options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token"])),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+ */
+/*
+builder.Services.AddAuthorization(options =>
+    options.AddPolicy("TransporterOnly", policy => RequireClaim("TransporterId"
+        )
+    ));
+    */
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseSqlite(
+        builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IPacketRepository, PacketRepository>();
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
+
+
+
 
 var app = builder.Build();
 
@@ -105,8 +111,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapSwagger().RequireAuthorization();
 
 app.MapControllers();
+app.MapGroup("/account").MapIdentityApi<IdentityUser>();
 
 app.MapFallbackToFile("/index.html");
 

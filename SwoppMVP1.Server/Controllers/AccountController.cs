@@ -22,7 +22,7 @@ namespace SwoppMVP1.Server.Controllers
 
 
         public AccountController(IConfiguration config, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+            SignInManager<IdentityUser> signInManager, ApplicationDbContext context)
         {
             _config = config;
             _userManager = userManager;
@@ -36,7 +36,7 @@ namespace SwoppMVP1.Server.Controllers
         [Authorize]
         [HttpGet]
         [AllowAnonymous]
-        [Route("account/checkTransporterRole")]
+        [Route("transporter/checkTransporterRole")]
         [Produces("application/json")]
         public async Task<Claim?> GetCheckTransporterRole()
         {
@@ -71,7 +71,7 @@ namespace SwoppMVP1.Server.Controllers
          */
         [HttpPost]
         [Authorize]
-        [Route("account/setTransporterRole")]
+        [Route("Transporter/setTransporterRole")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -103,6 +103,7 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Login method that return a JWT token that are used to authorize further request
          */
+        /*
         [HttpPost]
         [AllowAnonymous]
         [Route("[controller]/[action]")]
@@ -152,6 +153,7 @@ namespace SwoppMVP1.Server.Controllers
         /**
          * Method to register new users
          */
+        /*
         [HttpPost]
         [AllowAnonymous]
         [Route("[controller]/[action]")]

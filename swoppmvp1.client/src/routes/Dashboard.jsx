@@ -1,38 +1,72 @@
-import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
-import {useState, useCallback} from "react";
+import {useState, useCallback, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import UserDetails from "@/cards/UserDetail.jsx";
 import PacketDetails from "@/routes/PacketDetails.jsx";
 import DeliveryDetails from "@/routes/DeliveryDetails.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
+import {useOutletContext} from "react-router-dom";
+
 
 export default function Dashboard() {
-    const [transporterClaim, setTransporterClaim] = useState(false)
-    const auth = useAuth();
+    const context = useOutletContext();
+    const {transporter, handleUpdateTransporter} = useOutletContext();
 
-    const transporter = checkTransporterRole().then((res) => setTransporterClaim(res.valueOf()));
-    console.log(transporterClaim);
+    const [loading, setLoading] = useState(true);
+    const auth = useAuth();
+    const transporterClaim = transporter;
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     
     return (
         <>
-            {transporterClaim ? 
-            <>
-                <div className={"profile"}>
-                    <UserDetails transporter={transporterClaim}/>
-                    <PacketDetails auth={auth}/>
-                    <DeliveryDetails auth={auth} />
-                </div>
-            </> :
+            {loading ? (<p>...loading</p>) : (
                 <>
-                    <div className={"profile"}>
-                        <UserDetails/>
-                        <PacketDetails auth={auth}/>
-                    </div>
-                </>
+                    {transporterClaim ?
+                        <>
+                            <div className={"profile"}>
+                                <UserDetails transporter={transporterClaim}/>
+                                <PacketDetails auth={auth}/>
+                                <DeliveryDetails auth={auth} />
+                            </div>
+                        </>
+                        :
+                        <>
+                            <div className={"profile"}>
+                                <UserDetails/>
+                                <PacketDetails auth={auth}/>
+                            </div>
+                        </>
                     }
                 </>
+            )}
+        </>
 
-                )
-            }
+    )
+}
+
+/*
+ {loading ? (<p>...loading</p>) : (
+                <>
+                    {transporterClaim ? 
+                        <>
+                            <div className={"profile"}>
+                                <UserDetails transporter={transporterClaim}/>
+                                <PacketDetails auth={auth}/>
+                                <DeliveryDetails auth={auth} />
+                            </div>
+                        </> 
+                        :
+                        <>
+                            <div className={"profile"}>
+                                <UserDetails/>
+                                <PacketDetails auth={auth}/>
+                            </div>
+                        </>
+                    }
+                </>
+            )}
+ */

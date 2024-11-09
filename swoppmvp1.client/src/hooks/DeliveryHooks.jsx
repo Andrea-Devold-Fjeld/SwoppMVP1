@@ -1,4 +1,4 @@
-import {useAuth} from "@/hooks/AuthProvider.jsx";
+import { useAuth} from "@/hooks/AuthProvider.jsx";
 import queryString from "query-string";
 
 
@@ -31,14 +31,31 @@ export const getDeliveriesByUserId = async (auth) => {
                 "Authorization": `Bearer ${auth.token}`
             }
         })
-        return await response.json();
+        if(response.status === 401){
+            auth.refreshTokenAPI(auth.refreshToken);
+            const refreshedResponse = await fetch(`/delivery/getdeliverybyuserid`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": `Bearer ${auth.token}`
+                }})
+                if (refreshedResponse.status === 200) {
+                    return await refreshedResponse.json();
+                }else {
+                    console.log("Error in refreshing token");
+                }
+        }else if (response.status === 200) {
+            return await response.json();
+        }else {
+            alert("Error in fetching deliveries");
+            console.log("Error in fetching deliveries");
+        }
     } catch (e) {
         console.log(e);
     }
 }
 
-export const addPacketToDelivery = async (packetId, deliveryId) => {
-    const auth = useAuth();
+export const addPacketToDelivery = async (packetId, deliveryId, auth) => {
     const url = {}
     url.packetId = packetId;
     url.deliveryId = deliveryId;
@@ -48,7 +65,7 @@ export const addPacketToDelivery = async (packetId, deliveryId) => {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Authorization": `Bearer ${auth.token}`
+                "Authorization": `Bearer ${auth.tooken}`
             }
         })
         return await response.json();
@@ -57,8 +74,7 @@ export const addPacketToDelivery = async (packetId, deliveryId) => {
     }
 }
 
-export const createDelivery = async (packetId) => {
-    const auth = useAuth();
+export const createDelivery = async (packetId, auth) => {
     const url = {}
     url.packetId = packetId;
     const query = queryString.stringify(url);

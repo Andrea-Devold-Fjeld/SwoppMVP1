@@ -63,6 +63,7 @@ public class PacketController : Controller
     
             var packet = new Packet
             {
+                Title = packetDto.Title,
                 UserId = user.Id,
                 Timestamp = DateTime.Now,
                 OriginAddress = packetDto.OriginAddress,

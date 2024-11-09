@@ -70,6 +70,7 @@ export const addPacket = async (packet) => {
         const auth = useAuth();
         console.log(auth.token);
         console.log(packet);
+        console.log("Add packet: ", JSON.stringify(packet));
         const navigate = useNavigate();
         try {
             const response = await fetch("/packet/addpacket", {

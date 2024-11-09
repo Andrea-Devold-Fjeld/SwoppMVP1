@@ -3,7 +3,7 @@
 [Serializable]
 public class AddPacketDTO
 {
-    public string? UserId { get; set; }
+    public string? Title { get; set; }
     public string? Message { get; set; }
     public string? OriginAddress { get; set; }
     public string? DestinationAddress { get; set; }

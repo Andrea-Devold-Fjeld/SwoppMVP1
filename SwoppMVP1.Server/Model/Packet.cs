@@ -10,6 +10,7 @@ public class Packet
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
+    public string? Title { get; set; }
     public string UserId { get; set; }
     public virtual IdentityUser? User { get; set; }
     public DateTime Timestamp { get; set; }

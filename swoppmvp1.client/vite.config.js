@@ -63,11 +63,15 @@ export default defineConfig({
                 target,
                 secure: false
             },
-            '^/account/checktransporterrole': {
+            '^/account/refresh': {
                 target,
                 secure: false
             },
-            '/account/settransporterrole': {
+            '^/transporter/checkTransporterRole': {
+                target,
+                secure: false
+            },
+            '/Transporter/setTransporterRole': {
                 target,
                 secure: false
             },

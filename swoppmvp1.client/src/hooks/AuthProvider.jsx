@@ -5,11 +5,56 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children}) => {
     const [user, setUser] = useState("");
-    const [token, setToken] = useState(localStorage.getItem("site") || "");
+    const [token, setToken] = useState(localStorage.getItem("accessToken") || "");
+    const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refreshToken") || "");
+    const [login, setLogin] = useState(false);
     const navigate = useNavigate();
 
+    const refreshTokenAPI =  () => {
+        
+        console.log("In refresh token");
+        return fetch("/account/refresh", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+            body: JSON.stringify({refreshToken: refreshToken})
+        })
+            .then((response) => {
+                console.log("Response: ", response);
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("expiresIn");
+                if (response.status === 200) {
+                    console.log("Token refreshed succesfully");
+                    const status = response.status;
+                    return  response.json().then(
+                        (result) => {
+                            console.log("Result: ", result);
+                            console.log("Status: ", status);
+                            return {status, result}
+                        })}})
+            .then(({status, result}) => {
+                console.log("staus: ", status);
+                console.log("result: ", result);
+                if (status === 200) {
+                    localStorage.setItem("accessToken", result.accessToken);
+                    localStorage.setItem("refreshToken", result.refreshToken);
+                    localStorage.setItem("expiresIn", result.expiresIn);
+                    console.log("Token refreshed succesfully");
+                } else if (status === 401) {
+                    navigate("/login");
+                    console.error("inside token refresh: ", result);
+                }else {
+                    navigate("/login");
+                }})
+            .catch((err) => {
+                console.log("token refresh error: ", err);
+            })
+    };
+
     const isLoggedIn = () => {
-        if(user === ""){
+        if(!login){
             navigate("/home");
             return false;
         }
@@ -17,40 +62,59 @@ const AuthProvider = ({ children}) => {
     }
   
     const loginAction = async (data)=> {
-
+        console.log(data)
         try {
-            const response = await fetch("/account/login", {
+            await fetch("/account/login", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
                 },
                 body: JSON.stringify(data)
-            });
-            const res = await response.json();
+            }).then((response) => {
+                if(response.status === 200){
+                    return response.json();
+                } else {
+                    throw new Error("Login failed");
+                }})
+                .then(data => {
+                    const accessToken = data.accessToken;
+                    const refreshToken = data.refreshToken;
+                    const expiresIn = data.expiresIn;
+                    localStorage.setItem("accessToken", accessToken);
+                    localStorage.setItem("refreshToken", refreshToken);
+                    localStorage.setItem("expiresIn", expiresIn);
+                    console.log("Done setting, enjoy your event");
+                    console.log("Token: ", localStorage.getItem("accessToken"));
+                    console.log("Refresh token: ", localStorage.getItem("refreshToken"));
+                    console.log("Expires in: ", localStorage.getItem("expiresIn"));
+                    setToken(accessToken);
+                    setRefreshToken(refreshToken);
+                    
 
-            if(!(res.userId === null)){
-                setUser(res.userId);
-                setToken(res.token);
-                localStorage.setItem("site", res.token);
-                //navigate("/dashboard"); //this route dont exist
-            }
-            throw new Error("Login failed");
+                    setLogin(true);
+                    navigate("/dashboard");
+                })
+                .catch(err => {
+                    console.log(err);
+                    localStorage.setItem("accessToken", "");
+                });
         } catch (error) {
             console.log(error);
         }
     }
     const logOut = () => {
-        setUser("");
-        setToken("");
-        localStorage.removeItem("site");
+        localStorage.setItem("accessToken", "");
+        localStorage.setItem("refreshToken", "");
+        localStorage.setItem("expiresIn","");
         console.log("Logged out");
-        console.log(user);
-        console.log(token);
-        console.log(localStorage.getItem("site"));
         navigate("/login");
     };
+    
+    
+    
+    
 
-    return <AuthContext.Provider value={{ user,token, loginAction, logOut, isLoggedIn}}>
+    return <AuthContext.Provider value={{ user,token, loginAction, logOut, isLoggedIn, refreshTokenAPI, refreshToken}}>
         {children}
     </AuthContext.Provider>;
 };

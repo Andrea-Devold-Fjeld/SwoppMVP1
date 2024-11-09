@@ -1,15 +1,17 @@
-import {checkTransporterRole} from "@/hooks/AccountHooks.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import DeliveryCard from "@/cards/DeliveryCard.jsx";
+import { useOutletContext } from 'react-router-dom';
 
-export default function DeliveryTable({deliveris, packetid}) {
-    const [transporter, setTransporter] = useState(false);
+export default function DeliveryTable({deliveries, packetid}) {
+    const { project } = useOutletContext();
+    console.log("Testing outlet context", project.transporter)
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     console.log("DeliveryTable: ", packetid)
 
-    if(loading){
+    //if(loading){
+        /*
         console.log("In delivery table");
         checkTransporterRole().then(
             (response) => {
@@ -24,13 +26,15 @@ export default function DeliveryTable({deliveris, packetid}) {
                     navigate("/registerTransporter");
                 }
             }
-        )
-    }
+            
+         */
+        //)
+    //}
     
    
     return (
         <>
-            {deliveris.map((delivery) => {
+            {deliveries.map((delivery) => {
                 return(
                     <DeliveryCard key={deliveris.deliveryId} deliveris={delivery} packetId={packetid}
                     />)
@@ -38,5 +42,5 @@ export default function DeliveryTable({deliveris, packetid}) {
             })}
         </>
     )
-    }
+}
     

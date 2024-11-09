@@ -5,8 +5,8 @@ import {useAuth} from "@/hooks/AuthProvider.jsx"
 
 const LoginForm = ({children}) => {
     const [input, setInput] = useState({
-        Username: "",
-        Password: "",
+        email: "",
+        password: "",
     })
 
     const handleInput = (e) => {
@@ -23,7 +23,7 @@ const LoginForm = ({children}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
-        if (input.username !== "" && input.password !== "") {
+        if (input.email !== "" && input.password !== "") {
             auth.loginAction(input);
             return;
         }
@@ -37,7 +37,7 @@ const LoginForm = ({children}) => {
                 <input
                     type="email"
                     id="user-email"
-                    name="Username"
+                    name="email"
                     placeholder="example@yahoo.com"
                     aria-describedby="user-email"
                     aria-invalid="false"
@@ -52,7 +52,7 @@ const LoginForm = ({children}) => {
                 <input
                     type="password"
                     id="password"
-                    name="Password"
+                    name="password"
                     aria-describedby="user-password"
                     aria-invalid="false"
                     onChange={handleInput}

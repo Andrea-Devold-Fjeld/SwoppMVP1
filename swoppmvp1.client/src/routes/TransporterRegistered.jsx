@@ -1,8 +1,8 @@
 import {setTransporterRole} from "@/hooks/AccountHooks.jsx";
-
+import {useOutletContext} from "react-router-dom";
 
 export default function TransporterRegistered() {
-    setTransporterRole();
+    const {handleUpdateTransporter} = useOutletContext();
     return (
         <>
             <div>
