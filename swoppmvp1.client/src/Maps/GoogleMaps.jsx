@@ -16,8 +16,10 @@ const center = {
 
 function GoogleMapsComponent({children}) {
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    const mapId = ["a5995e39d0ac4d83"]
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: api_key
+        googleMapsApiKey: api_key,
+        mapIds: mapId
     })
   
   const [map, setMap] = React.useState(null);

@@ -19,7 +19,7 @@ function handleClick(e){
 
 export default function GoogleMapsAdvancedMarkers({packets, geoLocations, onStateChange}) {
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-    const mapIds = [import.meta.env.VITE_APP_MAPS_ID]
+    const mapIds = ["a5995e39d0ac4d83"]
     console.log(mapIds)
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,

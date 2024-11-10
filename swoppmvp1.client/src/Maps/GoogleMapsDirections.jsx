@@ -18,7 +18,7 @@ const libraries = ["places", "routes", "marker"]
 
 
 function GoogleMapsComponent({geoLocation, packets, onStateChange}) {
-    const mapIds = [import.meta.env.VITE_APP_MAPS_ID]
+    const mapIds = ["a5995e39d0ac4d83"]
 
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
     const { isLoaded } = useJsApiLoader({
