@@ -21,6 +21,16 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/swoppmvp1.client/node_modules
+**/.idea
+**/.idea.SwoppMVP1
+**/swoppmvp1.client/.idea
+**/swoppmvp1.client/.idea.SwoppMVP1
+**/swoppmvp1.client/.vs
+**/swoppmvp1.client/.vscode
+**/SwoppMVP1.Server/.idea
+./.idea
+./node_modules
 LICENSE
 README.md
 !**/.gitignore
