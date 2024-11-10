@@ -26,7 +26,16 @@ export default function ProtectedNavigation(){
     checkTransporterRole(auth)
         .then((response) => {
             console.log("response in useffect in protected nav",response);
-            setTransporter(response.value);
+            console.log("response in useffect in protected layout",response);
+            if(response.value === "false") {
+                console.log("User is not a transporter");
+
+            }
+            else if(response.value === "true") {
+                console.log("User is a transporter");
+                setTransporter(true);
+
+            }
         })
         .catch((error) => {
             console.error("Error checking transporter role:", error);

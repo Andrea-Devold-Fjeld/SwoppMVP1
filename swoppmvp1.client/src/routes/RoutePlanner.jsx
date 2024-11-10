@@ -71,17 +71,20 @@ export default function RoutePlanner(){
             console.log(input);
             const geo = bothGeoLocationHook(input.formOriginAddress, input.formOrginAddressNr, input.formOrginPostNr, input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr)
                 .then((response) => {
-                    return response
-                })
-                .then((response) => {
-                    console.log("RESPONSE", response);
-                    setGeolocation({
-                        originLat: parseFloat(response[0].results[0].geometry.location.lat.toString()),
-                        originLng: parseFloat(response[0].results[0].geometry.location.lng.toString()),
-                        destinationLat: parseFloat(response[1].results[0].geometry.location.lat.toString()),
-                        destinationLng: parseFloat(response[1].results[0].geometry.location.lng.toString())
-                    });
-                    setSubmit(true);
+                    if(response[0].status === "REQUEST_DENIED" || response[1].status === "REQUEST_DENIED") {
+                        console.log("Request denied");
+                        alert("Request denied");
+                    }
+                    else {
+                        console.log("RESPONSE", response);
+                        setGeolocation({
+                            originLat: parseFloat(response[0].results[0].geometry.location.lat.toString()),
+                            originLng: parseFloat(response[0].results[0].geometry.location.lng.toString()),
+                            destinationLat: parseFloat(response[1].results[0].geometry.location.lat.toString()),
+                            destinationLng: parseFloat(response[1].results[0].geometry.location.lng.toString())
+                        });
+                        setSubmit(true);
+                    }
                 })
                 .finally(() => {
                     console.log("finally", geo);

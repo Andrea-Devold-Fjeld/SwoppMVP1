@@ -4,13 +4,12 @@ steps:
     script: |
       docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID//my-docker-repo/myimage .
       automapSubstitutions: true
-    secretEnv:
-      - 'VITE_GOOGLE_MAPS_API_KEY'
+    secretEnv: ['VITE_GOOGLE_MAPS_API_KEY']
 images:
   - 'europe-north1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage'
 options:
   logging: CLOUD_LOGGING_ONLY
 availableSecrets:
   secretManager:
-    versionName: projects/swopp-436713/secrets/projects/844462537245/secrets/VITE_GOOGLE_MAPS_API_KEY/versions/1
+    versionName: projects/swopp-436713/secrets/projects/844462537245/secrets/VITE_GOOGLE_MAPS_API_KEY/versions/latest
     env: 'VITE_GOOGLE_MAPS_API_KEY'

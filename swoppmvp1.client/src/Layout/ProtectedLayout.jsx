@@ -22,7 +22,15 @@ export default function ProtectedLayout() {
                  checkTransporterRole(user)
                      .then((response) => {
                          console.log("response in useffect in protected layout",response);
-                         setTransporter(response.value);
+                         if(response.value === "false") {
+                             console.log("User is not a transporter");
+                             
+                         }
+                         else if(response.value === "true") {
+                             console.log("User is a transporter");
+                             setTransporter(true);
+                             
+                         }
                      })
                      .catch((error) => {
                          console.error("Error checking transporter role:", error);
