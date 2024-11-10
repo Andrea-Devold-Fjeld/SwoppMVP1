@@ -1,19 +1,17 @@
 ﻿
-export const geoLocationHook = async (adress, adressNr, postNr) => {
+export const geoLocationHook = async (key, adress, adressNr, postNr) => {
     try {
         console.log("adress", adress);
         adress.replaceAll(" ", "+");
-        const addresse = adress + "+" + adressNr;
         const country = "NO";
-        const key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${postNr}+${addresse}+${country}&key=${key}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${postNr}+${adress}+${country}&key=${key}`);
         return await response.json();
     } catch (e) {
         console.log(e);
     }
 }
 
-export const bothGeoLocationHook = async (originAdress, originAdressNr, originPostNr, destinationAdress, destinationAdressNr, destinationPostNr) => {
+export const bothGeoLocationHook = async (api_key, originAdress, originAdressNr, originPostNr, destinationAdress, destinationAdressNr, destinationPostNr) => {
     try {
         const response = [];
         response.push(await geoLocationHook(originAdress, originAdressNr, originPostNr));

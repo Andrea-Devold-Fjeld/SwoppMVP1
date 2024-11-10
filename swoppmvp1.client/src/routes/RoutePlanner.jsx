@@ -6,6 +6,7 @@ import Directions from "@/routes/Directions.jsx";
 import {getPackets} from "@/hooks/PacketHooks.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import DeliverPacket from "@/routes/DeliverPacket.jsx";
+import {useOutletContext} from "react-router-dom";
 
 export default function RoutePlanner(){
     const [input, setInput] = useState({
@@ -21,7 +22,8 @@ export default function RoutePlanner(){
     const [packets, setPackets] = useState([]);
     const [delivery, setDelivery] = useState(false);
     const [packet, setPacket] = useState("");
-
+    
+    const {api_key} = useOutletContext();
 
     const auth = useAuth();
     
@@ -51,8 +53,8 @@ export default function RoutePlanner(){
     }
     
     async function geo(){
-        const origin = await geoLocationHook(input.formOriginAddress, input.formOrginAddressNr, input.formOrginPostNr);
-        const destination = await geoLocationHook(input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr);
+        const origin = await geoLocationHook(api_key,input.formOriginAddress, input.formOrginAddressNr, input.formOrginPostNr);
+        const destination = await geoLocationHook(api_key,input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr);
         
         return [origin, destination];
     }
@@ -69,9 +71,9 @@ export default function RoutePlanner(){
         if(loading) {
             e.preventDefault();
             console.log(input);
-            const geo = bothGeoLocationHook(input.formOriginAddress, input.formOrginAddressNr, input.formOrginPostNr, input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr)
+            const geo = bothGeoLocationHook(api_key, input.formOriginAddress, input.formOrginAddressNr, input.formOrginPostNr, input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr)
                 .then((response) => {
-                    if(response[0].status === "REQUEST_DENIED" || response[1].status === "REQUEST_DENIED") {
+                    if(response.status === "REQUEST_DENIED" || response.status === "REQUEST_DENIED") {
                         console.log("Request denied");
                         alert("Request denied");
                     }

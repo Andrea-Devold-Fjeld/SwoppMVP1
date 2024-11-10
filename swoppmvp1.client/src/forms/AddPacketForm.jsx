@@ -4,8 +4,7 @@ import {useNavigate} from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import PackageReg from "@/routes/PackageReg.jsx";
-import {addPacket} from "@/hooks/PacketHooks.jsx";
-
+import {useOutletContext} from "react-router-dom";
 export default function AddPacketForm({children}) {
     const [inputValue, setInputValue] = useState({});
     const [packet, setPacket] = useState({});
@@ -14,7 +13,8 @@ export default function AddPacketForm({children}) {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-
+    
+    const {api_key} = useOutletContext();
 
 
     const handleChange = async (e) => {
@@ -28,6 +28,7 @@ export default function AddPacketForm({children}) {
     const getGeolocation = async (packet) => {
         console.log("getGeolocation", inputValue);
         return await bothGeoLocationHook(
+            api_key,
             inputValue.originAddress,
             inputValue.originAddressNr,
             inputValue.originPostNr,
