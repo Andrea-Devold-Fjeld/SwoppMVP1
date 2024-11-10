@@ -1,0 +1,35 @@
+steps:
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t',
+           'europe-north1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage',
+           '.']
+    secretEnv:
+      - 'VITE_GOOGLE_MAPS_API_KEY'
+
+availableSecrets:
+  - secretManager:
+      versionName: projects/swopp-436713/secrets/projects/844462537245/secrets/VITE_GOOGLE_MAPS_API_KEY/versions/1
+      env: 'VITE_GOOGLE_MAPS_API_KEY'
+
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push',
+           'europe-north1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage']
+    options:
+      logging: CLOUD_LOGGING_ONLY
+
+
+  # Entrypoint, timeout and environment variables
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    timeout: 240s
+    args: ['compute', 'instances',
+           'create-with-container', 'my-vm-name',
+           '--container-image',
+           'europe--docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage']
+    options:
+      logging: CLOUD_LOGGING_ONLY
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
