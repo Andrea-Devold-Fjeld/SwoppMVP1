@@ -21,6 +21,7 @@ function GoogleMapsComponent({geoLocation, packets, onStateChange}) {
     const mapIds = ["a5995e39d0ac4d83"]
 
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    console.log("Google Maps API Key: ", api_key);
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,
         libraries: libraries, 
