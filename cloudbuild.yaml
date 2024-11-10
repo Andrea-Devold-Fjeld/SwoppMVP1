@@ -1,15 +1,14 @@
 steps:
   # Docker Build
+  - name: node:10.15.1
+  - entrypoint: npm
+  - args: [ "run", "create-env" ]
+  - env:
+    - 'VITE_GOOGLE_MAPS_API_KEY=${_MY_SECRET_KEY}'
   - name: 'gcr.io/cloud-builders/docker'
     script: |
       docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID//my-docker-repo/myimage .
       automapSubstitutions: true
-    secretEnv: ['VITE_GOOGLE_MAPS_API_KEY']
-  - name: node:10.15.1
-    entrypoint: npm
-    args: [ "run", "create-env" ]
-    env:
-      - 'VITE_GOOGLE_MAPS_API_KEY=${_MY_SECRET_KEY}'
 images:
   - 'europe-north1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage'
 options:

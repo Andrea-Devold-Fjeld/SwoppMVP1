@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
     npm
 RUN npm install npm@latest -g && \
     npm install n -g && \
-    n latest
+    n latest \
+RUN echo "${_MY_SECRET_KEY}E" >> /app/.env
 
 
 FROM with-node AS build
