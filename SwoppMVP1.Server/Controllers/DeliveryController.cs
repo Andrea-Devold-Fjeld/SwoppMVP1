@@ -68,17 +68,26 @@ public class DeliveryController : Controller
         }
         
     }
-    [Authorize(Policy = "TransporterOnly")]
+    //(Policy = "TransporterOnly")
+    [Authorize]
     [HttpPost]
     [Route("[controller]/[action]")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<HttpResponseMessage> AddDelivery(string packetId)
+    public async Task<HttpResponseMessage> AddDelivery(string packetId, string deliveryTitle)
     {
         var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
-        var claim = User.Claims.FirstOrDefault(x => x.Type == "Transporter"); 
-        if (claim?.Value != "true") return new HttpResponseMessage(HttpStatusCode.Forbidden);
+
+        var test = User.Claims;
+        foreach (var claim1 in test)
+        {
+            Console.WriteLine(claim1);
+        }
+        var claim = User.Claims.FirstOrDefault(x => x.Type == "transporter"); 
+        Console.WriteLine(claim);
+        if (claim?.Value != "transporterClaim") return new HttpResponseMessage(HttpStatusCode.Forbidden);
+        
 
         try
         {
@@ -89,12 +98,13 @@ public class DeliveryController : Controller
             var delivery = new Delivery
             {
                 UserId = identifier.Value,
-                Delivered = false
+                Delivered = false, 
+                Title = deliveryTitle
             };
             delivery.Packets.Add(packet);
             await _repository.AddDeliveryAsync(delivery);
-            await _packetRepository.SetPacketAvailabilityAsync(packetId, false);
-            await _context.SaveChangesAsync();
+            await _packetRepository.SetPacketAvailabilityAsync(packetId.ToUpper(), false);
+            //await _context.SaveChangesAsync();
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
         catch (Exception e)

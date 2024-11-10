@@ -59,19 +59,35 @@ export const getPacketByUserId = async (auth) => {
                 "Authorization": `Bearer ${auth.token}`
             }            
         })
-        return await response.json();
-    }
-    catch(err) {
-        console.log(err);
+        if(response.status === 401){
+            auth.refreshTokenAPI(auth.refreshToken);
+            const refreshedResponse = await fetch(`/delivery/getdeliverybyuserid`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": `Bearer ${auth.token}`
+                }})
+            if (refreshedResponse.status === 200) {
+                return await refreshedResponse.json();
+            }else {
+                console.log("Error in refreshing token");
+            }
+        }else if (response.status === 200) {
+            return await response.json();
+        }else {
+            alert("Error in fetching packet by user id");
+            console.log("Error in fetching packet by user id");
+        }
+    } catch (e) {
+        console.log(e);
     }
 }
 
-export const addPacket = async (packet) => {
-        const auth = useAuth();
+export const addPacket = async (packet, auth) => {
         console.log(auth.token);
         console.log(packet);
         console.log("Add packet: ", JSON.stringify(packet));
-        const navigate = useNavigate();
+        //const navigate = useNavigate();
         try {
             const response = await fetch("/packet/addpacket", {
                 method: "POST",
@@ -82,7 +98,7 @@ export const addPacket = async (packet) => {
                 body: JSON.stringify(packet)
             }).catch((err) => {
                 console.log(err);
-                navigate("/login)")
+                //navigate("/login)")
             });
             return await response.json();
         } catch (err) {

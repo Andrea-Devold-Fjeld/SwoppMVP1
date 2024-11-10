@@ -52,7 +52,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthorization(
     options =>
     {
-        options.AddPolicy("TransporterOnly", policy => policy.RequireClaim("TransporterId"));
+        options.AddPolicy("TransporterOnly", policy => policy.RequireClaim("Transporter", true.ToString()));
     });
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

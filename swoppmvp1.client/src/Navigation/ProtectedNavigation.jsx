@@ -10,12 +10,27 @@ import {useOutletContext} from "react-router-dom";
 
 
 export default function ProtectedNavigation(){
-    const { transporter, handleUpdateTransporter } = useOutletContext || {};
     const [loading, setLoading] = useState(true);
+    const[transporter, setTransporter] = useState(false);
     const auth = useAuth();
-    
-    const transporterClaim = transporter;
-    
+
+    if (!auth || !auth.token) {
+        console.log("User or token does not exist");
+        navigate("/login");
+    }
+    //useEffect(() => {
+    //     {
+    console.log("In useEffect in protected navigation");
+    //if (user && user.token) {
+    console.log("In useEffect in protected nav, user and token exists");
+    checkTransporterRole(auth)
+        .then((response) => {
+            console.log("response in useffect in protected nav",response);
+            setTransporter(response.value);
+        })
+        .catch((error) => {
+            console.error("Error checking transporter role:", error);
+        });    
 
     /*
     useEffect(() => {
@@ -26,7 +41,7 @@ export default function ProtectedNavigation(){
             })
     }, []);
 */
-    console.log("Transporte2r: ", transporterClaim);
+    console.log("Transporte2r: ", transporter);
 
     /*
      <Navbar expand="lg" className="bg-body-tertiary">
@@ -47,7 +62,7 @@ export default function ProtectedNavigation(){
         <>
             <div className={"navigation sticky-top"} id={"protected-nav"}>
 
-                {transporterClaim ?
+                {transporter ?
                     <>
                         <Navbar expand="lg" className="bg-body-tertiary navigation">
                             <Container>
@@ -60,6 +75,7 @@ export default function ProtectedNavigation(){
                                     </NavDropdown>
                                     <Nav.Link href={"/routeplanner"}>Route Planner</Nav.Link>
                                 </Navbar.Collapse>
+                                <Nav.Link href={"/logout"}>Logout</Nav.Link>
                             </Container>
                         </Navbar>
                     </> :
@@ -74,6 +90,7 @@ export default function ProtectedNavigation(){
                                 </NavDropdown>
                                 <Nav.Link href={"/registerTransporter"}>Register as Transporter</Nav.Link>
                             </Navbar.Collapse>
+                            <Nav.Link href={"/logout"}>Logout</Nav.Link>
                         </Container>
                     </Navbar>
 

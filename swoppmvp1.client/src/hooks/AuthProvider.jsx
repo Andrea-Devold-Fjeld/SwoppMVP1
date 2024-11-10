@@ -73,6 +73,8 @@ const AuthProvider = ({ children}) => {
             }).then((response) => {
                 if(response.status === 200){
                     return response.json();
+                } else if (response.status === 400) {
+                    Alert("Username already exists");
                 } else {
                     throw new Error("Login failed");
                 }})

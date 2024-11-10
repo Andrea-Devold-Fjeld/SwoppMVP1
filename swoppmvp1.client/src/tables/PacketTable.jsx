@@ -5,10 +5,7 @@ import {useOutletContext} from "react-router-dom";
 export default function PacketTable({stateChanger ,loading, packets, onStateChange}) {
     const [deliverButton, setDeliverButton] = useState(false);
 
-    const context = useOutletContext();
-    const project = context ? context.project : null;
-
-    const transporter = project ? project.transporter : false;
+    const { transporter } = useOutletContext();
 
     console.log("Packets: ", packets);
 

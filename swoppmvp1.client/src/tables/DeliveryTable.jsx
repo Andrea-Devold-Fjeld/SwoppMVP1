@@ -4,8 +4,8 @@ import DeliveryCard from "@/cards/DeliveryCard.jsx";
 import { useOutletContext } from 'react-router-dom';
 
 export default function DeliveryTable({deliveries, packetid}) {
-    const { project } = useOutletContext();
-    console.log("Testing outlet context", project.transporter)
+    const { transporter } = useOutletContext();
+    console.log("Testing outlet context", transporter)
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     console.log("DeliveryTable: ", packetid)
@@ -33,14 +33,15 @@ export default function DeliveryTable({deliveries, packetid}) {
     
    
     return (
-        <>
-            {deliveries.map((delivery) => {
-                return(
-                    <DeliveryCard key={deliveris.deliveryId} deliveris={delivery} packetId={packetid}
-                    />)
-
-            })}
-        </>
+                <>
+                {deliveries.length === 0 ? (
+                    <p>No deliveries available.</p>
+                ) : (
+                    deliveries.map((delivery) => (
+                        <DeliveryCard key={delivery.deliveryId} deliveris={delivery} packetId={packetid} />
+                    ))
+                )}
+            </>
     )
 }
     

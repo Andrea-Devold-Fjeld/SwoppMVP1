@@ -17,7 +17,7 @@ const center = {
 const libraries = ["places", "routes", "marker"]
 
 
-function GoogleMapsComponent({geoLocation, packets}) {
+function GoogleMapsComponent({geoLocation, packets, onStateChange}) {
     const mapIds = [import.meta.env.VITE_APP_MAPS_ID]
 
     const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY

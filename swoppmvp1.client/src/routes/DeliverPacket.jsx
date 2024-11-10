@@ -44,7 +44,13 @@ export default function DeliverPacket({packet}) {
     </div>
     <div>
         <h2>Add to existing delivery</h2>
-        {loading ? <h1>Loading...</h1> : <DeliveryTable  deliveris={delivery} packetid={packet} />}
+        {loading ? <h1>Loading...</h1> : (
+            delivery.length === 0 ? (
+                <p>No deliveries available.</p>
+            ) : (
+                <DeliveryTable deliveries={delivery} packetid={packet.id} />
+            )
+        )}
     </div>
                     </>
                 )}

@@ -15,13 +15,25 @@ export default function UsersPacket({packet}) {
             <Card.Body>
                 <Card.Title>Packet</Card.Title>
                 <Card.Text>
-                    <p>Origin Address: {packet.originAddress}</p>
-                    <p>Destination Address: {packet.destinationAddress}</p>
-                    <p>Message: {packet.message}</p>
-                    <p>Height: {packet.height}</p>
-                    <p>Width: {packet.width}</p>
-                    <p>Depth: {packet.depth}</p>
-                    <p>Weight: {packet.weight}</p>
+                    Origin Address: {packet.originAddress}
+                </Card.Text>
+                <Card.Text>
+                    Destination Address: {packet.destinationAddress}
+                </Card.Text>
+                <Card.Text>
+                    Message: {packet.message}
+                </Card.Text>
+                <Card.Text>
+                    Height: {packet.height}
+                </Card.Text>
+                <Card.Text>
+                    Width: {packet.width}
+                </Card.Text>
+                <Card.Text>
+                    Depth: {packet.depth}
+                </Card.Text>
+                <Card.Text>
+                    Weight: {packet.weight}
                 </Card.Text>
                 <Button variant="primary" onClick={handleClick}>
                     Update Packet

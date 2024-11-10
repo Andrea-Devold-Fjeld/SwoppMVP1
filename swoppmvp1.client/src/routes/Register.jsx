@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 export default function Register() {
     const [inputValue, setInputValue] = useState({});
+    const [error, setError] = useState("");
     
     const navigate = useNavigate();
     const handleChange = async (e) => {
@@ -27,6 +28,10 @@ export default function Register() {
                 if(response.status === 200){
                     console.log("Registered");
                     navigate("/login");
+                }
+                else if(response.status === 400) {
+                    console.log("Error");
+                    setError("Username is already registered");
                 }
             })
 
@@ -52,6 +57,7 @@ export default function Register() {
                         onChange={handleChange}/>
                 </Form.Group>
                 <Button variant={"primary"} type={"submit"}>Register</Button>
+                {error && <p style={{color: "red"}}>{error}</p>}
             </Form>
         </div>
      

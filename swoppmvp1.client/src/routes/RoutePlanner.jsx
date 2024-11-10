@@ -5,6 +5,7 @@ import {bothGeoLocationHook, geoLocationHook} from "@/hooks/GeolocationHooks.jsx
 import Directions from "@/routes/Directions.jsx";
 import {getPackets} from "@/hooks/PacketHooks.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
+import DeliverPacket from "@/routes/DeliverPacket.jsx";
 
 export default function RoutePlanner(){
     const [input, setInput] = useState({
@@ -18,7 +19,10 @@ export default function RoutePlanner(){
     const [loading, setLoading] = useState(true);
     const [geoLocation, setGeolocation] = useState({});
     const [packets, setPackets] = useState([]);
-    
+    const [delivery, setDelivery] = useState(false);
+    const [packet, setPacket] = useState("");
+
+
     const auth = useAuth();
     
     useEffect(() => {
@@ -51,6 +55,12 @@ export default function RoutePlanner(){
         const destination = await geoLocationHook(input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr);
         
         return [origin, destination];
+    }
+    
+    const handleOnStateChange = (state) => {
+        console.log("State change in RoutePlanner: ", state);
+        setDelivery(state);
+        setPacket(state.packetId);
     }
     
     const handleSubmit = ((e) => {
@@ -108,9 +118,15 @@ export default function RoutePlanner(){
      */
     return(
         <>
+            {delivery ?
+            <>
+                <h1>Delivering packet</h1>
+                <DeliverPacket packet={packet} />
+            </>:
+            <>
             {submit ? (
             <div>
-                <Directions geoLocation={geoLocation} packets={packets}/>
+                <Directions geoLocation={geoLocation} packets={packets} handleStateChange={handleOnStateChange}/>
             </div> ):(
         <div id={"routePlanner"}>
             <Form>
@@ -168,6 +184,8 @@ export default function RoutePlanner(){
             </Form>
         </div>
             )}
+            </>
+            }
         </>
     )
 }

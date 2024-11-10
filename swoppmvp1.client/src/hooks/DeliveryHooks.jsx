@@ -65,7 +65,7 @@ export const addPacketToDelivery = async (packetId, deliveryId, auth) => {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Authorization": `Bearer ${auth.tooken}`
+                "Authorization": `Bearer ${auth.token}`
             }
         })
         return await response.json();
@@ -74,9 +74,12 @@ export const addPacketToDelivery = async (packetId, deliveryId, auth) => {
     }
 }
 
-export const createDelivery = async (packetId, auth) => {
+export const createDelivery = async (packetId, auth, titleValue) => {
+    console.log("In create delivery", titleValue);
+    console.log("In create delivery", titleValue.deliveryTitle);
     const url = {}
     url.packetId = packetId;
+    url.deliveryTitle = titleValue.deliveryTitle;
     const query = queryString.stringify(url);
     console.log("In create delivery query: ", query);
     try {
