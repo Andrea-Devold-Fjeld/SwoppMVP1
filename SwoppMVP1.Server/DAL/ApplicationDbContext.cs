@@ -9,7 +9,7 @@ namespace SwoppMVP1.Server.DAL
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         
         public DbSet<Packet> Packets { get; set; }
