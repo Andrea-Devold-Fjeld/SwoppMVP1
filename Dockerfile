@@ -14,7 +14,13 @@ RUN apt-get update
 #RUN apt-get install curl
 RUN wget -sL https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get -y install nodejs
-RUN apt-get -y install npm@latest -g
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    npm
+RUN npm install npm@latest -g && \
+    npm install n -g && \
+    n latest 
+    
 RUN echo "${_MY_SECRET_KEY}" >> /app/.env
 
 
