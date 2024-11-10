@@ -51,7 +51,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/ GoogleMapsApiKe/GetGoogleMapsApiKey': {
+            '^/GoogleMapsApiKey/GetGoogleMapsApiKey': {
                 target,
                 secure: false
             },

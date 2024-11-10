@@ -7,12 +7,14 @@ import {useState, useEffect} from "react";
 import '../index.css';
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import {useOutletContext} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ProtectedNavigation(){
     const [loading, setLoading] = useState(true);
     const[transporter, setTransporter] = useState(false);
     const auth = useAuth();
+    const navigate = useNavigate();
 
     if (!auth || !auth.token) {
         console.log("User or token does not exist");

@@ -22,9 +22,9 @@ const AuthProvider = ({ children}) => {
         })
             .then((response) => {
                 console.log("Response: ", response);
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
-                localStorage.removeItem("expiresIn");
+                localStorage.setItem("accessToken", "");
+                localStorage.setItem("refreshToken", "");
+                localStorage.setItem("expiresIn", "");
                 if (response.status === 200) {
                     console.log("Token refreshed succesfully");
                     const status = response.status;
@@ -43,6 +43,9 @@ const AuthProvider = ({ children}) => {
                     localStorage.setItem("expiresIn", result.expiresIn);
                     console.log("Token refreshed succesfully");
                 } else if (status === 401) {
+                    localStorage.setItem("accessToken", "");
+                    localStorage.setItem("refreshToken", "");
+                    localStorage.setItem("expiresIn", "");
                     navigate("/login");
                     console.error("inside token refresh: ", result);
                 }else {

@@ -6,9 +6,12 @@ public class GoogleMapsApiKey : Controller
 {
     [HttpGet]
     [Route("[controller]/[action]")]
-    public string? GetGoogleMapsApiKey()
+    [Produces("application/json")]
+    public async Task<string?> GetGoogleMapsApiKey()
     {
-        return Environment.GetEnvironmentVariable("VITE_GOOGLE_MAPS_API_KEY");
+        var api = Environment.GetEnvironmentVariable("VITE_GOOGLE_MAPS_API_KEY");
+        Console.WriteLine("api: " + api);
+        return api;
     }
     
 }

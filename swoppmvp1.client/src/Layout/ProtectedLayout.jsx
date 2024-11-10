@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 export default function ProtectedLayout() {
     const [ transporter, setTransporter ] = useState(false);
     const [api_key, setApiKey] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const user = useAuth();
     const navigate = useNavigate();
@@ -37,18 +38,25 @@ export default function ProtectedLayout() {
                      .catch((error) => {
                          console.error("Error checking transporter role:", error);
                      });
-    try {
-        fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
-            .then((response) => response.json())
-            .then((data) => {
-                setApiKey(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching Google Maps API Key:", error);
-            });
-    }catch (e) {
-        console.log("Error fetching Google Maps API Key:", e);
-    }
+    useEffect(() => {
+        try {
+            console.log("In useEffect in protected layout");
+            fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
+                .then((response) => {
+                    console.log("Response: ", response);
+                    response.json();
+                }).then((data) => {
+                    console.log("Data: ", data);
+                    setApiKey(data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Google Maps API Key:", error);
+                });
+        }catch (e) {
+            console.log("Error fetching Google Maps API Key:", e);
+        }
+    }, []);
 
 
 
@@ -72,9 +80,11 @@ export default function ProtectedLayout() {
             <div className={"nav"}>
                 <ProtectedNavigation />
             </div>
+            {loading ? (<p>...loading</p>) : (
             <div>
-                <Outlet context={{transporter, handleUpdateTransporter}} />
+                <Outlet context={{transporter, handleUpdateTransporter, api_key}} />
             </div>
+            )}
         </div>
     )
 }
