@@ -21,6 +21,8 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/.idea
+**/cloudbuild.yaml
 LICENSE
 README.md
 !**/.gitignore
