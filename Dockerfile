@@ -21,7 +21,6 @@ RUN npm install npm@latest -g && \
     npm install n -g && \
     n latest 
     
-RUN echo "${_MY_SECRET_KEY}" >> /app/.env
 
 
 FROM with-node AS build
@@ -29,6 +28,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["SwoppMVP1.Server/SwoppMVP1.Server.csproj", "SwoppMVP1.Server/"]
 COPY ["swoppmvp1.client/swoppmvp1.client.esproj", "swoppmvp1.client/"]
+RUN echo "${_MY_SECRET_KEY}" >> ./swoppmvp1.client/.env
+
 RUN dotnet restore "./SwoppMVP1.Server/SwoppMVP1.Server.csproj"
 COPY . .
 WORKDIR "/src/SwoppMVP1.Server"
