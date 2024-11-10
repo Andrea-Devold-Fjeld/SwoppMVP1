@@ -8,6 +8,8 @@ import {useNavigate} from "react-router-dom";
 
 export default function ProtectedLayout() {
     const [ transporter, setTransporter ] = useState(false);
+    const [api_key, setApiKey] = useState("");
+
     const user = useAuth();
     const navigate = useNavigate();
     if (!user || !user.token) {
@@ -35,10 +37,18 @@ export default function ProtectedLayout() {
                      .catch((error) => {
                          console.error("Error checking transporter role:", error);
                      });
-             //}
-             
-    //    }        
-    //}, [user]);
+    try {
+        fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
+            .then((response) => response.json())
+            .then((data) => {
+                setApiKey(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching Google Maps API Key:", error);
+            });
+    }catch (e) {
+        console.log("Error fetching Google Maps API Key:", e);
+    }
 
 
 

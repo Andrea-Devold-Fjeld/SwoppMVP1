@@ -9,6 +9,8 @@ steps:
     script: |
       docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID//my-docker-repo/myimage .
       automapSubstitutions: true
+    secretEnv:
+      - '_MY_SECRET_KEY'
 images:
   - 'europe-north1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage'
 options:

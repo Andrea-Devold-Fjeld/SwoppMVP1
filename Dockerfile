@@ -28,8 +28,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["SwoppMVP1.Server/SwoppMVP1.Server.csproj", "SwoppMVP1.Server/"]
 COPY ["swoppmvp1.client/swoppmvp1.client.esproj", "swoppmvp1.client/"]
-ARG _MY_SECRET_KEY
-RUN /bin/sh -c "envsubst '\$_MY_SECRET_KEY' < ./swoppmvp1.client/.template > ./swoppmvp1.client/.env"
 
 RUN dotnet restore "./SwoppMVP1.Server/SwoppMVP1.Server.csproj"
 COPY . .

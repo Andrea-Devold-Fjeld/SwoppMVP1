@@ -1,6 +1,6 @@
 import {GoogleMap, useJsApiLoader} from "@react-google-maps/api";
 import React, {useCallback, useState, useEffect} from "react";
-//import infoWindow from "@react-google-maps/api/src/components/drawing/InfoWindow.js";
+import {useOutletContext} from "react-router-dom";
 
 const libraries = ["places", "routes", "marker"];
 
@@ -18,7 +18,7 @@ function handleClick(e){
 }
 
 export default function GoogleMapsAdvancedMarkers({packets, geoLocations, onStateChange}) {
-    const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    const {api_key} = useOutletContext();
     console.log("Google Maps API Key: ", api_key);
     const mapIds = ["a5995e39d0ac4d83"]
     console.log(mapIds)
