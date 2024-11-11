@@ -12,8 +12,8 @@ export default function AllPackets() {
     const [loading, setLoading] = useState(true);
     const [delivery, setDelivery] = useState(false);
     const [packet, setPacket] = useState("");
-    const [api_key, setApiKey] = useState("");
-    const { transporter } = useOutletContext();
+    //const [api_key, setApiKey] = useState("");
+    const { transporter, aii_key } = useOutletContext();
     const auth = useAuth();
     console.log(loading);
     if(loading){
@@ -25,7 +25,7 @@ export default function AllPackets() {
                 console.log(packets);
             }
         )
- 
+ /*
         console.log("In useEffect in protected layout");
         fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
             .then((response) => {
@@ -41,6 +41,8 @@ export default function AllPackets() {
             });
 
         const auth = useAuth();
+        
+  */
     }
     const handleStateChange = (state) => {
         console.log("State change in PacketCard: ", state);

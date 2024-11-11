@@ -79,7 +79,6 @@ export default function RoutePlanner(){
     const handleSubmit = ((e) => {
         console.log("handleSubmit e:" + e);
         
-        if(loading) {
             e.preventDefault();
             console.log(input);
             const geo = bothGeoLocationHook(api_key, input.formOriginAddress, input.formOrginAddressNr, input.formOrginPostNr, input.formDestinationAddress, input.formDestinationAddressNr, input.formDestinationPostNr)
@@ -106,7 +105,7 @@ export default function RoutePlanner(){
 
             console.log("GEO", geo);
             console.log("GEOLOCATION", geoLocation);
-        }
+        
             
                     /*
                     if(response[1].status === "OK") {
