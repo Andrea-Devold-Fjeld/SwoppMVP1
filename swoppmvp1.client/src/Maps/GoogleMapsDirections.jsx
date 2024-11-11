@@ -18,10 +18,9 @@ const center = {
 const libraries = ["places", "routes", "marker"]
 
 
-function GoogleMapsComponent({geoLocation, packets, onStateChange}) {
+function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
     const mapIds = ["a5995e39d0ac4d83"]
 
-    const {api_key} = useOutletContext();
     console.log("Google Maps API Key: ", api_key);
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,

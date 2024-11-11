@@ -18,7 +18,6 @@ function handleClick(e){
 }
 
 export default function GoogleMapsAdvancedMarkers({api_key,packets, geoLocations, onStateChange}) {
-    const {api_key} = useOutletContext();
     console.log("Google Maps API Key: ", api_key);
     const mapIds = ["a5995e39d0ac4d83"]
     console.log(mapIds)
