@@ -21,27 +21,11 @@ export default function RoutePlanner(){
     const [geoLocation, setGeolocation] = useState({});
     const [packets, setPackets] = useState([]);
     const [delivery, setDelivery] = useState(false);
-    const [api_key, setApiKey] = useState("");
+    //const [api_key, setApiKey] = useState("");
     const [packet, setPacket] = useState("");
     
+    const { api_key } = useOutletContext();
     useEffect(() => {
-        try {
-            console.log("In useEffect in protected layout");
-            fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
-                .then((response) => {
-                    console.log("Response: ", response);
-                    response.json();
-                }).then((data) => {
-                console.log("Data: ", data);
-                setApiKey(data);
-                setLoading(false);
-            })
-                .catch((error) => {
-                    console.error("Error fetching Google Maps API Key:", error);
-                });
-        }catch (e) {
-            console.log("Error fetching Google Maps API Key:", e);
-        }
         getPackets(auth)
             .then((response) => {
                 console.log(response);
@@ -132,7 +116,7 @@ export default function RoutePlanner(){
             <>
             {submit ? (
             <div>
-                <Directions geoLocation={geoLocation} packets={packets} handleStateChange={handleOnStateChange}/>
+                <Directions api_key={api_key} geoLocation={geoLocation} packets={packets} handleStateChange={handleOnStateChange}/>
             </div> ):(
         <div id={"routePlanner"}>
             <Form>

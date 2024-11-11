@@ -1,8 +1,8 @@
 import GoogleMapsDirections from "@/Maps/GoogleMapsDirections.jsx";
 
 
-export default function Directions({geoLocation, packets, handleStateChange}){
+export default function Directions({api_key, geoLocation, packets, handleStateChange}){
     return (
-        <GoogleMapsDirections geoLocation={geoLocation} packets={packets} onStateChange={handleStateChange}/>
+        <GoogleMapsDirections api_key={api_key} geoLocation={geoLocation} packets={packets} onStateChange={handleStateChange}/>
     )
 }
