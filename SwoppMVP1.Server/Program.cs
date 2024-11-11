@@ -85,12 +85,15 @@ builder.Services.AddAuthorization(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 var connectionString = new MySqlConnectionStringBuilder()
 {
+    SslMode = MySqlSslMode.Disabled,
     Server = Environment.GetEnvironmentVariable("_DB_HOST"),
     //Port = Convert.ToUInt32(Environment.GetEnvironmentVariable("PORT")),
     UserID = Environment.GetEnvironmentVariable("_DB_USER"),
     Password = Environment.GetEnvironmentVariable("_DB_PASS"),
     Database = Environment.GetEnvironmentVariable("_DB_NAME"),
+    ConnectionProtocol = MySqlConnectionProtocol.UnixSocket
 };
+connectionString.Pooling = true;
 var host = Environment.GetEnvironmentVariable("_DB_HOST");
 var user = Environment.GetEnvironmentVariable("_DB_USER");
 var pass = Environment.GetEnvironmentVariable("_DB_PASS");
@@ -98,7 +101,7 @@ var db = Environment.GetEnvironmentVariable("_DB_NAME");
 Console.WriteLine($"Server={host};User={user};Password={pass};Database={db}");
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
-        $"Server={host};User={user};Password={pass};Database={db}"));    
+        connectionString.GetConnectionString(true)));    
 /*
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
