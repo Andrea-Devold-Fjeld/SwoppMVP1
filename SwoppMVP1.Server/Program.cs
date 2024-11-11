@@ -91,10 +91,14 @@ var connectionString = new MySqlConnectionStringBuilder()
     Password = Environment.GetEnvironmentVariable("_DB_PASS"),
     Database = Environment.GetEnvironmentVariable("_DB_NAME"),
 };
-Console.WriteLine(builder.Configuration["ConnectionStrings:AppDbContextConnection"]);
+var host = Environment.GetEnvironmentVariable("_DB_HOST");
+var user = Environment.GetEnvironmentVariable("_DB_USER");
+var pass = Environment.GetEnvironmentVariable("_DB_PASS");
+var db = Environment.GetEnvironmentVariable("_DB_NAME");
+Console.WriteLine($"Server={host};User={user};Password={pass};Database={db}");
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
-        connectionString.ConnectionString));    
+        $"Server={host};User={user};Password={pass};Database={db}"));    
 /*
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
