@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 export default function ProtectedLayout() {
     const [ transporter, setTransporter ] = useState(false);
     const [api_key, setApiKey] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     console.log("Google Maps API Key: ", api_key);
     const user = useAuth();
     const navigate = useNavigate();

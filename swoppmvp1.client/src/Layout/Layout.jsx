@@ -27,7 +27,7 @@ async function fetchApiKey(){
 export default function Layout({children}) {
     const user = useAuth();
     const [api_key, setApiKey] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     
     
     const navigate = useNavigate();
