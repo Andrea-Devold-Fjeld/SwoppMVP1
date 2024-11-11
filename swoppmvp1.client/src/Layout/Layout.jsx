@@ -58,11 +58,11 @@ export default function Layout({children}) {
     
     return (
         <>
-            <div className={"sticky-top"} id={"nav"}>
+            <div className={"sticky-top navigation"} id={"nav"}>
                 <Navigation />
             </div>
             {loading ? (<p>...loading</p>) : (
-            <div id={"content"}>
+            <div className={"content"} id={"content"}>
                 <Outlet context={{api_key}}/>
             </div>
             )}

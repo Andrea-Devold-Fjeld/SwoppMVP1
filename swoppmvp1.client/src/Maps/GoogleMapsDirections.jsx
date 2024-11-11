@@ -3,10 +3,13 @@ import React, {useCallback, useState, useEffect} from 'react'
 import {DirectionsRenderer, GoogleMap, useJsApiLoader} from '@react-google-maps/api';
 import {useOutletContext} from "react-router-dom";
 
+/*
 const containerStyle = {
     width: '800px',
     height: '800px'
 };
+
+ */
 
 // The latitude of Oslo, Ostlandet, Norway is 59.911491, and the longitude is 10.757933.
 
@@ -139,7 +142,7 @@ function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
     return isLoaded ? (
         <GoogleMap
             options={{mapId: "a5995e39d0ac4d83"}}
-            mapContainerStyle={containerStyle}
+            //mapContainerStyle={containerStyle}
             center={center}
             zoom={10}
             onLoad={onLoad}

@@ -98,13 +98,13 @@ export default function ProtectedLayout() {
     }
     return (
         <div>
-            <div className={"nav"}>
-                <ProtectedNavigation />
+            <div className={"sticky-top navigation"} id={"protected-nav"}>
+                <ProtectedNavigation/>
             </div>
             {loading ? (<p>...loading</p>) : (
-            <div>
-                <Outlet context={{transporter, handleUpdateTransporter, api_key}} />
-            </div>
+                <div className={"content"} id={"protected-content"}>
+                    <Outlet context={{transporter, handleUpdateTransporter, api_key}}/>
+                </div>
             )}
         </div>
     )
