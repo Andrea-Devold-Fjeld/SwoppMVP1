@@ -6,7 +6,7 @@ import Directions from "@/routes/Directions.jsx";
 import {getPackets} from "@/hooks/PacketHooks.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import DeliverPacket from "@/routes/DeliverPacket.jsx";
-import {useOutletContext} from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 export default function RoutePlanner(){
     const [input, setInput] = useState({
@@ -21,25 +21,36 @@ export default function RoutePlanner(){
     const [geoLocation, setGeolocation] = useState({});
     const [packets, setPackets] = useState([]);
     const [delivery, setDelivery] = useState(false);
+    const [api_key, setApiKey] = useState("");
     const [packet, setPacket] = useState("");
     
-    const {api_key} = useOutletContext();
-
-    const auth = useAuth();
-    
     useEffect(() => {
+        try {
+            console.log("In useEffect in protected layout");
+            fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
+                .then((response) => {
+                    console.log("Response: ", response);
+                    response.json();
+                }).then((data) => {
+                console.log("Data: ", data);
+                setApiKey(data);
+                setLoading(false);
+            })
+                .catch((error) => {
+                    console.error("Error fetching Google Maps API Key:", error);
+                });
+        }catch (e) {
+            console.log("Error fetching Google Maps API Key:", e);
+        }
         getPackets(auth)
             .then((response) => {
                 console.log(response);
                 setPackets(response);
             })
     }, []);
-    /*
-            originLat: 0,
-        originLng: 0,
-        destinationLat: 0,
-        destinationLng: 0
-     */
+    const auth = useAuth();
+    
+
     //const [geoLocation, setGeolocation] = useState([]);
     const [submit, setSubmit] = useState(false);
     

@@ -1,7 +1,7 @@
 import GoogleMapsAdvancedMarkers from "@/Maps/GoogleMapsAdvancedMarkers.jsx";
 
 
-export default function PacketMarker({children, onStateChange}) {
+export default function PacketMarker({api_key, children, onStateChange}) {
     console.log("PacketMarker", children);
     let marks = [];
     children.map((packet) => {
@@ -24,7 +24,7 @@ export default function PacketMarker({children, onStateChange}) {
     console.log(marks)
     return (
         <>
-            <GoogleMapsAdvancedMarkers packets={children} geoLocations={null} onStateChange={onStateChange} />
+            <GoogleMapsAdvancedMarkers api_key={api_key} packets={children} geoLocations={null} onStateChange={onStateChange} />
         </>
     )
 }

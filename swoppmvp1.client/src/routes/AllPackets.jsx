@@ -12,6 +12,7 @@ export default function AllPackets() {
     const [loading, setLoading] = useState(true);
     const [delivery, setDelivery] = useState(false);
     const [packet, setPacket] = useState("");
+    const [api_key, setApiKey] = useState("");
     const { transporter } = useOutletContext();
     const auth = useAuth();
     console.log(loading);
@@ -24,6 +25,22 @@ export default function AllPackets() {
                 console.log(packets);
             }
         )
+ 
+        console.log("In useEffect in protected layout");
+        fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
+            .then((response) => {
+                console.log("Response: ", response);
+                response.json();
+            }).then((data) => {
+                console.log("Data: ", data);
+                setApiKey(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching Google Maps API Key:", error);
+            });
+
+        const auth = useAuth();
     }
     const handleStateChange = (state) => {
         console.log("State change in PacketCard: ", state);
@@ -52,7 +69,7 @@ export default function AllPackets() {
                 
             </div>
             <div id={"map"}>
-                {loading ? <h1>Loading...</h1> : <PacketMarker children={packets} onStateChange={handleStateChange}/>}
+                {loading ? <h1>Loading...</h1> : <PacketMarker api_key={api_key} children={packets} onStateChange={handleStateChange}/>}
             </div>
                 </>
             }
