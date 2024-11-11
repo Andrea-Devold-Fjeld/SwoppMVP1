@@ -95,7 +95,7 @@ var host = Environment.GetEnvironmentVariable("_DB_HOST");
 var user = Environment.GetEnvironmentVariable("_DB_USER");
 var pass = Environment.GetEnvironmentVariable("_DB_PASS");
 var db = Environment.GetEnvironmentVariable("_DB_NAME");
-Console.WriteLine($"Server=swopp-436713:europe-north1:swoppmvp1-sql;User={user};Password={pass};Database={db}");
+Console.WriteLine($"Server={host};User={user};Password={pass};Database={db}");
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
         $"Server={host};User={user};Password={pass};Database={db}"));    
