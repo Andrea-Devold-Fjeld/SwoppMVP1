@@ -9,9 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MySql.Data.MySqlClient;
 using SwoppMVP1.Server.DAL;
-
+using MySqlConnector;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -86,22 +85,30 @@ builder.Services.AddAuthorization(options =>
 var connectionString = new MySqlConnectionStringBuilder()
 {
     SslMode = MySqlSslMode.Disabled,
-    Server = Environment.GetEnvironmentVariable("_DB_HOST"),
+    //Server = Environment.GetEnvironmentVariable("_DB_HOST"),
     //Port = Convert.ToUInt32(Environment.GetEnvironmentVariable("PORT")),
-    UserID = Environment.GetEnvironmentVariable("_DB_USER"),
-    Password = Environment.GetEnvironmentVariable("_DB_PASS"),
-    Database = Environment.GetEnvironmentVariable("_DB_NAME"),
-    ConnectionProtocol = MySqlConnectionProtocol.UnixSocket
+    //UserID = Environment.GetEnvironmentVariable("_DB_USER"),
+    //Password = Environment.GetEnvironmentVariable("_DB_PASS"),
+    //Database = Environment.GetEnvironmentVariable("_DB_NAME"),
+    UserID = "p844462537245-frb7tg@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+    Password = "swopp",
+    Server = "127.0.0.1",
+    Database = "swopp",
 };
 connectionString.Pooling = true;
-var host = Environment.GetEnvironmentVariable("_DB_HOST");
-var user = Environment.GetEnvironmentVariable("_DB_USER");
+//var host = Environment.GetEnvironmentVariable("_DB_HOST");
+//var user = Environment.GetEnvironmentVariable("_DB_USER");
 var pass = Environment.GetEnvironmentVariable("_DB_PASS");
 var db = Environment.GetEnvironmentVariable("_DB_NAME");
-Console.WriteLine($"Server={host};User={user};Password={pass};Database={db}");
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
+//Console.WriteLine($"Server={host};User={user};Password={pass};Database={db}");
+//builder.Services.AddMySqlDataSource(builder.Configuration.GetConnectionString("Default")!);
+
+
+builder.Services.AddDbContext<ApplicationDbContext>(
+    /*options =>
     options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
-        connectionString.GetConnectionString(true)));    
+        connectionString.GetConnectionString(true)));
+        */);
 /*
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
