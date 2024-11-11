@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 export default function ProtectedLayout() {
     const [ transporter, setTransporter ] = useState(false);
-    const [api_key, setApiKey] = useState(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+    const [api_key, setApiKey] = useState("");
     const [loading, setLoading] = useState(false);
     console.log("Google Maps API Key: ", api_key);
     const user = useAuth();
