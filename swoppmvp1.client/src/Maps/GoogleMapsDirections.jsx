@@ -19,7 +19,7 @@ const libraries = ["places", "routes", "marker"]
 
 
 function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
-    const mapIds = ["a5995e39d0ac4d83"]
+    const mapIds = "a5995e39d0ac4d83"
 
     console.log("Google Maps API Key: ", api_key);
     const { isLoaded } = useJsApiLoader({

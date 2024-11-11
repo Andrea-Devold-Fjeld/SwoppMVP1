@@ -19,7 +19,7 @@ function handleClick(e){
 
 export default function GoogleMapsAdvancedMarkers({api_key,packets, geoLocations, onStateChange}) {
     console.log("Google Maps Advanced API Key: ", api_key);
-    const mapIds = ["a5995e39d0ac4d83"]
+    const mapIds = "a5995e39d0ac4d83"
     console.log(mapIds)
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,
