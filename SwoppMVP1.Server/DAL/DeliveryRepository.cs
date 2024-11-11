@@ -39,7 +39,7 @@ public class DeliveryRepository : IDeliveryRepository
 
     public async Task<IEnumerable<Delivery>> GetAllDeliveriesByUserIdAsync(string userId)
     {
-        return await _context.Deliveries.Where(x => x.UserId.ToString() == userId)
+        return await _context.Deliveries.Where(x => x.UserId == userId)
             .Include(p => p.Packets).ToListAsync();
     }
 

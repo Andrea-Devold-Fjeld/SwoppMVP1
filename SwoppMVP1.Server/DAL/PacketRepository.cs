@@ -71,7 +71,7 @@ public class PacketRepository : IPacketRepository
 
     public async Task<IEnumerable<Packet>> GetPacketsByUserIdAsync(string userId)
     {
-        return await _context.Packets.Where(x => x.UserId.ToString() == userId).ToListAsync();
+        return await _context.Packets.Where(x => x.UserId == userId).ToListAsync();
     }
 
     public async Task<IEnumerable<Packet>> GetAvailablePacketsAsync()

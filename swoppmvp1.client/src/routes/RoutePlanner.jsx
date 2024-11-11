@@ -107,20 +107,11 @@ export default function RoutePlanner(){
                     }}
                     
                      */
-                
-                
-            //                <Directions geoLocation={geoLocation} />
+        
             
     })
-    //onChange={e => setInput({ formOriginAddress: e.target.value})}
-    /*
-    Origin: {loc.get(0).results[0].formatted_address}
-                                lat: {parseFloat(loc.get(0).results[0].geometry.location.lat.toString())}
-                                lng: {parseFloat(loc.get(0).results[0].geometry.location.lng.toString())}
-                                Destination: {loc.get(1).results[0].formatted_address}
-                                lat: {parseFloat(loc.get(1).results[0].geometry.location.lat.toString())}
-                                lng: {parseFloat(loc.get(1).results[0].geometry.location.lng.toString())}
-     */
+  
+     
     return(
         <>
             {delivery ?

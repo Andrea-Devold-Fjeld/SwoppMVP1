@@ -27,10 +27,14 @@ async function fetchApiKey(){
 export default function Layout({children}) {
     const user = useAuth();
     const [api_key, setApiKey] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    
+    
     const navigate = useNavigate();
     useEffect(()=>{
-        if(user.token) navigate("/dashboard")
+        if(user.token !== "") {
+            navigate("/dashboard")
+        }
     },[user.token])
     
 

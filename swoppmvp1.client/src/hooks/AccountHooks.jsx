@@ -76,7 +76,6 @@ export const checkTransporterRole = async (auth) => {
                 console.log("Error in refreshing token");
             }
         } else {
-            alert("Error in checking transporter role");
             console.log("Error in checking transporter role");
         }
     } catch (e) {

@@ -60,7 +60,7 @@ export const getPacketByUserId = async (auth) => {
             }            
         })
         if(response.status === 401){
-            auth.refreshTokenAPI(auth.refreshToken);
+            await auth.refreshTokenAPI(auth.refreshToken);
             const refreshedResponse = await fetch(`/delivery/getdeliverybyuserid`, {
                 method: "GET",
                 headers: {
@@ -87,7 +87,7 @@ export const addPacket = async (packet, auth) => {
         console.log(auth.token);
         console.log(packet);
         console.log("Add packet: ", JSON.stringify(packet));
-        //const navigate = useNavigate();
+        const navigate = useNavigate();
         try {
             const response = await fetch("/packet/addpacket", {
                 method: "POST",
@@ -100,7 +100,31 @@ export const addPacket = async (packet, auth) => {
                 console.log(err);
                 //navigate("/login)")
             });
-            return await response.json();
+            const data = await response.json();
+            if(data.status === 401){
+                console.log("Error in adding packet");
+                await auth.refreshTokenAPI(auth.refreshToken);
+                const refreshedResponse = await fetch(`/packet/addpacket`, {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": `Bearer ${auth.token}`
+                    },
+                    body: JSON.stringify(packet)
+                })
+                const refreshedData = await refreshedResponse.json();
+                if(refreshedData.status === 200) {
+                    console.log("Packet added");
+                    return refreshedData;
+                }else {
+                    console.log("Error in adding packet");
+                }
+            }else if(data.status !== 200){
+                console.log("Error in adding packet");
+            }else {
+                console.log("Packet added")
+                return data;
+            }
         } catch (err) {
             console.log(err);
         }

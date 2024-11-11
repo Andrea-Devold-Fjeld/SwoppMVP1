@@ -28,29 +28,25 @@ const AuthProvider = ({ children}) => {
                 if (response.status === 200) {
                     console.log("Token refreshed succesfully");
                     const status = response.status;
-                    return  response.json().then(
-                        (result) => {
-                            console.log("Result: ", result);
-                            console.log("Status: ", status);
-                            return {status, result}
-                        })}})
-            .then(({status, result}) => {
-                console.log("staus: ", status);
-                console.log("result: ", result);
-                if (status === 200) {
-                    localStorage.setItem("accessToken", result.accessToken);
-                    localStorage.setItem("refreshToken", result.refreshToken);
-                    localStorage.setItem("expiresIn", result.expiresIn);
-                    console.log("Token refreshed succesfully");
-                } else if (status === 401) {
+                    return response.json();
+                }else if (response.status !== 200) {
+                    console.log("Unauthorized");
+                    setToken("");
                     localStorage.setItem("accessToken", "");
                     localStorage.setItem("refreshToken", "");
                     localStorage.setItem("expiresIn", "");
+                    
                     navigate("/login");
-                    console.error("inside token refresh: ", result);
-                }else {
-                    navigate("/login");
-                }})
+                }}).then((data) => {
+                const accessToken = data.accessToken;
+                const refreshToken = data.refreshToken;
+                const expiresIn = data.expiresIn;
+                setToken(accessToken);
+                localStorage.setItem("accessToken", accessToken);
+                localStorage.setItem("refreshToken", refreshToken);
+                localStorage.setItem("expiresIn", expiresIn);
+                console.log("Done setting, enjoy your event");
+            })
             .catch((err) => {
                 console.log("token refresh error: ", err);
             })

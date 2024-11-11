@@ -8,36 +8,39 @@ import {useNavigate} from "react-router-dom";
 
 export default function ProtectedLayout() {
     const [ transporter, setTransporter ] = useState(false);
-    const [api_key, setApiKey] = useState("");
-    const [loading, setLoading] = useState(true);
-
+    const [api_key, setApiKey] = useState(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+    const [loading, setLoading] = useState(false);
+    console.log("Google Maps API Key: ", api_key);
     const user = useAuth();
     const navigate = useNavigate();
-    if (!user || !user.token) {
+    if ( user.token === "") {
         console.log("User or token does not exist");
         navigate("/login");
     }
+    
     //useEffect(() => {
     //     {
-             console.log("In useEffect in protected layout");
-             //if (user && user.token) {
-                console.log("In useEffect in protected layout, user and token exists");
-                 checkTransporterRole(user)
-                     .then((response) => {
-                         console.log("response in useffect in protected layout",response);
-                         if(response.value === "false") {
-                             console.log("User is not a transporter");
-                             
-                         }
-                         else if(response.value === "true") {
-                             console.log("User is a transporter");
-                             setTransporter(true);
-                             
-                         }
-                     })
-                     .catch((error) => {
-                         console.error("Error checking transporter role:", error);
-                     });
+    console.log("In useEffect in protected layout");
+    //if (user && user.token) {
+    console.log("In useEffect in protected layout, user and token exists");
+    checkTransporterRole(user)
+        .then((response) => {
+            console.log("response in useffect in protected layout",response);
+            if(response.value === "false") {
+                console.log("User is not a transporter");
+                
+            }
+            else if(response.value === "true") {
+                console.log("User is a transporter");
+                setTransporter(true);
+                
+            }
+        })
+        .catch((error) => {
+            console.error("Error checking transporter role:", error);
+        });
+
+
     useEffect(() => {
         try {
             console.log("In useEffect in protected layout");
@@ -46,10 +49,10 @@ export default function ProtectedLayout() {
                     console.log("Response: ", response);
                     response.json();
                 }).then((data) => {
-                    console.log("Data: ", data);
-                    setApiKey(data);
-                    setLoading(false);
-                })
+                console.log("Data: ", data);
+                setApiKey(data);
+                setLoading(false);
+            })
                 .catch((error) => {
                     console.error("Error fetching Google Maps API Key:", error);
                 });
@@ -57,6 +60,8 @@ export default function ProtectedLayout() {
             console.log("Error fetching Google Maps API Key:", e);
         }
     }, []);
+    
+                  
 
 
 
@@ -88,3 +93,25 @@ export default function ProtectedLayout() {
         </div>
     )
 }
+
+/*
+useEffect(() => {
+        try {
+            console.log("In useEffect in protected layout");
+            fetch("/GoogleMapsApiKey/GetGoogleMapsApiKey")
+                .then((response) => {
+                    console.log("Response: ", response);
+                    response.json();
+                }).then((data) => {
+                    console.log("Data: ", data);
+                    //setApiKey(data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Google Maps API Key:", error);
+                });
+        }catch (e) {
+            console.log("Error fetching Google Maps API Key:", e);
+        }
+    }, []);
+ */
