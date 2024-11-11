@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MySql.Data.MySqlClient;
 using SwoppMVP1.Server.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -82,9 +83,23 @@ builder.Services.AddAuthorization(options =>
     ));
     */
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var connectionString = new MySqlConnectionStringBuilder()
+{
+    Server = Environment.GetEnvironmentVariable("INSTANCE_UNIX_SOCKET"),
+    Port = Convert.ToUInt32(Environment.GetEnvironmentVariable("PORT")),
+    UserID = Environment.GetEnvironmentVariable("DB_USER"),
+    Password = Environment.GetEnvironmentVariable("DB_PASS"),
+    Database = Environment.GetEnvironmentVariable("DB_NAME"),
+};
+Console.WriteLine("ConnectionStrings:$ConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
+        builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
+    
+/*
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
+        */
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
