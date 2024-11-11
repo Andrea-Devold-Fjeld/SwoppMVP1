@@ -18,7 +18,7 @@ const center = {
 function GoogleMapsComponent({children}) {
     const {api_key} = useOutletContext();
     console.log("Google Maps API Key: ", api_key);
-    const mapId = "a5995e39d0ac4d83"
+    const mapId = ["a5995e39d0ac4d83"]
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,
         mapIds: mapId
@@ -44,6 +44,7 @@ function GoogleMapsComponent({children}) {
             center={center}
             zoom={10}
             onLoad={onLoad}
+            options={{mapId: "a5995e39d0ac4d83"}}
             onUnmount={onUnmount}
         >
             { /* Child components, such as markers, info windows, etc. */ }

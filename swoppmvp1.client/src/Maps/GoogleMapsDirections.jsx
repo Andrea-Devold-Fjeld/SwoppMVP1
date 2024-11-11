@@ -19,7 +19,7 @@ const libraries = ["places", "routes", "marker"]
 
 
 function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
-    const mapIds = "a5995e39d0ac4d83"
+    const mapIds = ["a5995e39d0ac4d83"]
 
     console.log("Google Maps API Key: ", api_key);
     const { isLoaded } = useJsApiLoader({
@@ -138,7 +138,7 @@ function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
 
     return isLoaded ? (
         <GoogleMap
-            options={{mapId: import.meta.env.VITE_APP_MAPS_ID}}
+            options={{mapId: "a5995e39d0ac4d83"}}
             mapContainerStyle={containerStyle}
             center={center}
             zoom={10}
