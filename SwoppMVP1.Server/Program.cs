@@ -91,7 +91,7 @@ var connectionString = new MySqlConnectionStringBuilder()
     Password = Environment.GetEnvironmentVariable("DB_PASS"),
     Database = Environment.GetEnvironmentVariable("DB_NAME"),
 };
-Console.WriteLine("ConnectionStrings:$ConnectionString");
+Console.WriteLine(builder.Configuration["ConnectionStrings:AppDbContextConnection"]);
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
         builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
