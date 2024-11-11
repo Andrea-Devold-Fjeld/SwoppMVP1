@@ -25,6 +25,7 @@ export default function RoutePlanner(){
     const [packet, setPacket] = useState("");
     
     const { api_key } = useOutletContext();
+    console.log("In route planner api key: ", api_key)
     useEffect(() => {
         getPackets(auth)
             .then((response) => {

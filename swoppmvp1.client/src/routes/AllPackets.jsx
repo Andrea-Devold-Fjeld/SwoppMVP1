@@ -13,7 +13,8 @@ export default function AllPackets() {
     const [delivery, setDelivery] = useState(false);
     const [packet, setPacket] = useState("");
     //const [api_key, setApiKey] = useState("");
-    const { transporter, aii_key } = useOutletContext();
+    const {  api_key } = useOutletContext();
+    console.log("In all packets api key: ", api_key)
     const auth = useAuth();
     console.log(loading);
     if(loading){
@@ -62,7 +63,7 @@ export default function AllPackets() {
             <div id={"loading"}>
                 {loading ? 
                     <h1>Loading...</h1> : 
-                    <PacketTable 
+                    <PacketTable
                         stateChanger={setLoading} 
                         loading={loading} 
                         packets={packets} 

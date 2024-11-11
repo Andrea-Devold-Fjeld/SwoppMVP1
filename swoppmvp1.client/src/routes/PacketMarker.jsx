@@ -3,6 +3,7 @@ import GoogleMapsAdvancedMarkers from "@/Maps/GoogleMapsAdvancedMarkers.jsx";
 
 export default function PacketMarker({api_key, children, onStateChange}) {
     console.log("PacketMarker", children);
+    console.log("PacketMarker api", api_key);
     let marks = [];
     children.map((packet) => {
         marks.push(
