@@ -85,17 +85,16 @@ builder.Services.AddAuthorization(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 var connectionString = new MySqlConnectionStringBuilder()
 {
-    Server = Environment.GetEnvironmentVariable("INSTANCE_UNIX_SOCKET"),
-    Port = Convert.ToUInt32(Environment.GetEnvironmentVariable("PORT")),
-    UserID = Environment.GetEnvironmentVariable("DB_USER"),
-    Password = Environment.GetEnvironmentVariable("DB_PASS"),
-    Database = Environment.GetEnvironmentVariable("DB_NAME"),
+    Server = Environment.GetEnvironmentVariable("_DB_HOST"),
+    //Port = Convert.ToUInt32(Environment.GetEnvironmentVariable("PORT")),
+    UserID = Environment.GetEnvironmentVariable("_DB_USER"),
+    Password = Environment.GetEnvironmentVariable("_DB_PASS"),
+    Database = Environment.GetEnvironmentVariable("_DB_NAME"),
 };
 Console.WriteLine(builder.Configuration["ConnectionStrings:AppDbContextConnection"]);
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseMySQL(//"Server=<INSTANCE_UNIX_SOCKET>;Uid=<DB_USER>;Pwd=<DB_PASS>;Database=<DB_NAME>;Protocol=unix"
-        builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
-    
+        connectionString.ConnectionString));    
 /*
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:AppDbContextConnection"]));
