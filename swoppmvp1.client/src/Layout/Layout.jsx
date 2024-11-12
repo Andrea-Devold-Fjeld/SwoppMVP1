@@ -2,7 +2,7 @@ import {Outlet} from 'react-router-dom'
 import Navigation from "@/Navigation/Navigation.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import {useNavigate} from 'react-router-dom'
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef} from 'react'
 
 async function fetchApiKey(){
     try {
@@ -28,7 +28,7 @@ export default function Layout({children}) {
     const user = useAuth();
     const [api_key, setApiKey] = useState("");
     const [loading, setLoading] = useState(false);
-    
+    const gotApiKey = useRef(false);
     
     const navigate = useNavigate();
     useEffect(()=>{
@@ -38,21 +38,21 @@ export default function Layout({children}) {
     },[user.token])
     
 
-        useEffect(() => {
-            try {
+    useEffect(() => {
+        try {
             console.log("In useEffect in protected layout");
-            /*
-            fetchApiKey()
-                .then((data) => {
-                    console.log("Data: ", data);
-                    setApiKey(data);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error fetching Google Maps API Key:", error);
-                });
-                
-             */
+            if(!gotApiKey.current) {
+                fetchApiKey()
+                    .then((data) => {
+                        console.log("Data: ", data);
+                        setApiKey(data);
+                        setLoading(false);
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching Google Maps API Key:", error);
+                    });
+
+            }
             }catch (e) {
                 console.log("Error fetching Google Maps API Key:", e);
             }
