@@ -86,8 +86,6 @@ export const getPacketByUserId = async (auth) => {
 export const addPacket = async (packet, auth) => {
         console.log(auth.token);
         console.log(packet);
-        console.log("Add packet: ", JSON.stringify(packet));
-        const navigate = useNavigate();
         try {
             const response = await fetch("/packet/addpacket", {
                 method: "POST",
@@ -101,6 +99,8 @@ export const addPacket = async (packet, auth) => {
                 //navigate("/login)")
             });
             const data = await response.json();
+            console.log("In packet hooks", data);
+            if(data === true) return data;
             if(data.status === 401){
                 console.log("Error in adding packet");
                 await auth.refreshTokenAPI(auth.refreshToken);

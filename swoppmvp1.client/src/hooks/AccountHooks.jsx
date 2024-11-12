@@ -35,8 +35,7 @@ export const registerHooks = async (user) => {
  * Check if user has claims as a transporter, use the logged in token to authorize
  * @returns {Promise<boolean>} returns true if user is validated as transporter
  */
-export const checkTransporterRole = async (auth) => {
-    const navigate = useNavigate();
+export async function checkTransporterRole(auth, navigate) {
     try {
         const response = await fetch("/transporter/checkTransporterRole", {
             method: "GET",

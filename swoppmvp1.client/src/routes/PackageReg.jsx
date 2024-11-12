@@ -1,17 +1,19 @@
 ﻿import {addPacket} from "@/hooks/PacketHooks.jsx";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 
 function PackageReg({packet}) {
     const [response, setResponse] = useState("");
     console.log("packet", packet);
     const auth = useAuth();
+    const isSendt = useRef(false);
 
     useEffect(() => {
+        if(isSendt.current) return;
+        isSendt.current = true;
         addPacket(packet, auth)
             .then(response => {
                 console.log("response", response);
-                console.log("response status", response.status);
                 if (response === true) {
                     console.log("Packet added");
                     setResponse("Package registered");

@@ -18,6 +18,7 @@ function handleClick(e){
 }
 
 export default function GoogleMapsAdvancedMarkers({api_key,packets, geoLocations, onStateChange}) {
+    api_key = import.meta.env.VITE_GOOGLE_MAPS_ADVANCED_API_KEY;
     console.log("Google Maps Advanced API Key: ", api_key);
     const mapIds = ["a5995e39d0ac4d83"]
     console.log(mapIds)

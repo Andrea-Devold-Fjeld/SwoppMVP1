@@ -27,7 +27,7 @@ async function fetchApiKey(){
 export default function Layout({children}) {
     const user = useAuth();
     const [api_key, setApiKey] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     
     
     const navigate = useNavigate();
@@ -41,6 +41,7 @@ export default function Layout({children}) {
         useEffect(() => {
             try {
             console.log("In useEffect in protected layout");
+            /*
             fetchApiKey()
                 .then((data) => {
                     console.log("Data: ", data);
@@ -50,6 +51,8 @@ export default function Layout({children}) {
                 .catch((error) => {
                     console.error("Error fetching Google Maps API Key:", error);
                 });
+                
+             */
             }catch (e) {
                 console.log("Error fetching Google Maps API Key:", e);
             }

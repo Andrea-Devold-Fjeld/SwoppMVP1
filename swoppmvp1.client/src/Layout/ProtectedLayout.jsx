@@ -2,7 +2,7 @@ import {Outlet, Navigate} from 'react-router-dom'
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import ProtectedNavigation from "@/Navigation/ProtectedNavigation.jsx";
 import {checkTransporterRole, setTransporterRole} from "@/hooks/AccountHooks.jsx";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import {useOutletContext} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 
@@ -29,17 +29,45 @@ async function fetchApiKey(){
 export default function ProtectedLayout() {
     const [ transporter, setTransporter ] = useState(false);
     const [api_key, setApiKey] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const hasCheckedRole = useRef(false);
+    const hasFetchedApiKey = useRef(false);
     console.log("Google Maps API Key: ", api_key);
+    console.log("In protected layout", transporter)
     const user = useAuth();
     const navigate = useNavigate();
-    if ( user.token === "") {
-        console.log("User or token does not exist");
-        navigate("/login");
-    }
     useEffect(() => {
-        try {
-            console.log("In useEffect in protected layout");
+        if ( user.token === "") {
+            console.log("User or token does not exist");
+            navigate("/login");
+        }
+    }, [user, navigate]);
+
+    useEffect(() => {
+        if(!hasCheckedRole.current) {
+            hasCheckedRole.current = true;
+            checkTransporterRole(user, navigate)
+                .then((response) => {
+                    console.log("response in useffect in protected layout",response);
+                    if(response.value === "false") {
+                        console.log("User is not a transporter");
+
+                    }
+                    else if(response.value === "true") {
+                        console.log("User is a transporter");
+                        setTransporter(true);
+
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error checking transporter role:", error);
+                });
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if(!hasFetchedApiKey.current) {
+            hasFetchedApiKey.current = true;
             fetchApiKey()
                 .then((data) => {
                     console.log("Data: ", data);
@@ -49,35 +77,8 @@ export default function ProtectedLayout() {
                 .catch((error) => {
                     console.error("Error fetching Google Maps API Key:", error);
                 });
-        }catch (e) {
-            console.log("Error fetching Google Maps API Key:", e);
         }
-        console.log("In useEffect in protected layout");
-        //if (user && user.token) {
-        console.log("In useEffect in protected layout, user and token exists");
-        checkTransporterRole(user)
-            .then((response) => {
-                console.log("response in useffect in protected layout",response);
-                if(response.value === "false") {
-                    console.log("User is not a transporter");
-
-                }
-                else if(response.value === "true") {
-                    console.log("User is a transporter");
-                    setTransporter(true);
-
-                }
-            })
-            .catch((error) => {
-                console.error("Error checking transporter role:", error);
-            });
-    },[]);
-    //useEffect(() => {
-    //     {
-    
-    
-    
-                  
+    }, []);
 
 
 

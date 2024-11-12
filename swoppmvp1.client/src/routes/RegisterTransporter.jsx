@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TransporterRegistered from "@/routes/TransporterRegistered.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import {useOutletContext} from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 export default function RegisterTransporter() {
     const [isRegistered, setIsRegistered] = useState(false);
     const {handleUpdateTransporter} = useOutletContext();
@@ -20,7 +21,7 @@ export default function RegisterTransporter() {
         <>  
             <div>
                 <h1>Register Transporter</h1>
-                <button onClick={handleClick}>Register as Transporter</button>
+                <Button onClick={handleClick}>Register as Transporter</Button>
             </div>
             {isRegistered && <TransporterRegistered /> }
         </>

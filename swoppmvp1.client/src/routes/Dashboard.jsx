@@ -13,7 +13,6 @@ export default function Dashboard() {
 
     const [loading, setLoading] = useState(true);
     const auth = useAuth();
-    const transporterClaim = transporter;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,10 +24,10 @@ export default function Dashboard() {
         <>
             {loading ? (<p>...loading</p>) : (
                 <>
-                    {transporterClaim ?
+                    {transporter ?
                         <>
                             <div className={"profile"}>
-                                <UserDetails transporter={transporterClaim}/>
+                                <UserDetails transporter={transporter}/>
                                 <PacketDetails auth={auth}/>
                                 <DeliveryDetails auth={auth} />
                             </div>

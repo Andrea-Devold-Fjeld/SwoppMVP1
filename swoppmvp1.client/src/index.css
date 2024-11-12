@@ -14,9 +14,23 @@
 .profile {
     width: 80%;
     text-align: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    flex-flow: row wrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.all-packets {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+#all-packets-map {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .packet-table {
