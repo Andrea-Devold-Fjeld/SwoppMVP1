@@ -15,9 +15,8 @@ const center = {
 };
 
 
-function GoogleMapsComponent({children}) {
+function GoogleMapsComponent({children, api_key}) {
     //const {api_key} = useOutletContext();
-    const api_key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     console.log("Google Maps API Key: ", api_key);
     const mapId = ["a5995e39d0ac4d83"]
     const { isLoaded } = useJsApiLoader({

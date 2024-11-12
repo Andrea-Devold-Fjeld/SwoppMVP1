@@ -22,7 +22,6 @@ const libraries = ["places", "routes", "marker"]
 
 
 function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
-    api_key = import.meta.env.VITE_GOOGLE_MAPS_ADVANCED_API_KEY;
     const mapIds = ["a5995e39d0ac4d83"]
 
     console.log("Google Maps API Key: ", api_key);
