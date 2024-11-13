@@ -8,10 +8,13 @@ const center = {
     lat: 59.911491,
     lng: 10.757933
 };
+
 const containerStyle = {
     width: '800px',
     height: '800px'
 };
+
+ 
 
 function handleClick(e){
     console.log("Deliver packet", e.name, e, e.target)
@@ -36,7 +39,7 @@ export default function GoogleMapsAdvancedMarkers({api_key,packets, onStateChang
         const {AdvancedMarkerElement, PinElement} = new window.google.maps.Marker();
         // This is just an example of getting and using the map instance!!! don't just blindly copy!
         const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
+        //map.fitBounds(bounds);
         setMap(map)
         /*
                 packets.map((packet) => {

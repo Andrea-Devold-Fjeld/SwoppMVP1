@@ -47,7 +47,7 @@ public class PacketRepository : IPacketRepository
 
     public async Task<bool> DeletePacketAsync(string id)
     {
-        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id.ToUpper());
         if (packet != null)
         {
             _context.Packets.Remove(packet);
@@ -62,7 +62,7 @@ public class PacketRepository : IPacketRepository
 
     public async Task<bool> SetPacketAvailabilityAsync(string id, bool availability)
     {
-        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+        var packet = await _context.Packets.FirstOrDefaultAsync(x => x.Id.ToString() == id.ToUpper());
         packet.Available = availability;
         _context.Packets.Update(packet);
         await _context.SaveChangesAsync();

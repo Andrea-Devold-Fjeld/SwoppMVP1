@@ -1,8 +1,10 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import {useState} from "react";
+import Modal from 'react-bootstrap/Modal';
 
-export default function UsersPacket({packet}) {
-    
+export default function UsersPacket({packet, onDeletePacket}) {
+    const [show, setShow] = useState(false);
     const handleClick = () => {
         console.log("Update packet");
     }
@@ -10,8 +12,11 @@ export default function UsersPacket({packet}) {
     const handleDelete = () => {
         console.log("Delete packet");
     }
+    
+    
     return (
-        <Card style={{ width: '18rem' }}>
+        <>    
+    <Card style={{ width: '18rem' }}>
             <Card.Body>
                 <Card.Title>Packet</Card.Title>
                 <Card.Text>
@@ -38,8 +43,20 @@ export default function UsersPacket({packet}) {
                 <Button variant="primary" onClick={handleClick}>
                     Update Packet
                 </Button>
-                <Button onClick={handleDelete}>Delete Packet</Button>
+                <Button variant={"danger"} onClick={() => setShow(true)}>Delete Packet</Button>
             </Card.Body>
         </Card> 
+            <Modal show={show} onHide={() => setShow(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete packet {packet.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you sure you want to delete this packet?</p>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={() => onDeletePacket(packet.id)}>Delete</Button>
+                    </Modal.Footer>
+                </Modal.Body>
+            </Modal>
+        </>
     )
 }

@@ -184,10 +184,9 @@ export const updatePacket = async (packet) => {
     }
 }
 
-export const deletePacket = async (packetId) => {
-    const auth = useAuth();
+export const deletePacket = async (packetId, auth) => {
     try {
-        const response = await fetch("/packet/deletePacket", {
+        const response = await fetch("/packet/DeletePacket", {
             method: "DELETE",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

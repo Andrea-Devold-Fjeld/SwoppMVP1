@@ -17,6 +17,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "VITE_GOOGLE_MAPS_API_KEY": "AIzaSyBmhtDmNRmkOsaWC7-w_DR3HxpnS2IWkj0"
 
       },
       "dotnetRunMessages": true,
@@ -29,6 +30,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "VITE_GOOGLE_MAPS_API_KEY": "AIzaSyBmhtDmNRmkOsaWC7-w_DR3HxpnS2IWkj0"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7135;http://localhost:5045"

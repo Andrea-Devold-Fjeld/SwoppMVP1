@@ -1,6 +1,5 @@
 import React from 'react'
 import {GoogleMap, Marker, useJsApiLoader} from '@react-google-maps/api';
-import {useOutletContext} from "react-router-dom";
 
 const containerStyle = {
     width: '400px',
@@ -13,7 +12,6 @@ const center = {
     lat: 59.911491,
     lng: 10.757933
 };
-
 
 function GoogleMapsComponentMarker({children}) {
     //const {api_key} = useOutletContext();

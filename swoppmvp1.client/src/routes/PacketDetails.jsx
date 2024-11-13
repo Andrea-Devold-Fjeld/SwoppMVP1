@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import {getPacketByUserId} from "@/hooks/PacketHooks.jsx";
+import {deletePacket, getPacketByUserId} from "@/hooks/PacketHooks.jsx";
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import UsersPacket from "@/cards/UsersPacket.jsx";
@@ -9,6 +9,7 @@ export default function PacketDetails({auth}) {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const isDeletePacket = useRef(false);
+    const [deleted, setDeleted] = useState(false);
     useEffect(() => {
         getPacketByUserId(auth)
             .then((response) => {
@@ -17,24 +18,23 @@ export default function PacketDetails({auth}) {
                 setLoading(false);
             })
     }, []);
-        
-    /*
+    
+    
+    
     const handleDeletePacket = async (packetId) => {
-        useEffect(() => {
-            if (!isDeletePacket.current) {
-                isDeletePacket.current = true;
-                deletePacket(packetId).then(
+                 deletePacket(packetId, auth).then(
                     (response) => {
                         console.log(response);
                         setLoading(false);
-                        setPacket(response);
+                        setDeleted(true);
                         console.log(packet);
+                        setPacket((prevPackets) => prevPackets.filter(packet => packet.id !== packetId));
+
                     }
                 )
-            }
-        }, []);
+            
+    }
         
-     */
     return (
         <>
             <div>
@@ -45,7 +45,7 @@ export default function PacketDetails({auth}) {
                 packet.length > 0 ? (
                     <div id="packet-user-details">
                         {packet.map((packet) => (
-                            <UsersPacket key={packet.id} packet={packet} />
+                            <UsersPacket key={packet.id} packet={packet} onDeletePacket={handleDeletePacket}/>
                         ))}
                         <Button onClick={() => navigate("/addPacket")}>Add new packet</Button>
                     </div>
