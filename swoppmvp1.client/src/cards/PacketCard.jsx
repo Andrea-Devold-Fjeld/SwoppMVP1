@@ -10,8 +10,6 @@ export default function PacketCard({packet, role, delivery, onStateChange}) {
     const [showDeliverPacket, setShowDeliverPacket] = useState(false);
 
     const navigate = useNavigate();
-    console.log("Role: ", role);
-    console.log("Packet: ", packet);
     const handleClick = () => {
         if(role){
             setShowDeliverPacket(true);
@@ -31,13 +29,13 @@ export default function PacketCard({packet, role, delivery, onStateChange}) {
                     <Card.Body>
                         <Card.Title>Packet</Card.Title>
                         <Card.Text>
-                            <p>Origin Address: {packet.originAddress}</p>
-                            <p>Destination Address: {packet.destinationAddress}</p>
-                            <p>Message: {packet.message}</p>
-                            <p>Height: {packet.height}</p>
-                            <p>Width: {packet.width}</p>
-                            <p>Depth: {packet.depth}</p>
-                            <p>Weight: {packet.weight}</p>
+                            Origin Address: {packet.originAddress} <br />
+                            Destination Address: {packet.destinationAddress} <br/>
+                            Message: {packet.message}<br/>
+                            Height: {packet.height}<br/>
+                            Width: {packet.width}<br/>
+                            Depth: {packet.depth}<br/>
+                            Weight: {packet.weight}
                         </Card.Text>
                         <Button variant="primary" onClick={handleClick}>
                             {role ? 'Deliver packet' : 'Register as transporter'}

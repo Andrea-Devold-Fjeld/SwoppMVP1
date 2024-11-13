@@ -17,7 +17,7 @@ function handleClick(e){
     console.log("Deliver packet", e.name, e, e.target)
 }
 
-export default function GoogleMapsAdvancedMarkers({api_key,packets, geoLocations, onStateChange}) {
+export default function GoogleMapsAdvancedMarkers({api_key,packets, onStateChange}) {
 
     console.log("Google Maps Advanced API Key: ", api_key);
     const mapIds = ["a5995e39d0ac4d83"]
@@ -56,11 +56,9 @@ export default function GoogleMapsAdvancedMarkers({api_key,packets, geoLocations
 
     useEffect(() => {
         if (map && packets.length > 0) {
-            console.log("Packets: ", packets)
             const infoWindow = new window.google.maps.InfoWindow();
             packets.forEach((packet) => {
-                console.log("OriginLatitude: ", packet.originLatitude, "type: ", typeof packet.originLatitude)
-                console.log("OriginLongitude: ", packet.originLongitude, "type: ", typeof packet.originLongitude)
+
                 const pin = new google.maps.marker.PinElement({});
                 let marker =new window.google.maps.marker.AdvancedMarkerElement({
                     map,

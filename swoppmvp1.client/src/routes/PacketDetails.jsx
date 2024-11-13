@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {getPacketByUserId} from "@/hooks/PacketHooks.jsx";
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ export default function PacketDetails({auth}) {
     const [packet, setPacket] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const isDeletePacket = useRef(false);
     useEffect(() => {
         getPacketByUserId(auth)
             .then((response) => {
@@ -17,6 +18,23 @@ export default function PacketDetails({auth}) {
             })
     }, []);
         
+    /*
+    const handleDeletePacket = async (packetId) => {
+        useEffect(() => {
+            if (!isDeletePacket.current) {
+                isDeletePacket.current = true;
+                deletePacket(packetId).then(
+                    (response) => {
+                        console.log(response);
+                        setLoading(false);
+                        setPacket(response);
+                        console.log(packet);
+                    }
+                )
+            }
+        }, []);
+        
+     */
     return (
         <>
             <div>
