@@ -9,6 +9,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\messages\" />
     <Folder Include="src\routes\PackageRegistered\" />
   </ItemGroup>
 </Project>

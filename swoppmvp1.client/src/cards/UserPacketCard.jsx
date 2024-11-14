@@ -8,7 +8,7 @@ export default function UserPacketCard({packet}) {
             <div className={"packet-card"}>
                 <Card style={{ width: '18rem' }}>
                     <Card.Body>
-                        <Card.Title>Packet</Card.Title>
+                        <Card.Title>{packet.title}</Card.Title>
                         <Card.Text>
                             <p>Origin Address: {packet.originAddress}</p>
                             <p>Destination Address: {packet.destinationAddress}</p>

@@ -3,13 +3,13 @@ import React, {useCallback, useState, useEffect} from 'react'
 import {DirectionsRenderer, GoogleMap, useJsApiLoader} from '@react-google-maps/api';
 import {useOutletContext} from "react-router-dom";
 
-/*
+
 const containerStyle = {
     width: '800px',
     height: '800px'
 };
 
- */
+ 
 
 // The latitude of Oslo, Ostlandet, Norway is 59.911491, and the longitude is 10.757933.
 
@@ -24,7 +24,6 @@ const libraries = ["places", "routes", "marker"]
 function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
     const mapIds = ["a5995e39d0ac4d83"]
 
-    console.log("Google Maps API Key: ", api_key);
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: api_key,
         libraries: libraries, 
@@ -43,8 +42,7 @@ function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
         const origin = {lat: geoLocation.originLat, lng: geoLocation.originLng}
 
         const destination = {lat: geoLocation.destinationLat, lng: geoLocation.destinationLng}
-        console.log("origin", origin)
-        console.log("destination", destination)
+
         setMap(map)
 
         const directionsService = new window.google.maps.DirectionsService();
@@ -80,11 +78,8 @@ function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
 
     useEffect(() => {
         if (map && packets.length > 0) {
-            console.log("Packets: ", packets)
             const infoWindow = new window.google.maps.InfoWindow();
             packets.forEach((packet) => {
-                console.log("OriginLatitude: ", packet.originLatitude, "type: ", typeof packet.originLatitude)
-                console.log("OriginLongitude: ", packet.originLongitude, "type: ", typeof packet.originLongitude)
                 const pin = new google.maps.marker.PinElement({});
                 let marker =new window.google.maps.marker.AdvancedMarkerElement({
                     map,
@@ -120,7 +115,6 @@ function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
         const content = document.createElement("div");
         content.classList.add("property");
         content.addEventListener("click", (e) => {
-            console.log("Click event", e);
             onStateChange({packetId: property.id, status: "Delivered"});
         });
         content.innerHTML = `<div>
@@ -142,7 +136,7 @@ function GoogleMapsComponent({api_key, geoLocation, packets, onStateChange}) {
     return isLoaded ? (
         <GoogleMap
             options={{mapId: "a5995e39d0ac4d83"}}
-            //mapContainerStyle={containerStyle}
+            mapContainerStyle={containerStyle}
             center={center}
             zoom={10}
             onLoad={onLoad}

@@ -12,7 +12,7 @@ public class Delivery
     public string Title { get; set; }
     public virtual IdentityUser User { get; set; }
     public required string UserId { get; set; }
-    //public ICollection<Tuple<string, Packet>> Packets { get; set; } = new List<Tuple<string, Packet>>();
+    //public ICollection<string> ConfirmedPacketIds { get; set; } = new ICollection<string>();
     public ICollection<Packet> Packets { get; set; } = new List<Packet>();
     public bool Delivered { get; set; }
 }

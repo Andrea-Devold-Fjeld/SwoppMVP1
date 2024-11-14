@@ -22,7 +22,7 @@ export default function DeliveryUserCard({delivery}) {
                     <ul>
                     {delivery.packets.map((packet) => (
                         <li key={packet.id}>
-                            <Link to={`/packet/${packet.id}`}>Packet id: {packet.id}</Link>
+                            <Link to={`/packet/${packet.id}`}>Packet name: {packet.title}</Link>
                         </li>
                     ))}
                     </ul>
