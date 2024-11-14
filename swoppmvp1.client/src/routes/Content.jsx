@@ -6,10 +6,7 @@ function Content() {
     return (
         <>
             <div className="content" id={"content"}>
-                Content
-            </div>
-            <div className={"map"} id={"map"}>
-                <GoogleMapsComponent api_key={api_key}/>
+                Her skal det stå
             </div>
         </>
     )

@@ -42,13 +42,17 @@ export default function PacketDetails({auth}) {
             {loading ? (
                 <h1>Loading...</h1>
             ) : (
+                
                 packet.length > 0 ? (
+                    <>
+                    <Button onClick={() => navigate("/addPacket")}>Add new packet</Button>
                     <div id="packet-user-details">
                         {packet.map((packet) => (
                             <UsersPacket key={packet.id} packet={packet} onDeletePacket={handleDeletePacket}/>
                         ))}
                         <Button onClick={() => navigate("/addPacket")}>Add new packet</Button>
                     </div>
+                    </>
                 ) : (
                     <div>
                         <h1>No packets found</h1>

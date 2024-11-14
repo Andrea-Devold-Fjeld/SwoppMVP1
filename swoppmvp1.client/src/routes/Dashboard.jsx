@@ -5,7 +5,8 @@ import PacketDetails from "@/routes/PacketDetails.jsx";
 import DeliveryDetails from "@/routes/DeliveryDetails.jsx";
 import {useAuth} from "@/hooks/AuthProvider.jsx";
 import {useOutletContext} from "react-router-dom";
-
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 export default function Dashboard() {
     const context = useOutletContext();
@@ -25,47 +26,43 @@ export default function Dashboard() {
             {loading ? (<p>...loading</p>) : (
                 <>
                     {transporter ?
-                        <>
-                            <div className={"profile"}>
-                                <UserDetails transporter={transporter}/>
-                                <PacketDetails auth={auth}/>
-                                <DeliveryDetails auth={auth} />
-                            </div>
-                        </>
+                        <div className={"dashboard"}>
+                            <Tabs
+                                defaultActiveKey="profile"
+                                id="uncontrolled-tab-example"
+                                className="mb-3"
+                                justify>
+                                <Tab eventKey="profile" title="Profile">
+                                    <UserDetails transporter={transporter}/>
+                                </Tab>
+                                <Tab eventKey="packet" title="Packet">
+                                    <PacketDetails auth={auth}/>
+                                </Tab>
+                                <Tab eventKey="delivery" title="Delivery">
+                                    <DeliveryDetails auth={auth} />
+                                </Tab>
+
+                            </Tabs>
+                        </div>
                         :
-                        <>
-                            <div className={"profile"}>
-                                <UserDetails/>
-                                <PacketDetails auth={auth}/>
-                            </div>
-                        </>
-                    }
+                        <div className={"dashboard"}>
+                            <Tabs
+                                defaultActiveKey="profile"
+                                id="uncontrolled-tab-example"
+                                className="mb-3"
+                                justify>
+                                <Tab eventKey="profile" title="Profile">
+                                    <UserDetails/>
+                                </Tab>
+                                <Tab eventKey="packet" title="Packet">
+                                    <PacketDetails auth={auth}/>
+                                </Tab>
+                            </Tabs>
+                        </div>}
                 </>
+                    
             )}
         </>
 
     )
 }
-
-/*
- {loading ? (<p>...loading</p>) : (
-                <>
-                    {transporterClaim ? 
-                        <>
-                            <div className={"profile"}>
-                                <UserDetails transporter={transporterClaim}/>
-                                <PacketDetails auth={auth}/>
-                                <DeliveryDetails auth={auth} />
-                            </div>
-                        </> 
-                        :
-                        <>
-                            <div className={"profile"}>
-                                <UserDetails/>
-                                <PacketDetails auth={auth}/>
-                            </div>
-                        </>
-                    }
-                </>
-            )}
- */

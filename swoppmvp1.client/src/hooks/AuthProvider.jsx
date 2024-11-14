@@ -37,7 +37,16 @@ const AuthProvider = ({ children}) => {
                     localStorage.setItem("expiresIn", "");
                     
                     navigate("/login");
-                }}).then((data) => {
+                }else {
+                    console.log("Unauthorized");
+                    setToken("");
+                    localStorage.setItem("accessToken", "");
+                    localStorage.setItem("refreshToken", "");
+                    localStorage.setItem("expiresIn", "");
+
+                    navigate("/login");
+                }
+            }).then((data) => {
                 const accessToken = data.accessToken;
                 const refreshToken = data.refreshToken;
                 const expiresIn = data.expiresIn;

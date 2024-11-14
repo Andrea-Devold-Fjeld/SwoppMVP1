@@ -11,6 +11,15 @@
     align-content: flex-start;
 }
 
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    width: 80%;
+    justify-self: center;
+}
+
 .profile {
     width: 80%;
     text-align: center;
@@ -20,6 +29,15 @@
     justify-content: space-between;
 }
 
+#packet-user-details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    width: 80%;
+    justify-self: center;
+}
 
 
 #all-packets-map {
