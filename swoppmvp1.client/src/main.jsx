@@ -11,13 +11,11 @@ import { CookiesProvider } from 'react-cookie';
 
 //removed strict mode
 createRoot(document.getElementById('root')).render(
-      <ThemeProvider theme={"base"}>
           <StrictMode>
             <CookiesProvider>
                 <RouterProvider router={router} />
             </CookiesProvider>
           </StrictMode>
-      </ThemeProvider>
   ,
 )
 
