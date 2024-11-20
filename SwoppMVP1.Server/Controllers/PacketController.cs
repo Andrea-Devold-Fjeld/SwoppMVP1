@@ -143,7 +143,7 @@ public class PacketController : Controller
     [HttpDelete]
     [Route("[controller]/[action]")]
     [Produces("application/json")]
-    public async Task<bool> DeletePacket(string packetId)
+    public async Task<bool> DeletePacket([FromBody]string packetId)
     {
         return await _repository.DeletePacketAsync(packetId);
     }

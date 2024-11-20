@@ -144,4 +144,24 @@ public class DeliveryController : Controller
         await _context.SaveChangesAsync();
         return new HttpResponseMessage(HttpStatusCode.Created);
     }
+    
+    [Authorize]
+    [HttpPost]
+    [Route("[controller]/[action]")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<HttpResponseMessage> DeliverPacket(string deliveryId)
+    {
+        var identifier = User.FindFirst(ClaimTypes.NameIdentifier);
+        var claim = User.Claims.FirstOrDefault(x => x.Type == "Transporter"); 
+        if (claim?.Value != "true") return new HttpResponseMessage(HttpStatusCode.Forbidden);
+        
+        var delivery = await _repository.GetDeliveryByIdAsync(deliveryId.ToUpper());
+        if (delivery is null) return new HttpResponseMessage(HttpStatusCode.BadRequest);
+        
+        delivery.Delivered = true;
+        await _repository.UpdateDeliveryAsync(delivery);
+        await _context.SaveChangesAsync();
+        return new HttpResponseMessage(HttpStatusCode.Created);
+    }
 }

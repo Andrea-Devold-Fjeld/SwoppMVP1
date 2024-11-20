@@ -20,7 +20,7 @@ function handleClick(e){
     console.log("Deliver packet", e.name, e, e.target)
 }
 
-export default function GoogleMapsAdvancedMarkers({api_key,packets, onStateChange}) {
+export default function GoogleMapsAdvancedMarkers({api_key,packets, onStateChange, handleDeliveryChange}) {
 
     const mapIds = ["a5995e39d0ac4d83"]
     console.log(mapIds)
@@ -97,7 +97,7 @@ export default function GoogleMapsAdvancedMarkers({api_key,packets, onStateChang
         content.classList.add("property");
         content.addEventListener("click", (e) => {
             console.log("Click event", e);
-            onStateChange({packetId: property.id, status: "Delivered"});
+            handleDeliveryChange(property);
         });
         content.innerHTML = `<div>
             <h5>Packet</h5>

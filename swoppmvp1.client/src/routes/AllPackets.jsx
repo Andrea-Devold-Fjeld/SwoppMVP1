@@ -57,7 +57,12 @@ export default function AllPackets() {
                     ) : (
                         <>
                             <Button onClick={() => setShow(true)}>Show Map</Button>
-                            <GoogleMapModal show={show} handleClose={handleClose} api_key={api_key} packets={packets}/>
+                            <GoogleMapModal 
+                                show={show} 
+                                handleClose={handleClose} 
+                                api_key={api_key} 
+                                packets={packets} 
+                            handleStateChange={handleStateChange}/>
                         </>
                     )}
                 </div>
