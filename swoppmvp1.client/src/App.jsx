@@ -26,6 +26,7 @@ export const router = createBrowserRouter(
             
             <Route element={<AuthLayout />}>
                 <Route element={<Layout />} >
+                    <Route path={""} element={<Content />} />
                     <Route path={"/"} element={<Content />} />
                     <Route path={"/home"} element={<Content />} />
                     <Route path="/login" element={<Login />} />
