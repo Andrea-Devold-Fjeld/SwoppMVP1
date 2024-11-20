@@ -5,7 +5,7 @@ function Content() {
     const {api_key} = useOutletContext();
     return (
         <>
-            <div className="content" id={"content"}>
+            <div className="dashboard">
                 Her skal det stå
             </div>
         </>

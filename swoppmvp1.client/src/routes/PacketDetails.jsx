@@ -11,7 +11,7 @@ export default function PacketDetails({auth}) {
     const isDeletePacket = useRef(false);
     const [deleted, setDeleted] = useState(false);
     useEffect(() => {
-        getPacketByUserId(auth)
+        getPacketByUserId(auth, navigate)
             .then((response) => {
                 console.log("IN packet details",response);
                 setPacket(response);

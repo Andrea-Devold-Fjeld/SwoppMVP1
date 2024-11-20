@@ -27,7 +27,7 @@ export default function DeliverPacket({packet}) {
         
     }
     return (
-        <>
+        <div className={"dashboard"}>
             {createDelivery ? <><CreateDelivery packetid={packet} /> </> :
                 (
                     <>
@@ -56,7 +56,7 @@ export default function DeliverPacket({packet}) {
                 )}
             
             
-        </>
+        </div>
     )
     
 }

@@ -36,7 +36,7 @@ export default function CreateDelivery({ packetid}) {
     }
 
     return (
-        <>
+        <div className={"dashboard"}>
             {deliveryCreatet ? 
                 <div>
                     <h1>Delivery created</h1>
@@ -53,6 +53,6 @@ export default function CreateDelivery({ packetid}) {
                     </Form>
                 </div>
             }
-        </>
+        </div>
     )
 }

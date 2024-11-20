@@ -131,7 +131,7 @@ export default function RoutePlanner(){
     })
      
     return(
-        <>
+        <div className={"dashboard"}>
             {delivery ?
             <>
                 <h1>Delivering packet</h1>
@@ -188,6 +188,6 @@ export default function RoutePlanner(){
             )}
             </>
             }
-        </>
+        </div>
     )
 }

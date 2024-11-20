@@ -88,7 +88,7 @@ export default function Register() {
     }
     
     return (
-        <div id={"register"} className={"form mb-3"}>
+        <div id={"register"} className={"form mb-3 dashboard"}>
             <Form className={"mb-3"} onSubmit={handleSubmit}>
                 <Form.Group className={"mb-3"} controlId={"formBasicEmail"}>
                     <Form.Label>Email address</Form.Label>

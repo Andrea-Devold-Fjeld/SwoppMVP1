@@ -116,6 +116,9 @@ const AuthProvider = ({ children}) => {
         localStorage.setItem("accessToken", "");
         localStorage.setItem("refreshToken", "");
         localStorage.setItem("expiresIn","");
+        setToken("");
+        setRefreshToken("");
+        setLogin(false);
         console.log("Logged out");
         navigate("/login");
     };

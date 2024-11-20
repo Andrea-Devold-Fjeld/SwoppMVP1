@@ -67,7 +67,7 @@ const LoginForm = ({children}) => {
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} size={"sm"} className={"justify-center"}>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter email" name="email" onChange={handleInput} />

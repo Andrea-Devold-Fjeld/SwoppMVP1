@@ -37,12 +37,17 @@ export default function ProtectedNavigation(){
                     }
                 })
                 .catch((error) => {
-                    console.error("Error checking transporter role:", error);
+                    navigate("/login");
                 });
         }
     }, [auth, navigate]);
 
-
+/*
+                                    <NavDropdown title={"Packet"} id={"basic-nav-dropdown"}>
+                                        <NavDropdown.Item href={"/addPacket"}><p className={"text-white"}>Add Packet</p> </NavDropdown.Item>
+                                        <NavDropdown.Item href={"/allPackets"}>See all packets</NavDropdown.Item>
+                                    </NavDropdown>
+ */
     console.log("Transporte2r: ", transporter);
 
     return (
@@ -51,33 +56,37 @@ export default function ProtectedNavigation(){
 
                 {transporter ?
                     <>
-                        <Navbar expand="lg" className="bg-body-tertiary navigation">
+                        <Navbar variant={"dark"} expand="lg" data-bs-theme="dark" className="justify-content-center bg-transparent">
                             <Container>
                                 <Navbar.Brand href="/">SWOPP</Navbar.Brand>
                                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                                 <Navbar.Collapse id="basic-navbar-nav">
-                                    <NavDropdown title={"Packet"} id={"basic-nav-dropdown"}>
-                                        <NavDropdown.Item href={"/addPacket"}>Add Packet</NavDropdown.Item>
-                                        <NavDropdown.Item href={"/allPackets"}>See all packets</NavDropdown.Item>
-                                    </NavDropdown>
-                                    <Nav.Link href={"/routeplanner"}>Route Planner</Nav.Link>
+                                    <Nav>
+                                        <Nav.Link href={"/allPackets"}>All packets</Nav.Link>
+                                        <Nav.Link href={"/addPacket"}>Add packet</Nav.Link>
+                                        <Nav.Link href={"/routeplanner"}>Route Planner</Nav.Link>
+                                    </Nav>
                                 </Navbar.Collapse>
-                                <Nav.Link href={"/logout"}>Logout</Nav.Link>
+                                <Nav>
+                                    <Nav.Link href={"/logout"}>Logout</Nav.Link>
+                                </Nav>
                             </Container>
                         </Navbar>
                     </> :
-                    <Navbar expand="lg" className="bg-body-tertiary justify-content-center">
+                    <Navbar variant={"dark"} expand="lg" data-bs-theme="dark" className="justify-content-center bg-transparent">
                         <Container>
                             <Navbar.Brand href="/">SWOPP</Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                             <Navbar.Collapse id="basic-navbar-nav">
-                                <NavDropdown title={"Packet"} id={"basic-nav-dropdown"}>
-                                    <NavDropdown.Item href={"/addPacket"}>Add Packet</NavDropdown.Item>
-                                    <NavDropdown.Item href={"/allPackets"}>See all packets</NavDropdown.Item>
-                                </NavDropdown>
-                                <Nav.Link href={"/registerTransporter"}>Register as Transporter</Nav.Link>
+                                <Nav>
+                                    <Nav.Link href={"/allPackets"}>All packets </Nav.Link>
+                                    <Nav.Link href={"/addPackets"}>Add packets</Nav.Link>
+                                    <Nav.Link href={"/registerTransporter"}>Register as Transporter</Nav.Link>
+                                </Nav>
                             </Navbar.Collapse>
-                            <Nav.Link href={"/logout"}>Logout</Nav.Link>
+                            <Nav>
+                                <Nav.Link href={"/logout"}>Logout</Nav.Link>
+                            </Nav>
                         </Container>
                     </Navbar>
 

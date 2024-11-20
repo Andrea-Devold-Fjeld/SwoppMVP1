@@ -18,12 +18,12 @@ export default function RegisterTransporter() {
             })
     }
     return (
-        <>  
+        <div className={"dashboard"}>  
             <div>
                 <h1>Register Transporter</h1>
                 <Button onClick={handleClick}>Register as Transporter</Button>
             </div>
             {isRegistered && <TransporterRegistered /> }
-        </>
+        </div>
     )
 }

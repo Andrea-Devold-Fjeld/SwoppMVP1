@@ -2,7 +2,7 @@ import LoginForm from "@/forms/LoginForm.jsx";
 
 function Login () {
     return (
-        <div className={"content"} id={"loginform"}>
+        <div className={"dashboard"} id={"loginform"}>
             <LoginForm />
         </div>
     )

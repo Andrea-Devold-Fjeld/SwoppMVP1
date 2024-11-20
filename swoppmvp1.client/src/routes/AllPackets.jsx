@@ -45,7 +45,7 @@ export default function AllPackets() {
     }
     //  <PacketMarker api_key={api_key} children={packets} onStateChange={handleStateChange}/>}
     return (
-        <>{ delivery ? 
+        <div className={"dashboard"}>{ delivery ? 
             <>
                 <h1>Delivering packet</h1> 
                 <DeliverPacket packet={packet} />
@@ -77,6 +77,6 @@ export default function AllPackets() {
                 </div>
             </>
         }
-        </>
+        </div>
     )
 }

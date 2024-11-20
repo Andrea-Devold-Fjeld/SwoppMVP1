@@ -49,7 +49,7 @@ export const usePacketByUserId = () => {
         }
     }
 }
-export const getPacketByUserId = async (auth) => {
+export const getPacketByUserId = async (auth ,navigate) => {
     //const auth = useAuth();
     try {
         const response = await fetch("/packet/getpacketsbyuserid", {
@@ -75,8 +75,8 @@ export const getPacketByUserId = async (auth) => {
         }else if (response.status === 200) {
             return await response.json();
         }else {
-            alert("Error in fetching packet by user id");
             console.log("Error in fetching packet by user id");
+            navigate("/login");
         }
     } catch (e) {
         console.log(e);
